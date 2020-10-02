@@ -44,8 +44,13 @@ install: all
 	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
 	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
 
+alternatives:
+	update-alternatives\
+		--install /usr/bin/x-window-manager x-window-manager ${DESTDIR}${PREFIX}/bin/dwm 30\
+		--slave /usr/share/man/man1/x-window-manager.1 x-window-manager.1 ${DESTDIR}${MANPREFIX}/man1/dwm.1
+
 uninstall:
 	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
 		${DESTDIR}${MANPREFIX}/man1/dwm.1
 
-.PHONY: all options clean dist install uninstall
+.PHONY: all options clean dist install uninstall alternatives
