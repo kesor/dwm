@@ -11,48 +11,50 @@ static const int showbar            = 0;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font Mono:size=14:antialias=true:autohint=true", "FontAwesome:size=14:antialias=true:autohint=true", "Symbola:size=14:antialias=true:autohint=true", "monospace:size=14" };
 static const char dmenufont[]       = "JetBrainsMono Nerd Font Mono:size=14:antialias=true:autohint=true";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
 
 /* gruvbox colors https://github.com/morhetz/gruvbox#dark-mode-1 */
-static const char col_235_bg[]     = "#282828";
-static const char col_124_red[]    = "#cc241d";
-static const char col_106_green[]  = "#98971a";
-static const char col_172_yellow[] = "#d79921";
-static const char col_066_blue[]   = "#458588";
-static const char col_132_purple[] = "#b16286";
-static const char col_072_aqua[]   = "#689d6a";
-static const char col_246_gray[]   = "#a89984";
-static const char col_245_gray[]   = "#928374";
-static const char col_167_red[]    = "#fb4934";
-static const char col_142_green[]  = "#b8bb26";
-static const char col_214_yellow[] = "#fabd2f";
-static const char col_109_blue[]   = "#83a598";
-static const char col_175_purple[] = "#d3869b";
-static const char col_108_aqua[]   = "#8ec07c";
-static const char col_223_fg[]     = "#ebdbb2";
-static const char col_234_bg0_h[]  = "#1d2021";
-static const char col_235_bg0[]    = "#282828";
-static const char col_237_bg1[]    = "#3c3836";
-static const char col_239_bg2[]    = "#504945";
-static const char col_241_bg3[]    = "#665c54";
-static const char col_243_bg4[]    = "#7c6f64";
-static const char col_166_orange[] = "#d65d0e";
-static const char col_236_bg0_s[]  = "#32302f";
-static const char col_246_fg4[]    = "#a89984";
-static const char col_248_fg3[]    = "#bdae93";
-static const char col_250_fg2[]    = "#d5c4a1";
-static const char col_223_fg1[]    = "#ebdbb2";
-static const char col_229_fg0[]    = "#fbf1c7";
-static const char col_208_orange[] = "#fe8019";
+#define COLOR_235_BG     "#282828"
+#define COLOR_124_RED    "#cc241d"
+#define COLOR_106_GREEN  "#98971a"
+#define COLOR_172_YELLOW "#d79921"
+#define COLOR_066_BLUE   "#458588"
+#define COLOR_132_PURPLE "#b16286"
+#define COLOR_072_AQUA   "#689d6a"
+#define COLOR_246_GRAY   "#a89984"
+#define COLOR_245_GRAY   "#928374"
+#define COLOR_167_RED    "#fb4934"
+#define COLOR_142_GREEN  "#b8bb26"
+#define COLOR_214_YELLOW "#fabd2f"
+#define COLOR_109_BLUE   "#83a598"
+#define COLOR_175_PURPLE "#d3869b"
+#define COLOR_108_AQUA   "#8ec07c"
+#define COLOR_223_FG     "#ebdbb2"
+#define COLOR_234_BG0_H  "#1d2021"
+#define COLOR_235_BG0    "#282828"
+#define COLOR_237_BG1    "#3c3836"
+#define COLOR_239_BG2    "#504945"
+#define COLOR_241_BG3    "#665c54"
+#define COLOR_243_BG4    "#7c6f64"
+#define COLOR_166_ORANGE "#d65d0e"
+#define COLOR_236_BG0_S  "#32302f"
+#define COLOR_246_FG4    "#a89984"
+#define COLOR_248_FG3    "#bdae93"
+#define COLOR_250_FG2    "#d5c4a1"
+#define COLOR_223_FG1    "#ebdbb2"
+#define COLOR_229_FG0    "#fbf1c7"
+#define COLOR_208_ORANGE "#fe8019"
+
+static const char col_norm_bg[] = COLOR_235_BG0;
+static const char col_norm_fg[] = COLOR_246_FG4;
+static const char col_norm_br[] = COLOR_237_BG1;
+static const char col_selc_bg[] = COLOR_234_BG0_H;
+static const char col_selc_fg[] = COLOR_229_FG0;
+static const char col_selc_br[] = COLOR_246_FG4;
 
 static const char *colors[][3]      = {
-	/*               fg           bg             border   */
-	[SchemeNorm] = { col_246_fg4, col_235_bg0,   col_237_bg1  },
-	[SchemeSel]  = { col_229_fg0, col_234_bg0_h, col_246_fg4 },
+	/*               fg           bg           border   */
+	[SchemeNorm] = { col_norm_fg, col_norm_bg, col_norm_br },
+	[SchemeSel]  = { col_selc_fg, col_selc_bg, col_selc_br },
 };
 
 /* tagging */
@@ -63,9 +65,11 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class           instance         title       tags mask     isfloating   monitor */
-	{ "google-chrome", "Google-chrome", NULL,       0,            0,           -1 },
-	{ "Firefox",       NULL,            NULL,       1 << 8,       0,           -1 },
+	/* class             instance         title       tags mask     isfloating   monitor */
+	{ "Google-chrome",   NULL,            NULL,       0,            0,           -1 },
+	{ "Blueman-manager", NULL,            NULL,       1 << 8,       1,           -1 },
+	{ "SpeedCrunch",     NULL,            NULL,       1 << 8,       1,           -1 },
+	{ "flameshot",       NULL,            NULL,       1 << 8,       1,           -1 },
 };
 
 /* layout(s) */
@@ -93,7 +97,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_235_bg0, "-nf", col_246_fg4, "-sb", col_234_bg0_h, "-sf", col_229_fg0, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_norm_bg, "-nf", col_norm_fg, "-sb", col_selc_bg, "-sf", col_selc_fg, NULL };
 static const char *termcmd[]  = { "x-terminal-emulator", NULL };
 
 static Key keys[] = {
