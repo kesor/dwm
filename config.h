@@ -65,11 +65,14 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class             instance         title       tags mask     isfloating   monitor */
-	{ "Google-chrome",   NULL,            NULL,       0,            0,           -1 },
-	{ "Blueman-manager", NULL,            NULL,       1 << 8,       1,           -1 },
-	{ "SpeedCrunch",     NULL,            NULL,       1 << 8,       1,           -1 },
-	{ "flameshot",       NULL,            NULL,       1 << 8,       1,           -1 },
+	/* class             instance         title        tags mask     isfloating   monitor */
+	{ "Google-chrome",   NULL,            NULL,        0,            0,           -1 },
+	{ "Blueman-manager", NULL,            NULL,        1 << 8,       1,           -1 },
+	{ "SpeedCrunch",     NULL,            NULL,        1 << 8,       1,           -1 },
+	{ "flameshot",       NULL,            NULL,        1 << 8,       1,           -1 },
+	{ "flameshot",       NULL,            NULL,        1 << 8,       1,           -1 },
+	{ "zoom",           "zoom", "Participants",        0,            1,           -1 },
+	{ "zoom",           "zoom", "Zoom - Free Account", 0,            1,           -1 },
 };
 
 /* layout(s) */
