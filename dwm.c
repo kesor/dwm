@@ -239,7 +239,7 @@ static void spawn(const Arg *arg);
 static Monitor *systraytomon(Monitor *m);
 static void tag(const Arg *arg);
 static void tagmon(const Arg *arg);
-static void tile(Monitor *m);
+static void fullscreenmode(const Arg *arg);
 static void togglebar(const Arg *arg);
 static void togglefloating(const Arg *arg);
 static void toggletag(const Arg *arg);
@@ -1891,6 +1891,24 @@ tile(Monitor *m)
 			if (ty + HEIGHT(c) < m->wh)
 				ty += HEIGHT(c);
 		}
+}
+
+void
+fullscreenmode(const Arg *arg)
+{
+	if (!selmon->sel)
+		return;
+
+	if (!selmon->sel->isfullscreen)
+    {
+        selmon->showbar = 0;
+		setfullscreen(selmon->sel, 1);
+    }
+	else if (selmon->sel->isfullscreen)
+    {
+        selmon->showbar = 1;
+		setfullscreen(selmon->sel, 0);
+    }
 }
 
 void
