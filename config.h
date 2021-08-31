@@ -35,14 +35,21 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class             instance         title        tags mask     isfloating   monitor */
-	{ "Google-chrome",   NULL,            NULL,        0,            0,           -1 },
-	{ "Blueman-manager", NULL,            NULL,        1 << 8,       1,           -1 },
-	{ "SpeedCrunch",     NULL,            NULL,        1 << 8,       1,           -1 },
-	{ "flameshot",       NULL,            NULL,        1 << 8,       1,           -1 },
-	{ "flameshot",       NULL,            NULL,        1 << 8,       1,           -1 },
-	{ "zoom",           "zoom", "Participants",        0,            1,           -1 },
-	{ "zoom",           "zoom", "Zoom - Free Account", 0,            1,           -1 },
+	/* class             instance         title         tags mask    iscentered   isfloating   monitor */
+	{ "Gimp",            NULL,            NULL,         0,           0,           1,           -1 },
+	{ "Firefox",         NULL,            NULL,         0,           0,           0,           -1 },
+
+	/* class             instance         title        tags mask     iscentered   isfloating   monitor */
+	{ "Pavucontrol",     "pavucontrol", "Volume Control", 0,         1,           1,           -1 },
+	{ "Gcr-prompter",    "gcr-prompter",  NULL,         0,           1,           1,           -1 },
+	{ "Google-chrome",   NULL,            NULL,         0,           0,           0,           -1 },
+	{ "Blueman-manager", NULL,            NULL,         0,           0,           1,           -1 },
+	{ "SpeedCrunch",     NULL,            NULL,         0,           0,           1,           -1 },
+	{ "Steam",           NULL,  "Steam - Self Updater", 0,           1,           1,           -1 },
+	{ "Steam",           NULL,         "Steam",         0,           1,           0,           -1 },
+	{ "flameshot",       NULL,            NULL,         0,           0,           1,           -1 },
+	{ "zoom",            "zoom",          NULL,         0,           1,           1,           -1 },
+	{ "Code",            "code",          NULL,         0,           1,           0,           -1 },
 };
 
 /* layout(s) */
