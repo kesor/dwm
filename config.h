@@ -50,6 +50,7 @@ static const Rule rules[] = {
 	{ "flameshot",       NULL,            NULL,         0,           0,           1,           -1 },
 	{ "zoom",            "zoom",          NULL,         0,           1,           1,           -1 },
 	{ "Code",            "code",          NULL,         0,           1,           0,           -1 },
+	{ "1Password",       "1password",     NULL,         0,           1,           1,           -1 },
 };
 
 /* layout(s) */
