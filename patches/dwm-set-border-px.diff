@@ -1,0 +1,88 @@
+--- a/config.def.h
++++ b/config.def.h
+@@ -99,6 +99,9 @@ static const Key keys[] = {
+ 	{ MODKEY,                       XK_equal,  setgaps,        {.i = +5 } },
+ 	{ MODKEY|ShiftMask,             XK_minus,  setgaps,        {.i = GAP_RESET } },
+ 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = GAP_TOGGLE} },
++	{ ALTMOD,                       XK_minus,  setborderpx,    {.i = -1 } },
++	{ ALTMOD,                       XK_equal,  setborderpx,    {.i = +1 } },
++	{ ALTMOD|ShiftMask,             XK_equal,  setborderpx,    {.i = 0 } },
+ 	TAGKEYS(                        XK_1,                      0)
+ 	TAGKEYS(                        XK_2,                      1)
+ 	TAGKEYS(                        XK_3,                      2)
+--- a/dwm.c
++++ b/dwm.c
+@@ -128,6 +128,7 @@ struct Monitor {
+ 	int by;               /* bar geometry */
+ 	int mx, my, mw, mh;   /* screen size */
+ 	int wx, wy, ww, wh;   /* window area  */
++	unsigned int borderpx;
+ 	unsigned int seltags;
+ 	unsigned int sellt;
+ 	unsigned int tagset[2];
+@@ -209,6 +210,7 @@ static void run(void);
+ static void scan(void);
+ static int sendevent(Client *c, Atom proto);
+ static void sendmon(Client *c, Monitor *m);
++static void setborderpx(const Arg *arg);
+ static void setclientstate(Client *c, long state);
+ static void setcurrentdesktop(void);
+ static void setdesktopnames(void);
+@@ -689,6 +691,7 @@ createmon(void)
+ 	m->nmaster = nmaster;
+ 	m->showbar = showbar;
+ 	m->topbar = topbar;
++	m->borderpx = borderpx;
+ 	m->lt[0] = &layouts[0];
+ 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
+ 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
+@@ -1162,7 +1165,7 @@ manage(Window w, XWindowAttributes *wa)
+ 		c->y = c->mon->wy + c->mon->wh - HEIGHT(c);
+ 	c->x = MAX(c->x, c->mon->wx);
+ 	c->y = MAX(c->y, c->mon->wy);
+-	c->bw = borderpx;
++	c->bw = c->mon->borderpx;
+ 
+ 	wc.border_width = c->bw;
+ 	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
+@@ -1542,6 +1545,40 @@ sendmon(Client *c, Monitor *m)
+ }
+ 
+ void
++setborderpx(const Arg *arg)
++{
++	Client *c;
++	int prev_borderpx = selmon->borderpx;
++
++	if (arg->i == 0)
++		selmon->borderpx = borderpx;
++	else if (selmon->borderpx + arg->i < 0)
++		selmon->borderpx = 0;
++	else
++		selmon->borderpx += arg->i;
++
++	for (c = selmon->clients; c; c = c->next)
++	{
++		if (c->bw + arg->i < 0)
++			c->bw = selmon->borderpx = 0;
++		else
++			c->bw = selmon->borderpx;
++		if (c->isfloating || !selmon->lt[selmon->sellt]->arrange)
++		{
++			if (arg->i != 0 && prev_borderpx + arg->i >= 0)
++				resize(c, c->x, c->y, c->w-(arg->i*2), c->h-(arg->i*2), 0);
++			else if (arg->i != 0)
++				resizeclient(c, c->x, c->y, c->w, c->h);
++			else if (prev_borderpx > borderpx)
++				resize(c, c->x, c->y, c->w + 2*(prev_borderpx - borderpx), c->h + 2*(prev_borderpx - borderpx), 0);
++			else if (prev_borderpx < borderpx)
++				resize(c, c->x, c->y, c->w-2*(borderpx - prev_borderpx), c->h-2*(borderpx - prev_borderpx), 0);
++		}
++	}
++	arrange(selmon);
++}
++
++void
+ setclientstate(Client *c, long state)
+ {
+ 	long data[] = { state, None };

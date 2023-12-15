@@ -1,0 +1,95 @@
+--- a/config.def.h
++++ b/config.def.h
+@@ -51,7 +51,9 @@ static const Layout layouts[] = {
+ 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+ 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+ 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
++	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} }, \
++	{ ALTMOD,                       KEY,      focusnthmon,    {.i  = TAG } }, \
++	{ ALTMOD|ShiftMask,             KEY,      tagnthmon,      {.i  = TAG } },
+ 
+ /* commands */
+ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+--- a/dwm.c
++++ b/dwm.c
+@@ -164,6 +164,7 @@ static void destroynotify(XEvent *e);
+ static void detach(Client *c);
+ static void detachstack(Client *c);
+ static Monitor *dirtomon(int dir);
++static Monitor *numtomon(int num);
+ static void drawbar(Monitor *m);
+ static void drawbars(void);
+ static void enternotify(XEvent *e);
+@@ -171,6 +172,7 @@ static void expose(XEvent *e);
+ static void focus(Client *c);
+ static void focusin(XEvent *e);
+ static void focusmon(const Arg *arg);
++static void focusnthmon(const Arg *arg);
+ static void focusstack(const Arg *arg);
+ static Atom getatomprop(Client *c, Atom prop);
+ static int getrootptr(int *x, int *y);
+@@ -216,6 +218,7 @@ static void showhide(Client *c);
+ static void spawn(const Arg *arg);
+ static void tag(const Arg *arg);
+ static void tagmon(const Arg *arg);
++static void tagnthmon(const Arg *arg);
+ static void tile(Monitor *m);
+ static void togglebar(const Arg *arg);
+ static void togglefloating(const Arg *arg);
+@@ -714,6 +717,18 @@ dirtomon(int dir)
+ 	return m;
+ }
+ 
++Monitor *
++numtomon(int num)
++{
++	Monitor *m = NULL;
++	int i = 0;
++
++	for(m = mons, i=0; m->next && i < num; m = m->next){
++		i++;
++	}
++	return m;
++}
++
+ void
+ drawbar(Monitor *m)
+ {
+@@ -855,6 +870,21 @@ focusmon(const Arg *arg)
+ }
+ 
+ void
++focusnthmon(const Arg *arg)
++{
++	Monitor *m;
++
++	if (!mons->next)
++		return;
++
++	if ((m = numtomon(arg->i)) == selmon)
++		return;
++	unfocus(selmon->sel, 0);
++	selmon = m;
++	focus(NULL);
++}
++
++void
+ focusstack(const Arg *arg)
+ {
+ 	Client *c = NULL, *i;
+@@ -1737,6 +1767,14 @@ tagmon(const Arg *arg)
+ }
+ 
+ void
++tagnthmon(const Arg *arg)
++{
++	if (!selmon->sel || !mons->next)
++		return;
++	sendmon(selmon->sel, numtomon(arg->i));
++}
++
++void
+ tile(Monitor *m)
+ {
+ 	unsigned int i, n, h, mw, my, ty;
