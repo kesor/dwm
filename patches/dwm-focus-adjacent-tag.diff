@@ -52,7 +52,7 @@
  static Client *wintoclient(Window w);
  static Monitor *wintomon(Window w);
  static int xerror(Display *dpy, XErrorEvent *ee);
-@@ -1775,6 +1779,28 @@ tagnthmon(const Arg *arg)
+@@ -1785,6 +1789,28 @@ tagnthmon(const Arg *arg)
  }
  
  void
@@ -81,7 +81,7 @@
  tile(Monitor *m)
  {
  	unsigned int i, n, h, mw, my, ty;
-@@ -2246,6 +2272,28 @@ view(const Arg *arg)
+@@ -2256,6 +2282,28 @@ view(const Arg *arg)
  	updatecurrentdesktop();
  }
  

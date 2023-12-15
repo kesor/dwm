@@ -96,7 +96,7 @@
  }
  
  void
-@@ -1373,6 +1395,15 @@ resizeclient(Client *c, int x, int y, in
+@@ -1378,6 +1400,15 @@ resizeclient(Client *c, int x, int y, in
  	c->oldw = c->w; c->w = wc.width = w;
  	c->oldh = c->h; c->h = wc.height = h;
  	wc.border_width = c->bw;
@@ -112,7 +112,7 @@
  	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
  	configure(c);
  	XSync(dpy, False);
-@@ -1601,6 +1632,29 @@ setfullscreen(Client *c, int fullscreen)
+@@ -1611,6 +1642,29 @@ setfullscreen(Client *c, int fullscreen)
  }
  
  void
@@ -142,7 +142,7 @@
  setlayout(const Arg *arg)
  {
  	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
-@@ -1864,24 +1918,44 @@ tile(Monitor *m)
+@@ -1874,24 +1928,44 @@ tile(Monitor *m)
  	if (n == 0)
  		return;
  
