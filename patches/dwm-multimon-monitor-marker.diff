@@ -1,0 +1,81 @@
+From c13f9b5a379422525ec7f714d83a1cbb0e3251c2 Mon Sep 17 00:00:00 2001
+From: "Gary B. Genett" <me@garybgenett.net>
+Date: Sun, 19 Feb 2023 08:56:42 -0800
+Subject: added monitor marker to bar
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------2.37.4"
+
+This is a multi-part message in MIME format.
+--------------2.37.4
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+---
+ config.def.h |  2 ++
+ dwm.c        | 12 +++++++++++-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+
+
+--------------2.37.4
+Content-Type: text/x-patch; name="0001-added-monitor-marker-to-bar.patch"
+Content-Transfer-Encoding: 8bit
+Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patch"
+
+--- a/config.def.h
++++ b/config.def.h
+@@ -127,6 +127,8 @@ static const Button buttons[] = {
+ 	/* click                event mask      button          function        argument */
+ 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+ 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
++	{ ClkMonNum,            0,              Button1,        focusmon,       {.i = +1} },
++	{ ClkMonNum,            0,              Button3,        focusmon,       {.i = -1} },
+ 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
+ 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+ 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+--- a/dwm.c
++++ b/dwm.c
+@@ -70,7 +70,7 @@ enum { NetSupported, NetWMName, NetWMSta
+ 		NetDesktopNames, NetDesktopViewport, NetNumberOfDesktops, NetCurrentDesktop,
+ 		NetLast }; /* EWMH atoms */
+ enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
+-enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
++enum { ClkTagBar, ClkLtSymbol, ClkMonNum, ClkStatusText, ClkWinTitle,
+ 		ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
+ 
+ typedef union {
+@@ -122,6 +122,7 @@ typedef struct Pertag Pertag;
+ 
+ struct Monitor {
+ 	char ltsymbol[16];
++	char monmark[16];
+ 	float mfact;
+ 	int nmaster;
+ 	int num;
+@@ -495,6 +496,8 @@ buttonpress(XEvent *e)
+ 			arg.ui = 1 << i;
+ 		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
+ 			click = ClkLtSymbol;
++		else if (ev->x < x + TEXTW(selmon->ltsymbol) + TEXTW(selmon->monmark))
++			click = ClkMonNum;
+ 		else if (m == statmon && ev->x > selmon->ww - (int)TEXTW(stext))
+ 			click = ClkStatusText;
+ 		else
+@@ -822,6 +825,9 @@ drawbar(Monitor *m)
+ 	w = TEXTW(m->ltsymbol);
+ 	drw_setscheme(drw, scheme[SchemeNorm]);
+ 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
++	w = TEXTW(m->monmark);
++	drw_setscheme(drw, scheme[SchemeNorm]);
++	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->monmark, 0);
+ 
+ 	if ((w = m->ww - tw - x) > bh) {
+ 		if (m->sel) {
+@@ -2253,6 +2259,8 @@ updategeom(void)
+ 			{
+ 				dirty = 1;
+ 				m->num = i;
++				/* this is ugly, but it is a race condition otherwise */
++				snprintf(m->monmark, sizeof(m->monmark), "(%d)", m->num + 1);
+ 				m->mx = m->wx = unique[i].x_org;
+ 				m->my = m->wy = unique[i].y_org;
+ 				m->mw = m->ww = unique[i].width;

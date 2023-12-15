@@ -1,0 +1,9 @@
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,6 @@
++.pc/
++dwm
++config.h
++*.o
++dwm-*.tar.gz
++patches/*~
