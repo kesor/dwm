@@ -1,0 +1,57 @@
+--- a/dwm.c
++++ b/dwm.c
+@@ -48,7 +48,7 @@
+ #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
+ #define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
+ #define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
+-                               * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
++								* MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
+ #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
+ #define LENGTH(X)               (sizeof X / sizeof X[0])
+ #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
+@@ -61,11 +61,11 @@
+ enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
+ enum { SchemeNorm, SchemeSel }; /* color schemes */
+ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
+-       NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+-       NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
++		NetWMFullscreen, NetActiveWindow, NetWMWindowType,
++		NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
+ enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
+ enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
+-       ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
++		ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
+ 
+ typedef union {
+ 	int i;
+@@ -970,9 +970,9 @@ grabkeys(void)
+ 				if (keys[i].keysym == syms[(k - start) * skip])
+ 					for (j = 0; j < LENGTH(modifiers); j++)
+ 						XGrabKey(dpy, k,
+-							 keys[i].mod | modifiers[j],
+-							 root, True,
+-							 GrabModeAsync, GrabModeAsync);
++							keys[i].mod | modifiers[j],
++							root, True,
++							GrabModeAsync, GrabModeAsync);
+ 		XFree(syms);
+ 	}
+ }
+--- /dev/null
++++ b/.editorconfig
+@@ -0,0 +1,15 @@
++root = true
++
++# Unix-style newlines with a newline ending every file
++[*]
++charset = utf-8
++trim_trailing_whitespace = true
++end_of_line = lf
++insert_final_newline = true
++
++# Tab indentation (no size specified)
++[Makefile]
++indent_style = tab
++
++[*.{c,h,cpp,hpp,mk}]
++indent_style = tab
