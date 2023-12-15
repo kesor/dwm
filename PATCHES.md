@@ -5,7 +5,6 @@
 - [x] dwm-preserve-on-restart -- makes sure windows stay in place across dwm restarts
 - [x] dwm-fix-multi-mon -- focus on status bar when moving mouse to empty monitor
 - [x] dwm-ewmhtags -- add desktop information like current_desktop/names/viewport/...
-- [x] dwm-refresh-rate
 - [x] dwm-windowmap - map() and unmap() windows on creation/removal (for compositor?)
 
 ## Hotkeys

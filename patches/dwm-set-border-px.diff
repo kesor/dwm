@@ -45,7 +45,7 @@
  
  	wc.border_width = c->bw;
  	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
-@@ -1542,6 +1545,40 @@ sendmon(Client *c, Monitor *m)
+@@ -1552,6 +1555,40 @@ sendmon(Client *c, Monitor *m)
  }
  
  void

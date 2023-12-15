@@ -41,7 +41,7 @@ in config.def.h
  	}
  
  	for (c = m->clients; c; c = c->next) {
-@@ -1771,8 +1772,8 @@ setup(void)
+@@ -1781,8 +1782,8 @@ setup(void)
  	drw = drw_create(dpy, screen, root, sw, sh);
  	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
  		die("no fonts could be loaded.");

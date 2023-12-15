@@ -4,7 +4,6 @@ dwm-config-defaults.diff
 dwm-preserve-on-restart.diff
 dwm-fix-multimon.diff
 dwm-ewmh-desktop-tags.diff
-dwm-refreshrate.diff
 dwm-windowmap.diff
 dwm-actualfullscreen.diff
 dwm-access-nth-monitor.diff
@@ -20,3 +19,4 @@ dwm-status-padding.diff
 dwm-multimon-monitor-marker.diff
 dwm-centered-window-name.diff
 dwm-attach-aside-and-below.diff
+kesor-personalization.diff

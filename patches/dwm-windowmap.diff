@@ -10,7 +10,7 @@
  static Client *wintoclient(Window w);
  static Monitor *wintomon(Window w);
  static int xerror(Display *dpy, XErrorEvent *ee);
-@@ -1672,14 +1675,12 @@ showhide(Client *c)
+@@ -1682,14 +1685,12 @@ showhide(Client *c)
  		return;
  	if (ISVISIBLE(c)) {
  		/* show clients top down */
@@ -27,7 +27,7 @@
  	}
  }
  
-@@ -2134,6 +2135,51 @@ updateclienttagprop(Client *c)
+@@ -2144,6 +2145,51 @@ updateclienttagprop(Client *c)
  }
  
  void
