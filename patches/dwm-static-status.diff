@@ -39,7 +39,7 @@
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
  		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
-@@ -2240,7 +2240,7 @@ updategeom(void)
+@@ -2250,7 +2250,7 @@ updategeom(void)
  			else
  				mons = createmon();
  		}
@@ -48,7 +48,7 @@
  			if (i >= n
  			|| unique[i].x_org != m->mx || unique[i].y_org != m->my
  			|| unique[i].width != m->mw || unique[i].height != m->mh)
-@@ -2253,6 +2253,9 @@ updategeom(void)
+@@ -2263,6 +2263,9 @@ updategeom(void)
  				m->mh = m->wh = unique[i].height;
  				updatebarpos(m);
  			}
@@ -58,7 +58,7 @@
  		/* removed monitors if n > nn */
  		for (i = nn; i < n; i++) {
  			for (m = mons; m && m->next; m = m->next);
-@@ -2266,6 +2269,8 @@ updategeom(void)
+@@ -2276,6 +2279,8 @@ updategeom(void)
  			}
  			if (m == selmon)
  				selmon = mons;
@@ -67,7 +67,7 @@
  			cleanupmon(m);
  		}
  		free(unique);
-@@ -2353,7 +2358,7 @@ updatestatus(void)
+@@ -2363,7 +2368,7 @@ updatestatus(void)
  {
  	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
  		strcpy(stext, "dwm-"VERSION);

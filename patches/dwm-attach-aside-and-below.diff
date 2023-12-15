@@ -63,7 +63,7 @@
  	attachstack(c);
  	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
  		(unsigned char *) &(c->win), 1);
-@@ -1329,6 +1353,16 @@ movemouse(const Arg *arg)
+@@ -1334,6 +1358,16 @@ movemouse(const Arg *arg)
  	}
  }
  
@@ -80,7 +80,7 @@
  Client *
  nexttiled(Client *c)
  {
-@@ -1558,7 +1592,7 @@ sendmon(Client *c, Monitor *m)
+@@ -1568,7 +1602,7 @@ sendmon(Client *c, Monitor *m)
  	detachstack(c);
  	c->mon = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -89,7 +89,7 @@
  	attachstack(c);
  	setclienttagprop(c);
  	focus(NULL);
-@@ -2284,6 +2318,7 @@ updategeom(void)
+@@ -2294,6 +2328,7 @@ updategeom(void)
  				detachstack(c);
  				c->mon = mons;
  				attach(c);
