@@ -1,6 +1,10 @@
 --- a/config.def.h
 +++ b/config.def.h
-@@ -4,24 +4,28 @@
+@@ -1,27 +1,34 @@
+ /* See LICENSE file for copyright and license details. */
++#include <X11/XF86keysym.h>
+
+ /* appearance */
  static const unsigned int borderpx  = 1;        /* border pixel of windows */
  static const int startwithgaps[]    = { 1 };	/* 1 means gaps are used by default, this can be customized for each tag */
  static const unsigned int gappx[]   = { 10 };   /* default gap between windows in pixels, this can be customized for each tag */
@@ -22,52 +26,63 @@
  static const char col_gray3[]       = "#bbbbbb";
  static const char col_gray4[]       = "#eeeeee";
  static const char col_cyan[]        = "#005577";
-+static const char col_base[]   = "#1e1e2e"; // catppuccin mocha base
-+static const char col_fg[]     = "#89b4fa"; // catppuccin mocha blue
-+static const char col_border[] = "#181825"; // col_catppuccin_mocha_mantle;
++
++static const char cat_base[]        = "#1e1e2e"; // catppuccin mocha base
++static const char cat_surface1[]    = "#45475a"; // catppuccin mocha surface1
++static const char cat_mantle[]      = "#181825"; // catppuccin mocha mantle
++static const char cat_blue[]        = "#89b4fa"; // catppuccin mocha blue
 +
  static const char *colors[][3]      = {
 -	/*               fg         bg         border   */
 -	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
 -	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
-+	/*               fg      bg          border   */
-+	[SchemeNorm] = { col_fg, col_border, col_border },
-+	[SchemeSel]  = { col_fg, col_base,   col_fg     },
++	/*               fg            bg          border   */
++	[SchemeNorm] = { cat_surface1, cat_mantle, cat_mantle   },
++	[SchemeSel]  = { cat_blue,     cat_base,   cat_surface1 },
  };
  
  /* staticstatus */
-@@ -35,9 +39,19 @@ static const Rule rules[] = {
+@@ -35,9 +42,22 @@ static const Rule rules[] = {
  	 *	WM_CLASS(STRING) = instance, class
  	 *	WM_NAME(STRING) = title
  	 */
 -	/* class      instance    title       tags mask     iscentered   isfloating   monitor */
 -	{ "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
 -	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
-+	/* class                        instance                   title         tags mask     iscentered   isfloating   monitor */
-+	{ "Brave-browser",              NULL,                      NULL,         0,            0,           0,          -1 },
-+	{ "1Password",                  "1password",               NULL,         0,            1,           1,           0 },
-+	{ "install4j-jclient-Launcher", "sun-awt-X11-XFramePeer",  NULL,         1 << 8,       0,           0,           3 },
-+	{ "install4j-jclient-Launcher", "sun-awt-X11-XFramePeer",  "Login",      1 << 8,       1,           1,           3 },
-+	{ "install4j-jclient-Launcher", "sun-awt-X11-XFramePeer",  "Tool tips",  1 << 8,       0,           1,           3 },
-+	{ "install4j-jclient-Launcher", "sun-awt-X11-XDialogPeer", NULL,         1 << 8,       1,           1,           3 },
-+	{ "Pavucontrol",                NULL,                      NULL,         0,            1,           1,           0 },
-+	{ "Blueman-manager",            NULL,                      NULL,         0,            1,           1,           0 },
-+	{ "Update-manager",             NULL,                      NULL,         0,            1,           1,           0 },
-+	{ "SpeedCrunch",                NULL,                      NULL,         0,            1,           1,          -1 },
-+	{ "flameshot",                  NULL,                      NULL,         0,            0,           0,           0 },
-+	{ "stalonetray",                NULL,                      NULL,         1 << 8,       0,           1,           0 }
++	/* class                        instance                   title            tags mask     iscentered   isfloating   monitor */
++	{ "Brave-browser",              NULL,                      NULL,            0,            0,           0,          -1 },
++	{ "1Password",                  "1password",               NULL,            0,            1,           1,           0 },
++	{ "install4j-jclient-Launcher", "sun-awt-X11-XFramePeer",  "Tool tips",     0,            0,           1,           2 },
++	{ "install4j-jclient-Launcher", "sun-awt-X11-XDialogPeer", "Order Preview", 0,            1,           1,           2 },
++	{ "install4j-jclient-Launcher", "sun-awt-X11-XFramePeer",  NULL,            0,            0,           1,           2 },
++	{ "install4j-jclient-Launcher", "sun-awt-X11-XDialogPeer", NULL,            0,            0,           1,           2 },
++	{ "tasty.javafx.launcher.LauncherFxApp", NULL,             NULL,            2 << 8,       0,           0,           2 },
++	{ "tasty.javafx.launcher.LauncherFxApp", NULL,             "tastytrade",    2 << 8,       0,           0,           2 },
++	{ "Slack",                      NULL,                      NULL,            1 << 8,       0,           0,           0 },
++	{ "Pavucontrol",                NULL,                      NULL,            0,            1,           1,           0 },
++	{ "Blueman-manager",            NULL,                      NULL,            0,            1,           1,           0 },
++	{ "Update-manager",             NULL,                      NULL,            0,            1,           1,           0 },
++	{ "SpeedCrunch",                NULL,                      NULL,            0,            1,           1,          -1 },
++	{ "flameshot",                  NULL,                      NULL,            0,            0,           0,           0 },
++	{ "stalonetray",                NULL,                      NULL,            1 << 8,       0,           1,           0 }
  };
  
  /* layout(s) */
-@@ -66,13 +80,17 @@ static const Layout layouts[] = {
+@@ -66,13 +86,29 @@ static const Layout layouts[] = {
  
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 -static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_base, "-nf", col_fg, "-sb", col_base, "-sf", col_fg, NULL };
++static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", cat_mantle, "-nf", cat_surface1, "-sb", cat_base, "-sf", cat_surface1, "-nhb", cat_mantle, "-nhf", cat_blue, "-shb", cat_base, "-shf", cat_blue, NULL };
  static const char *termcmd[]  = { "x-terminal-emulator", NULL };
 +static const char *calccmd[]  = { "speedcrunch", NULL };
 +static const char *xprop[] = { "tmux", "set-option", "remain-on-exit", "on" ";", "split-window", "xprop", NULL };
++
++static const char *muteMus[]  = { "wpctl", "set-mute",   "@DEFAULT_AUDIO_SINK@",   "toggle" };
++static const char *muteMic[]  = { "wpctl", "set-mute",   "@DEFAULT_AUDIO_SOURCE@", "toggle" };
++static const char *volumeUp[] = { "wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@",   "3%+" };
++static const char *volumeDn[] = { "wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@",   "3%-" };
++
  
  static const Key keys[] = {
  	/* modifier                     key        function        argument */
@@ -75,10 +90,16 @@
  	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 + 	{ MODKEY|ControlMask,           XK_Return, spawn,          {.v = calccmd } },
 + 	{ MODKEY|ShiftMask,             XK_x,      spawn,          {.v = xprop } },
++
++	{ 0,              XF86XK_AudioMute,        spawn,          {.v = muteMus } },
++	{ 0,              XF86XK_AudioMicMute,     spawn,          {.v = muteMic } },
++	{ 0,              XF86XK_AudioRaiseVolume, spawn,          {.v = volumeUp } },
++	{ 0,              XF86XK_AudioLowerVolume, spawn,          {.v = volumeDn } },
++
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-@@ -94,10 +112,10 @@ static const Key keys[] = {
+@@ -94,10 +130,10 @@ static const Key keys[] = {
  	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
  	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
