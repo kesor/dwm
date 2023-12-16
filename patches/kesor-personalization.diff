@@ -68,12 +68,13 @@
  };
  
  /* layout(s) */
-@@ -66,13 +86,29 @@ static const Layout layouts[] = {
+@@ -66,13 +86,31 @@ static const Layout layouts[] = {
  
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 -static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 +static const char *dmenucmd[] = { "dmenu_run", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", cat_mantle, "-nf", cat_surface1, "-sb", cat_base, "-sf", cat_surface1, "-nhb", cat_mantle, "-nhf", cat_blue, "-shb", cat_base, "-shf", cat_blue, NULL };
++static const char *roficmd[]  = { "rofi", "-m", dmenumon, "-i", "-modi", "combi,window", "-show", "combi", "-combi-modi", "run,drun", "-show-icons", "-matching", "fuzzy", NULL };
  static const char *termcmd[]  = { "x-terminal-emulator", NULL };
 +static const char *calccmd[]  = { "speedcrunch", NULL };
 +static const char *xprop[] = { "tmux", "set-option", "remain-on-exit", "on" ";", "split-window", "xprop", NULL };
@@ -87,6 +88,7 @@
  static const Key keys[] = {
  	/* modifier                     key        function        argument */
  	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
++	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = roficmd } },
  	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 + 	{ MODKEY|ControlMask,           XK_Return, spawn,          {.v = calccmd } },
 + 	{ MODKEY|ShiftMask,             XK_x,      spawn,          {.v = xprop } },
@@ -99,7 +101,7 @@
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-@@ -94,10 +130,10 @@ static const Key keys[] = {
+@@ -94,10 +132,10 @@ static const Key keys[] = {
  	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
  	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
