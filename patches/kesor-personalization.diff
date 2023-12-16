@@ -3,7 +3,7 @@
 @@ -1,27 +1,34 @@
  /* See LICENSE file for copyright and license details. */
 +#include <X11/XF86keysym.h>
-
+ 
  /* appearance */
  static const unsigned int borderpx  = 1;        /* border pixel of windows */
  static const int startwithgaps[]    = { 1 };	/* 1 means gaps are used by default, this can be customized for each tag */

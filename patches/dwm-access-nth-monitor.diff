@@ -37,7 +37,7 @@
  static void tile(Monitor *m);
  static void togglebar(const Arg *arg);
  static void togglefloating(const Arg *arg);
-@@ -714,6 +717,18 @@ dirtomon(int dir)
+@@ -709,6 +712,18 @@ dirtomon(int dir)
  	return m;
  }
  
@@ -56,7 +56,7 @@
  void
  drawbar(Monitor *m)
  {
-@@ -855,6 +870,21 @@ focusmon(const Arg *arg)
+@@ -850,6 +865,21 @@ focusmon(const Arg *arg)
  }
  
  void
@@ -78,7 +78,7 @@
  focusstack(const Arg *arg)
  {
  	Client *c = NULL, *i;
-@@ -1747,6 +1777,14 @@ tagmon(const Arg *arg)
+@@ -1742,6 +1772,14 @@ tagmon(const Arg *arg)
  }
  
  void

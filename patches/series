@@ -2,7 +2,6 @@ gitignore
 dwm-normalize-whitespace-6.4.diff
 dwm-config-defaults.diff
 dwm-preserve-on-restart.diff
-dwm-fix-multimon.diff
 dwm-ewmh-desktop-tags.diff
 dwm-windowmap.diff
 dwm-actualfullscreen.diff
