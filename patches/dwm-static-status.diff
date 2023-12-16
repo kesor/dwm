@@ -12,7 +12,7 @@
  
 --- a/dwm.c
 +++ b/dwm.c
-@@ -298,7 +298,7 @@ static Cur *cursor[CurLast];
+@@ -295,7 +295,7 @@ static Cur *cursor[CurLast];
  static Clr **scheme;
  static Display *dpy;
  static Drw *drw;
@@ -21,7 +21,7 @@
  static Window root, wmcheckwin;
  
  /* configuration, allows nested code to access above variables */
-@@ -488,7 +488,7 @@ buttonpress(XEvent *e)
+@@ -485,7 +485,7 @@ buttonpress(XEvent *e)
  			arg.ui = 1 << i;
  		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
  			click = ClkLtSymbol;
@@ -30,7 +30,7 @@
  			click = ClkStatusText;
  		else
  			click = ClkWinTitle;
-@@ -789,7 +789,7 @@ drawbar(Monitor *m)
+@@ -786,7 +786,7 @@ drawbar(Monitor *m)
  		return;
  
  	/* draw status first so it can be overdrawn by tags later */
@@ -39,7 +39,7 @@
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
  		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
-@@ -2245,7 +2245,7 @@ updategeom(void)
+@@ -2244,7 +2244,7 @@ updategeom(void)
  			else
  				mons = createmon();
  		}
@@ -48,7 +48,7 @@
  			if (i >= n
  			|| unique[i].x_org != m->mx || unique[i].y_org != m->my
  			|| unique[i].width != m->mw || unique[i].height != m->mh)
-@@ -2258,6 +2258,9 @@ updategeom(void)
+@@ -2257,6 +2257,9 @@ updategeom(void)
  				m->mh = m->wh = unique[i].height;
  				updatebarpos(m);
  			}
@@ -58,7 +58,7 @@
  		/* removed monitors if n > nn */
  		for (i = nn; i < n; i++) {
  			for (m = mons; m && m->next; m = m->next);
-@@ -2271,6 +2274,8 @@ updategeom(void)
+@@ -2270,6 +2273,8 @@ updategeom(void)
  			}
  			if (m == selmon)
  				selmon = mons;
@@ -67,7 +67,7 @@
  			cleanupmon(m);
  		}
  		free(unique);
-@@ -2358,7 +2363,7 @@ updatestatus(void)
+@@ -2357,7 +2362,7 @@ updatestatus(void)
  {
  	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
  		strcpy(stext, "dwm-"VERSION);

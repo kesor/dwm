@@ -39,7 +39,7 @@ Subject: [PATCH] Fixed 'cfacts' patch failure due to upstream commit
  static void setmfact(const Arg *arg);
  static void setnumdesktops(void);
  static void setup(void);
-@@ -1119,6 +1121,7 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1116,6 +1118,7 @@ manage(Window w, XWindowAttributes *wa)
  	c->w = c->oldw = wa->width;
  	c->h = c->oldh = wa->height;
  	c->oldbw = wa->border_width;
@@ -47,7 +47,7 @@ Subject: [PATCH] Fixed 'cfacts' patch failure due to upstream commit
  
  	updatetitle(c);
  	if (XGetTransientForHint(dpy, w, &trans) && (t = wintoclient(trans))) {
-@@ -1616,6 +1619,23 @@ setlayout(const Arg *arg)
+@@ -1613,6 +1616,23 @@ setlayout(const Arg *arg)
  		drawbar(selmon);
  }
  
@@ -71,7 +71,7 @@ Subject: [PATCH] Fixed 'cfacts' patch failure due to upstream commit
  /* arg > 1.0 will set mfact absolutely */
  void
  setmfact(const Arg *arg)
-@@ -1837,9 +1857,15 @@ void
+@@ -1836,9 +1856,15 @@ void
  tile(Monitor *m)
  {
  	unsigned int i, n, h, mw, my, ty;
@@ -88,7 +88,7 @@ Subject: [PATCH] Fixed 'cfacts' patch failure due to upstream commit
  	if (n == 0)
  		return;
  
-@@ -1849,15 +1875,17 @@ tile(Monitor *m)
+@@ -1848,15 +1874,17 @@ tile(Monitor *m)
  		mw = m->ww;
  	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
  		if (i < m->nmaster) {

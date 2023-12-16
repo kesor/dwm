@@ -5,11 +5,12 @@
 - [x] dwm-preserve-on-restart -- makes sure windows stay in place across dwm restarts
 - [x] dwm-fix-multi-mon -- focus on status bar when moving mouse to empty monitor
 - [x] dwm-ewmhtags -- add desktop information like current_desktop/names/viewport/...
-- [x] dwm-windowmap - map() and unmap() windows on creation/removal (for compositor?)
+- [-] dwm-refresh-rate - BREAKS MOVEMENT - instead of improving movement, slows every window movement
+- [-] dwm-windowmap - BREAKS MENUS: map() and unmap() windows on creation/removal (for compositor?)
 
 ## Hotkeys
 - [x] dwm-actual-fullscreen - allow toggling fullscreen mode
-- [ ] dwm-keycodes - ? use keycodes instead of keysyms for shortcuts (maybe?)
+- [-] dwm-keycodes - ANNOYING CONFIG: use keycodes instead of keysyms for shortcuts (maybe?)
 
 ## Navigation
 - [x] dwm-access-nth-monitor - user altmod to jump directly to other monitors
@@ -26,7 +27,6 @@
 - [x] dwm-staticstatus - keep main statusbar on a static monitor
 - [x] dwm-barpadding  - status bar gaps
 - [x] dwm-statuspadding - inner padding of the status bar
-- [ ] ?? dwm-bar-height-spacing ... probably better to go with font-sized sizing
 - [x] dwm-multimon-monitor-marker
 - [x] dwm-centeredwindowname - makes the name move to the center of the bar
 
