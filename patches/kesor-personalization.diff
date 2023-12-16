@@ -73,7 +73,7 @@
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 -static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
-+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", cat_mantle, "-nf", cat_surface1, "-sb", cat_base, "-sf", cat_surface1, "-nhb", cat_mantle, "-nhf", cat_blue, "-shb", cat_base, "-shf", cat_blue, NULL };
++static const char *dmenucmd[] = { "dmenu_run", "-i", "-m", dmenumon, "-fn", dmenufont, "-nb", cat_mantle, "-nf", cat_surface1, "-sb", cat_base, "-sf", cat_surface1, "-nhb", cat_mantle, "-nhf", cat_blue, "-shb", cat_base, "-shf", cat_blue, NULL };
  static const char *termcmd[]  = { "x-terminal-emulator", NULL };
 +static const char *calccmd[]  = { "speedcrunch", NULL };
 +static const char *xprop[] = { "tmux", "set-option", "remain-on-exit", "on" ";", "split-window", "xprop", NULL };
