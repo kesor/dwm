@@ -51,7 +51,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  	float mfact;
  	int nmaster;
  	int num;
-@@ -495,6 +496,8 @@ buttonpress(XEvent *e)
+@@ -490,6 +491,8 @@ buttonpress(XEvent *e)
  			arg.ui = 1 << i;
  		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
  			click = ClkLtSymbol;
@@ -60,7 +60,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  		else if (m == statmon && ev->x > selmon->ww - (int)TEXTW(stext))
  			click = ClkStatusText;
  		else
-@@ -822,6 +825,9 @@ drawbar(Monitor *m)
+@@ -817,6 +820,9 @@ drawbar(Monitor *m)
  	w = TEXTW(m->ltsymbol);
  	drw_setscheme(drw, scheme[SchemeNorm]);
  	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
@@ -70,7 +70,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
-@@ -2263,6 +2269,8 @@ updategeom(void)
+@@ -2258,6 +2264,8 @@ updategeom(void)
  			{
  				dirty = 1;
  				m->num = i;

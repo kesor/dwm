@@ -31,7 +31,7 @@ in config.def.h
  static const char *fonts[]          = { "monospace:size=10" };
 --- a/dwm.c
 +++ b/dwm.c
-@@ -799,7 +799,8 @@ drawbar(Monitor *m)
+@@ -794,7 +794,8 @@ drawbar(Monitor *m)
  	if (m == statmon) { /* status is only drawn on user-defined status monitor */
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
@@ -41,7 +41,7 @@ in config.def.h
  	}
  
  	for (c = m->clients; c; c = c->next) {
-@@ -1781,8 +1782,8 @@ setup(void)
+@@ -1776,8 +1777,8 @@ setup(void)
  	drw = drw_create(dpy, screen, root, sw, sh);
  	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
  		die("no fonts could be loaded.");

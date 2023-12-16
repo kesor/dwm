@@ -28,7 +28,7 @@
  static void setclientstate(Client *c, long state);
  static void setcurrentdesktop(void);
  static void setdesktopnames(void);
-@@ -689,6 +691,7 @@ createmon(void)
+@@ -684,6 +686,7 @@ createmon(void)
  	m->nmaster = nmaster;
  	m->showbar = showbar;
  	m->topbar = topbar;
@@ -36,7 +36,7 @@
  	m->lt[0] = &layouts[0];
  	m->lt[1] = &layouts[1 % LENGTH(layouts)];
  	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
-@@ -1162,7 +1165,7 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1157,7 +1160,7 @@ manage(Window w, XWindowAttributes *wa)
  		c->y = c->mon->wy + c->mon->wh - HEIGHT(c);
  	c->x = MAX(c->x, c->mon->wx);
  	c->y = MAX(c->y, c->mon->wy);
@@ -45,7 +45,7 @@
  
  	wc.border_width = c->bw;
  	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
-@@ -1552,6 +1555,40 @@ sendmon(Client *c, Monitor *m)
+@@ -1547,6 +1550,40 @@ sendmon(Client *c, Monitor *m)
  }
  
  void
