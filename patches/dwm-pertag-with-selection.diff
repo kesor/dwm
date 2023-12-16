@@ -25,7 +25,7 @@ Subject: [PATCH] pertag with last selection
  };
  
  typedef struct {
-@@ -292,6 +294,16 @@ static Window root, wmcheckwin;
+@@ -289,6 +291,16 @@ static Window root, wmcheckwin;
  /* configuration, allows nested code to access above variables */
  #include "config.h"
  
@@ -42,7 +42,7 @@ Subject: [PATCH] pertag with last selection
  /* compile-time check if all tags fit into an unsigned int bit array. */
  struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
  
-@@ -655,6 +667,7 @@ Monitor *
+@@ -652,6 +664,7 @@ Monitor *
  createmon(void)
  {
  	Monitor *m;
@@ -50,7 +50,7 @@ Subject: [PATCH] pertag with last selection
  
  	m = ecalloc(1, sizeof(Monitor));
  	m->tagset[0] = m->tagset[1] = 1;
-@@ -665,6 +678,20 @@ createmon(void)
+@@ -662,6 +675,20 @@ createmon(void)
  	m->lt[0] = &layouts[0];
  	m->lt[1] = &layouts[1 % LENGTH(layouts)];
  	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
@@ -71,7 +71,7 @@ Subject: [PATCH] pertag with last selection
  	return m;
  }
  
-@@ -841,6 +868,7 @@ focus(Client *c)
+@@ -838,6 +865,7 @@ focus(Client *c)
  		XDeleteProperty(dpy, root, netatom[NetActiveWindow]);
  	}
  	selmon->sel = c;
@@ -79,7 +79,7 @@ Subject: [PATCH] pertag with last selection
  	drawbars();
  }
  
-@@ -1028,7 +1056,7 @@ grabkeys(void)
+@@ -1025,7 +1053,7 @@ grabkeys(void)
  void
  incnmaster(const Arg *arg)
  {
@@ -88,7 +88,7 @@ Subject: [PATCH] pertag with last selection
  	arrange(selmon);
  }
  
-@@ -1578,9 +1606,9 @@ void
+@@ -1575,9 +1603,9 @@ void
  setlayout(const Arg *arg)
  {
  	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
@@ -100,7 +100,7 @@ Subject: [PATCH] pertag with last selection
  	strncpy(selmon->ltsymbol, selmon->lt[selmon->sellt]->symbol, sizeof selmon->ltsymbol);
  	if (selmon->sel)
  		arrange(selmon);
-@@ -1599,7 +1627,7 @@ setmfact(const Arg *arg)
+@@ -1596,7 +1624,7 @@ setmfact(const Arg *arg)
  	f = arg->f < 1.0 ? arg->f + selmon->mfact : arg->f - 1.0;
  	if (f < 0.05 || f > 0.95)
  		return;
@@ -109,7 +109,7 @@ Subject: [PATCH] pertag with last selection
  	arrange(selmon);
  }
  
-@@ -1836,7 +1864,7 @@ tile(Monitor *m)
+@@ -1835,7 +1863,7 @@ tile(Monitor *m)
  void
  togglebar(const Arg *arg)
  {
@@ -118,7 +118,7 @@ Subject: [PATCH] pertag with last selection
  	updatebarpos(selmon);
  	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
  	arrange(selmon);
-@@ -1892,9 +1920,33 @@ void
+@@ -1891,9 +1919,33 @@ void
  toggleview(const Arg *arg)
  {
  	unsigned int newtagset = selmon->tagset[selmon->seltags] ^ (arg->ui & TAGMASK);
@@ -152,7 +152,7 @@ Subject: [PATCH] pertag with last selection
  		focus(NULL);
  		arrange(selmon);
  	}
-@@ -1917,9 +1969,14 @@ unfocus(Client *c, int setfocus)
+@@ -1916,9 +1968,14 @@ unfocus(Client *c, int setfocus)
  void
  unmanage(Client *c, int destroyed)
  {
@@ -167,7 +167,7 @@ Subject: [PATCH] pertag with last selection
  	detach(c);
  	detachstack(c);
  	if (!destroyed) {
-@@ -2267,12 +2324,38 @@ window_unmap(Display *dpy, Window win, W
+@@ -2221,12 +2278,38 @@ updateclienttagprop(Client *c)
  void
  view(const Arg *arg)
  {
