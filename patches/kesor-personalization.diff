@@ -42,7 +42,7 @@
  };
  
  /* staticstatus */
-@@ -35,9 +42,28 @@ static const Rule rules[] = {
+@@ -35,9 +42,30 @@ static const Rule rules[] = {
  	 *	WM_CLASS(STRING) = instance, class
  	 *	WM_NAME(STRING) = title
  	 */
@@ -50,18 +50,20 @@
 -	{ "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
 -	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
 +	/* class                        instance                   title            tags mask     iscentered   isfloating   monitor */
++	{ "Gcr-prompter",               "gcr-prompter",            NULL,            0,            1,           1,           0 },
 +	{ "Brave-browser",              NULL,                      NULL,            0,            0,           0,          -1 },
 +	{ "1Password",                  "1password",               NULL,            0,            1,           1,           0 },
 +
-+	{ "install4j-jclient-Launcher", "sun-awt-X11-XFramePeer",  "Tool tips",     0,            0,           1,           2 },
-+	{ "install4j-jclient-Launcher", "sun-awt-X11-XDialogPeer", "Order Preview", 0,            1,           1,           2 },
-+	{ "install4j-jclient-Launcher", "sun-awt-X11-XFramePeer",  NULL,            0,            1,           1,           2 },
-+	{ "install4j-jclient-Launcher", "sun-awt-X11-XDialogPeer", NULL,            0,            1,           1,           2 },
-+	{ "install4j-jclient-Launcher", NULL,                      NULL,            0,            1,           1,           2 },
++	{ "install4j-jclient-Launcher", "sun-awt-X11-XFramePeer",  "Tool tips",     1 << 8,       0,           1,           2 },
++	{ "install4j-jclient-Launcher", "sun-awt-X11-XDialogPeer", "Order Preview", 1 << 8,       1,           1,           2 },
++	{ "install4j-jclient-Launcher", "sun-awt-X11-XFramePeer",  NULL,            1 << 8,       1,           1,           2 },
++	{ "install4j-jclient-Launcher", "sun-awt-X11-XDialogPeer", NULL,            1 << 8,       1,           1,           2 },
++	{ "install4j-jclient-Launcher", NULL,                      NULL,            1 << 8,       1,           1,           2 },
 +
 +	{ "tasty.javafx.launcher.LauncherFxApp", NULL,             NULL,            2 << 8,       0,           0,           2 },
 +	{ "tasty.javafx.launcher.LauncherFxApp", NULL,             "tastytrade",    2 << 8,       0,           0,           2 },
 +
++	{ "steam_app_0",                NULL,                      NULL,            0,            0,           1,          -1 },
 +	{ "steam",                      "steamwebhelper",    "Steam Games List",    0,            0,           0,          -1 },
 +	{ "steam",                      "steamwebhelper",          NULL,            0,            1,           1,          -1 },
 +	{ "Slack",                      NULL,                      NULL,            1 << 8,       0,           0,           0 },
@@ -74,7 +76,7 @@
  };
  
  /* layout(s) */
-@@ -66,13 +92,31 @@ static const Layout layouts[] = {
+@@ -66,13 +94,31 @@ static const Layout layouts[] = {
  
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -107,7 +109,7 @@
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-@@ -94,10 +138,10 @@ static const Key keys[] = {
+@@ -94,10 +140,10 @@ static const Key keys[] = {
  	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
  	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
