@@ -42,7 +42,7 @@
  };
  
  /* staticstatus */
-@@ -35,9 +42,35 @@ static const Rule rules[] = {
+@@ -35,9 +42,37 @@ static const Rule rules[] = {
  	 *	WM_CLASS(STRING) = instance, class
  	 *	WM_NAME(STRING) = title
  	 */
@@ -68,6 +68,8 @@
 +	{ "tasty.javafx.launcher.LauncherFxApp", NULL,             NULL,            2 << 8,       0,           0,           2 },
 +	{ "tasty.javafx.launcher.LauncherFxApp", NULL,             "tastytrade",    2 << 8,       0,           0,           2 },
 +
++	{ "zoom",                       NULL,                      NULL,            0,            0,           1,           0 },
++
 +	{ "steam_app_0",                NULL,                      NULL,            0,            0,           1,          -1 },
 +	{ "steam",                      "steamwebhelper",    "Steam Games List",    0,            0,           0,          -1 },
 +	{ "steam",                      "steamwebhelper",          NULL,            0,            1,           1,          -1 },
@@ -81,7 +83,7 @@
  };
  
  /* layout(s) */
-@@ -66,13 +99,31 @@ static const Layout layouts[] = {
+@@ -66,13 +101,31 @@ static const Layout layouts[] = {
  
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -114,7 +116,7 @@
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-@@ -94,10 +145,10 @@ static const Key keys[] = {
+@@ -94,10 +147,10 @@ static const Key keys[] = {
  	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
  	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
