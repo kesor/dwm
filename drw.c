@@ -13,6 +13,9 @@
 static int
 utf8decode(const char *s_in, long *u, int *err)
 {
+	if (!s_in || !u || !err)
+		return 0;
+
 	static const unsigned char lens[] = {
 		/* 0XXXX */ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 		/* 10XXX */ 0, 0, 0, 0, 0, 0, 0, 0,  /* invalid */
@@ -117,6 +120,11 @@ xfont_create(Drw *drw, const char *fontname, FcPattern *fontpattern)
 		}
 	} else {
 		die("no font specified.");
+	}
+
+	if (!xfont && pattern) {
+		FcPatternDestroy(pattern);
+		return NULL;
 	}
 
 	font = ecalloc(1, sizeof(Fnt));
@@ -263,11 +271,12 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 	if (!invalid_width && render)
 		invalid_width = drw_fontset_getwidth(drw, invalid);
 	while (1) {
-		ew = ellipsis_len = utf8err = utf8charlen = utf8strlen = 0;
+		ew = ellipsis_len = utf8err = utf8strlen = 0;
 		utf8str = text;
 		nextfont = NULL;
 		while (*text) {
 			utf8charlen = utf8decode(text, &utf8codepoint, &utf8err);
+			charexists = 0;
 			for (curfont = drw->fonts; curfont; curfont = curfont->next) {
 				charexists = charexists || XftCharExists(drw->dpy, curfont->xfont, utf8codepoint);
 				if (charexists) {
@@ -301,8 +310,6 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 
 			if (overflow || !charexists || nextfont || utf8err)
 				break;
-			else
-				charexists = 0;
 		}
 
 		if (utf8strlen) {
@@ -323,16 +330,11 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 		if (render && overflow)
 			drw_text(drw, ellipsis_x, y, ellipsis_w, h, 0, "...", invert);
 
-		if (!*text || overflow) {
+		if (!*text || overflow)
 			break;
-		} else if (nextfont) {
-			charexists = 0;
+		else if (nextfont)
 			usedfont = nextfont;
-		} else {
-			/* Regardless of whether or not a fallback font is found, the
-			 * character must be drawn. */
-			charexists = 1;
-
+		else {
 			hash = (unsigned int)utf8codepoint;
 			hash = ((hash >> 16) ^ hash) * 0x21F0AAAD;
 			hash = ((hash >> 15) ^ hash) * 0xD35A2D97;
@@ -345,9 +347,11 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 			fccharset = FcCharSetCreate();
 			FcCharSetAddChar(fccharset, utf8codepoint);
 
-			if (!drw->fonts->pattern) {
+			if (!drw->fonts || !drw->fonts->pattern) {
 				/* Refer to the comment in xfont_create for more information. */
+				FcCharSetDestroy(fccharset);
 				die("the first font in the cache must be loaded from a font string.");
+				return 0;
 			}
 
 			fcpattern = FcPatternDuplicate(drw->fonts->pattern);

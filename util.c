@@ -8,7 +8,7 @@
 #include "util.h"
 
 void
-die(const char *fmt, ...)
+die(const char * const fmt, ...)
 {
 	va_list ap;
 	int saved_errno;
