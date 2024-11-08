@@ -18,7 +18,7 @@
 
 ## Clients
 - [x] dwm-pertag-with-sel - change layouts for each tag individually
-- [x] dwm-cfacts - allow to resize each client individually (not just mfactor)
+- [x] dwm-cfacts - allow resizing each client individually (not just mfactor)
 - [x] dwm-functional-gaps - control the size of window gaps
 - [x] dwm-set-border-px
 - [x] dwm-center - center, but only very specific windows

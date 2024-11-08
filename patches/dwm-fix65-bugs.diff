@@ -88,7 +88,36 @@
  			for (curfont = drw->fonts; curfont; curfont = curfont->next) {
  				charexists = charexists || XftCharExists(drw->dpy, curfont->xfont, utf8codepoint);
  				if (charexists) {
-@@ -345,9 +352,10 @@ drw_text(Drw *drw, int x, int y, unsigne
+@@ -301,8 +308,6 @@ drw_text(Drw *drw, int x, int y, unsigne
+ 
+ 			if (overflow || !charexists || nextfont || utf8err)
+ 				break;
+-			else
+-				charexists = 0;
+ 		}
+ 
+ 		if (utf8strlen) {
+@@ -323,16 +328,11 @@ drw_text(Drw *drw, int x, int y, unsigne
+ 		if (render && overflow)
+ 			drw_text(drw, ellipsis_x, y, ellipsis_w, h, 0, "...", invert);
+ 
+-		if (!*text || overflow) {
++		if (!*text || overflow)
+ 			break;
+-		} else if (nextfont) {
+-			charexists = 0;
++		else if (nextfont)
+ 			usedfont = nextfont;
+-		} else {
+-			/* Regardless of whether or not a fallback font is found, the
+-			 * character must be drawn. */
+-			charexists = 1;
+-
++		else {
+ 			hash = (unsigned int)utf8codepoint;
+ 			hash = ((hash >> 16) ^ hash) * 0x21F0AAAD;
+ 			hash = ((hash >> 15) ^ hash) * 0xD35A2D97;
+@@ -345,9 +345,10 @@ drw_text(Drw *drw, int x, int y, unsigne
  			fccharset = FcCharSetCreate();
  			FcCharSetAddChar(fccharset, utf8codepoint);
  

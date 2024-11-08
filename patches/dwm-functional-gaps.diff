@@ -4,8 +4,8 @@
  
  /* appearance */
  static const unsigned int borderpx  = 1;        /* border pixel of windows */
-+static const int startwithgaps[]    = { 1 };	/* 1 means gaps are used by default, this can be customized for each tag */
-+static const unsigned int gappx[]   = { 10 };   /* default gap between windows in pixels, this can be customized for each tag */
++static const int startwithgaps[]    = { 1, 1, 1, 1, 1, 1, 1, 1, 1 };  /* 1 means gaps are used by default, this can be customized for each tag */
++static const unsigned int gappx[]   = { 10,10,10,10,10,10,10,10,10 }; /* default gap between windows in pixels, this can be customized for each tag */
  static const unsigned int snap      = 32;       /* snap pixel */
  static const int showbar            = 1;        /* 0 means no bar */
  static const int topbar             = 1;        /* 0 means bottom bar */
@@ -100,8 +100,8 @@
  	c->oldw = c->w; c->w = wc.width = w;
  	c->oldh = c->h; c->h = wc.height = h;
  	wc.border_width = c->bw;
-+	if (!selmon->pertag->drawwithgaps[selmon->pertag->curtag] && /* this is the noborderfloatingfix patch, slightly modified so that it will work if, and only if, gaps are disabled. */
-+	    (((nexttiled(c->mon->clients) == c && !nexttiled(c->next)) /* these two first lines are the only ones changed. if you are manually patching and have noborder installed already, just change these lines; or conversely, just remove this section if the noborder patch is not desired;) */
++	if (!selmon->pertag->drawwithgaps[selmon->pertag->curtag] &&
++	    (((nexttiled(c->mon->clients) == c && !nexttiled(c->next))
 +	    || &monocle == c->mon->lt[c->mon->sellt]->arrange))
 +	    && !c->isfullscreen && !c->isfloating
 +	    && NULL != c->mon->lt[c->mon->sellt]->arrange) {
@@ -125,7 +125,7 @@
 +			break;
 +		case GAP_RESET:
 +			if (selmon->pertag->curtag > 0)
-+				selmon->pertag->gappx[selmon->pertag->curtag] = gappx[selmon->pertag->curtag - 1 % LENGTH(gappx)];
++				selmon->pertag->gappx[selmon->pertag->curtag] = gappx[( (selmon->pertag->curtag - 1 + LENGTH(gappx)) % LENGTH(gappx) )];
 +			else
 +				selmon->pertag->gappx[0] = gappx[0];
 +			break;
