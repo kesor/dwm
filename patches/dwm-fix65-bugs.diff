@@ -1,0 +1,51 @@
+--- a/dwm.c
++++ b/dwm.c
+@@ -475,12 +475,18 @@ cleanup(void)
+ 	Layout foo = { "", NULL };
+ 	Monitor *m;
+ 	size_t i;
++	Client *current, *next;
+ 
+ 	view(&a);
+ 	selmon->lt[selmon->sellt] = &foo;
+-	for (m = mons; m; m = m->next)
+-		while (m->stack)
+-			unmanage(m->stack, 0);
++	for (m = mons; m; m = m->next) {
++		current = m->stack;
++		while (current) {
++			next = current->snext;
++			unmanage(current, 0);
++			current = next;
++		}
++	}
+ 	XUngrabKey(dpy, AnyKey, AnyModifier, root);
+ 	while (mons)
+ 		cleanupmon(mons);
+@@ -1705,7 +1711,10 @@ tile(Monitor *m)
+ 			if (my + HEIGHT(c) < m->wh)
+ 				my += HEIGHT(c);
+ 		} else {
+-			h = (m->wh - ty) / (n - i);
++			if (n > i) // prevent division by zero
++				h = (m->wh - ty) / (n - i);
++			else
++				h = m->wh - ty; // default to height remaining
+ 			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
+ 			if (ty + HEIGHT(c) < m->wh)
+ 				ty += HEIGHT(c);
+--- a/drw.c
++++ b/drw.c
+@@ -133,6 +133,12 @@ xfont_create(Drw *drw, const char *fontn
+ 		die("no font specified.");
+ 	}
+ 
++	if (!xfont) {  // Final check to prevent null dereference
++		fprintf(stderr, "error, failed to load font.\n");
++		FcPatternDestroy(pattern);  // Clean up pattern if allocated
++		return NULL;
++	}
++
+ 	font = ecalloc(1, sizeof(Fnt));
+ 	font->xfont = xfont;
+ 	font->pattern = pattern;
