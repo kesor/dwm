@@ -54,7 +54,7 @@
  
  void
  attachstack(Client *c)
-@@ -1195,7 +1219,7 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1203,7 +1227,7 @@ manage(Window w, XWindowAttributes *wa)
  		c->isfloating = c->oldstate = trans != None || c->isfixed;
  	if (c->isfloating)
  		XRaiseWindow(dpy, c->win);
@@ -63,7 +63,7 @@
  	attachstack(c);
  	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
  		(unsigned char *) &(c->win), 1);
-@@ -1326,6 +1350,16 @@ movemouse(const Arg *arg)
+@@ -1334,6 +1358,16 @@ movemouse(const Arg *arg)
  	}
  }
  
@@ -80,7 +80,7 @@
  Client *
  nexttiled(Client *c)
  {
-@@ -1560,7 +1594,7 @@ sendmon(Client *c, Monitor *m)
+@@ -1568,7 +1602,7 @@ sendmon(Client *c, Monitor *m)
  	detachstack(c);
  	c->mon = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -89,7 +89,7 @@
  	attachstack(c);
  	setclienttagprop(c);
  	focus(NULL);
-@@ -2288,6 +2322,7 @@ updategeom(void)
+@@ -2299,6 +2333,7 @@ updategeom(void)
  				detachstack(c);
  				c->mon = mons;
  				attach(c);
