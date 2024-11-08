@@ -24,7 +24,7 @@
  
  typedef union {
  	int i;
-@@ -970,9 +970,9 @@ grabkeys(void)
+@@ -979,9 +979,9 @@ grabkeys(void)
  				if (keys[i].keysym == syms[(k - start) * skip])
  					for (j = 0; j < LENGTH(modifiers); j++)
  						XGrabKey(dpy, k,

@@ -22,7 +22,23 @@
  	XUngrabKey(dpy, AnyKey, AnyModifier, root);
  	while (mons)
  		cleanupmon(mons);
-@@ -1705,7 +1711,10 @@ tile(Monitor *m)
+@@ -501,11 +507,14 @@ cleanupmon(Monitor *mon)
+ {
+ 	Monitor *m;
+ 
++	if (!mons)
++		return;
+ 	if (mon == mons)
+ 		mons = mons->next;
+ 	else {
+ 		for (m = mons; m && m->next != mon; m = m->next);
+-		m->next = mon->next;
++		if (m)
++			m->next = mon->next;
+ 	}
+ 	XUnmapWindow(dpy, mon->barwin);
+ 	XDestroyWindow(dpy, mon->barwin);
+@@ -1705,7 +1714,10 @@ tile(Monitor *m)
  			if (my + HEIGHT(c) < m->wh)
  				my += HEIGHT(c);
  		} else {
@@ -34,6 +50,15 @@
  			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
  			if (ty + HEIGHT(c) < m->wh)
  				ty += HEIGHT(c);
+@@ -1910,7 +1922,7 @@ updategeom(void)
+ 		/* removed monitors if n > nn */
+ 		for (i = nn; i < n; i++) {
+ 			for (m = mons; m && m->next; m = m->next);
+-			while ((c = m->clients)) {
++			while (m && (c = m->clients)) {
+ 				dirty = 1;
+ 				m->clients = c->next;
+ 				detachstack(c);
 --- a/drw.c
 +++ b/drw.c
 @@ -133,6 +133,12 @@ xfont_create(Drw *drw, const char *fontn

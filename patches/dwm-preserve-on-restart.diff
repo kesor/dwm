@@ -38,7 +38,7 @@ clients on old tags, however note that layout order is not preserved.
  static void view(const Arg *arg);
  static Client *wintoclient(Window w);
  static Monitor *wintomon(Window w);
-@@ -1068,6 +1070,8 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1077,6 +1079,8 @@ manage(Window w, XWindowAttributes *wa)
  	updatewindowtype(c);
  	updatesizehints(c);
  	updatewmhints(c);
@@ -47,7 +47,7 @@ clients on old tags, however note that layout order is not preserved.
  	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
  	grabbuttons(c, 0);
  	if (!c->isfloating)
-@@ -1429,6 +1433,7 @@ sendmon(Client *c, Monitor *m)
+@@ -1438,6 +1442,7 @@ sendmon(Client *c, Monitor *m)
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
  	attach(c);
  	attachstack(c);
@@ -55,7 +55,7 @@ clients on old tags, however note that layout order is not preserved.
  	focus(NULL);
  	arrange(NULL);
  }
-@@ -1579,6 +1584,7 @@ setup(void)
+@@ -1588,6 +1593,7 @@ setup(void)
  	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);
  	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
  	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
@@ -63,7 +63,7 @@ clients on old tags, however note that layout order is not preserved.
  	/* init cursors */
  	cursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
  	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
-@@ -1602,6 +1608,7 @@ setup(void)
+@@ -1611,6 +1617,7 @@ setup(void)
  	XChangeProperty(dpy, root, netatom[NetSupported], XA_ATOM, 32,
  		PropModeReplace, (unsigned char *) netatom, NetLast);
  	XDeleteProperty(dpy, root, netatom[NetClientList]);
@@ -71,7 +71,7 @@ clients on old tags, however note that layout order is not preserved.
  	/* select events */
  	wa.cursor = cursor[CurNormal]->cursor;
  	wa.event_mask = SubstructureRedirectMask|SubstructureNotifyMask
-@@ -1667,10 +1674,21 @@ spawn(const Arg *arg)
+@@ -1676,10 +1683,21 @@ spawn(const Arg *arg)
  }
  
  void
@@ -93,7 +93,7 @@ clients on old tags, however note that layout order is not preserved.
  		focus(NULL);
  		arrange(selmon);
  	}
-@@ -1745,6 +1763,7 @@ toggletag(const Arg *arg)
+@@ -1757,6 +1775,7 @@ toggletag(const Arg *arg)
  	newtags = selmon->sel->tags ^ (arg->ui & TAGMASK);
  	if (newtags) {
  		selmon->sel->tags = newtags;
@@ -101,7 +101,7 @@ clients on old tags, however note that layout order is not preserved.
  		focus(NULL);
  		arrange(selmon);
  	}
-@@ -2051,6 +2070,27 @@ updatewmhints(Client *c)
+@@ -2063,6 +2082,27 @@ updatewmhints(Client *c)
  }
  
  void
