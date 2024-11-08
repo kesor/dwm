@@ -1,6 +1,6 @@
 dwm-fix65-bugs.diff
 dwm-coderabbit-review.diff
-gitignore
+dwm-gitignore.diff
 dwm-normalize-whitespace-6.4.diff
 dwm-config-defaults.diff
 dwm-preserve-on-restart.diff
