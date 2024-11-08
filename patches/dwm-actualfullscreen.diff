@@ -35,7 +35,7 @@ and applying the monocle layout.
  .TP
 --- a/dwm.c
 +++ b/dwm.c
-@@ -125,7 +125,7 @@ struct Monitor {
+@@ -124,7 +124,7 @@ struct Monitor {
  	unsigned int seltags;
  	unsigned int sellt;
  	unsigned int tagset[2];
@@ -44,7 +44,7 @@ and applying the monocle layout.
  	int topbar;
  	Client *clients;
  	Client *sel;
-@@ -219,6 +219,7 @@ static void tagmon(const Arg *arg);
+@@ -218,6 +218,7 @@ static void tagmon(const Arg *arg);
  static void tile(Monitor *m);
  static void togglebar(const Arg *arg);
  static void togglefloating(const Arg *arg);
@@ -52,7 +52,7 @@ and applying the monocle layout.
  static void toggletag(const Arg *arg);
  static void toggleview(const Arg *arg);
  static void unfocus(Client *c, int setfocus);
-@@ -1803,6 +1804,21 @@ togglefloating(const Arg *arg)
+@@ -1802,6 +1803,21 @@ togglefloating(const Arg *arg)
  }
  
  void

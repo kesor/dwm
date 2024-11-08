@@ -13,7 +13,7 @@
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 --- a/dwm.c
 +++ b/dwm.c
-@@ -164,6 +164,7 @@ static void destroynotify(XEvent *e);
+@@ -163,6 +163,7 @@ static void destroynotify(XEvent *e);
  static void detach(Client *c);
  static void detachstack(Client *c);
  static Monitor *dirtomon(int dir);
@@ -21,7 +21,7 @@
  static void drawbar(Monitor *m);
  static void drawbars(void);
  static void enternotify(XEvent *e);
-@@ -171,6 +172,7 @@ static void expose(XEvent *e);
+@@ -170,6 +171,7 @@ static void expose(XEvent *e);
  static void focus(Client *c);
  static void focusin(XEvent *e);
  static void focusmon(const Arg *arg);
@@ -29,7 +29,7 @@
  static void focusstack(const Arg *arg);
  static Atom getatomprop(Client *c, Atom prop);
  static int getrootptr(int *x, int *y);
-@@ -216,6 +218,7 @@ static void showhide(Client *c);
+@@ -215,6 +217,7 @@ static void showhide(Client *c);
  static void spawn(const Arg *arg);
  static void tag(const Arg *arg);
  static void tagmon(const Arg *arg);
@@ -37,7 +37,7 @@
  static void tile(Monitor *m);
  static void togglebar(const Arg *arg);
  static void togglefloating(const Arg *arg);
-@@ -715,6 +718,18 @@ dirtomon(int dir)
+@@ -714,6 +717,18 @@ dirtomon(int dir)
  	return m;
  }
  
@@ -56,7 +56,7 @@
  void
  drawbar(Monitor *m)
  {
-@@ -856,6 +871,21 @@ focusmon(const Arg *arg)
+@@ -855,6 +870,21 @@ focusmon(const Arg *arg)
  }
  
  void
@@ -78,7 +78,7 @@
  focusstack(const Arg *arg)
  {
  	Client *c = NULL, *i;
-@@ -1750,6 +1780,14 @@ tagmon(const Arg *arg)
+@@ -1749,6 +1779,14 @@ tagmon(const Arg *arg)
  }
  
  void

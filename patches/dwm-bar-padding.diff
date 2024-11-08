@@ -22,7 +22,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  static const char col_gray1[]       = "#222222";
 --- a/dwm.c
 +++ b/dwm.c
-@@ -271,6 +271,8 @@ static int screen;
+@@ -270,6 +270,8 @@ static int screen;
  static int sw, sh;           /* X display screen geometry width, height */
  static int bh;               /* bar height */
  static int lrpad;            /* sum of left and right padding for text */
@@ -31,7 +31,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  static int (*xerrorxlib)(Display *, XErrorEvent *);
  static unsigned int numlockmask = 0;
  static void (*handler[LASTEvent]) (XEvent *) = {
-@@ -623,7 +625,7 @@ configurenotify(XEvent *e)
+@@ -622,7 +624,7 @@ configurenotify(XEvent *e)
  				for (c = m->clients; c; c = c->next)
  					if (c->isfullscreen)
  						resizeclient(c, m->mx, m->my, m->mw, m->mh);
@@ -40,7 +40,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  			}
  			focus(NULL);
  			arrange(NULL);
-@@ -798,7 +800,7 @@ drawbar(Monitor *m)
+@@ -797,7 +799,7 @@ drawbar(Monitor *m)
  	if (m == statmon) { /* status is only drawn on user-defined status monitor */
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
@@ -49,7 +49,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  	}
  
  	for (c = m->clients; c; c = c->next) {
-@@ -824,12 +826,12 @@ drawbar(Monitor *m)
+@@ -823,12 +825,12 @@ drawbar(Monitor *m)
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
  			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
@@ -64,7 +64,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  		}
  	}
  	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
-@@ -1782,7 +1784,10 @@ setup(void)
+@@ -1781,7 +1783,10 @@ setup(void)
  		die("no fonts could be loaded.");
  	lrpad = drw->fonts->h;
  	bh = drw->fonts->h + 2;
@@ -75,7 +75,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  	/* init atoms */
  	utf8string = XInternAtom(dpy, "UTF8_STRING", False);
  	wmatom[WMProtocols] = XInternAtom(dpy, "WM_PROTOCOLS", False);
-@@ -2023,7 +2028,7 @@ togglebar(const Arg *arg)
+@@ -2022,7 +2027,7 @@ togglebar(const Arg *arg)
  {
  	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] = !selmon->showbar;
  	updatebarpos(selmon);
@@ -84,7 +84,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  	arrange(selmon);
  }
  
-@@ -2181,7 +2186,7 @@ updatebars(void)
+@@ -2180,7 +2185,7 @@ updatebars(void)
  	for (m = mons; m; m = m->next) {
  		if (m->barwin)
  			continue;
@@ -93,7 +93,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  				CopyFromParent, DefaultVisual(dpy, screen),
  				CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
  		XDefineCursor(dpy, m->barwin, cursor[CurNormal]->cursor);
-@@ -2196,11 +2201,11 @@ updatebarpos(Monitor *m)
+@@ -2195,11 +2200,11 @@ updatebarpos(Monitor *m)
  	m->wy = m->my;
  	m->wh = m->mh;
  	if (m->showbar) {

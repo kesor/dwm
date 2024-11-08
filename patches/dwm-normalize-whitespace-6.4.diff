@@ -7,9 +7,9 @@
 -                               * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
 +								* MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
  #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
- #define LENGTH(X)               (sizeof X / sizeof X[0])
  #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
-@@ -61,11 +61,11 @@
+ #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
+@@ -60,11 +60,11 @@
  enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
  enum { SchemeNorm, SchemeSel }; /* color schemes */
  enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
@@ -24,7 +24,7 @@
  
  typedef union {
  	int i;
-@@ -979,9 +979,9 @@ grabkeys(void)
+@@ -978,9 +978,9 @@ grabkeys(void)
  				if (keys[i].keysym == syms[(k - start) * skip])
  					for (j = 0; j < LENGTH(modifiers); j++)
  						XGrabKey(dpy, k,
