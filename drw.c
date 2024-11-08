@@ -119,6 +119,12 @@ xfont_create(Drw *drw, const char *fontname, FcPattern *fontpattern)
 		die("no font specified.");
 	}
 
+	if (!xfont) {  // Final check to prevent null dereference
+		fprintf(stderr, "error, failed to load font.\n");
+		FcPatternDestroy(pattern);  // Clean up pattern if allocated
+		return NULL;
+	}
+
 	font = ecalloc(1, sizeof(Fnt));
 	font->xfont = xfont;
 	font->pattern = pattern;
@@ -263,11 +269,12 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 	if (!invalid_width && render)
 		invalid_width = drw_fontset_getwidth(drw, invalid);
 	while (1) {
-		ew = ellipsis_len = utf8err = utf8charlen = utf8strlen = 0;
+		ew = ellipsis_len = utf8err = utf8strlen = 0;
 		utf8str = text;
 		nextfont = NULL;
 		while (*text) {
 			utf8charlen = utf8decode(text, &utf8codepoint, &utf8err);
+			charexists = 0;
 			for (curfont = drw->fonts; curfont; curfont = curfont->next) {
 				charexists = charexists || XftCharExists(drw->dpy, curfont->xfont, utf8codepoint);
 				if (charexists) {
@@ -345,9 +352,10 @@ drw_text(Drw *drw, int x, int y, unsigned int w, unsigned int h, unsigned int lp
 			fccharset = FcCharSetCreate();
 			FcCharSetAddChar(fccharset, utf8codepoint);
 
-			if (!drw->fonts->pattern) {
+			if (!drw->fonts || !drw->fonts->pattern) {
 				/* Refer to the comment in xfont_create for more information. */
 				die("the first font in the cache must be loaded from a font string.");
+				return 0;
 			}
 
 			fcpattern = FcPatternDuplicate(drw->fonts->pattern);

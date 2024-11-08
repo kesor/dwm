@@ -1,0 +1,6 @@
+.pc/
+dwm
+config.h
+*.o
+dwm-*.tar.gz
+patches/*~
