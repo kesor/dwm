@@ -1,6 +1,6 @@
 --- a/dwm.c
 +++ b/dwm.c
-@@ -475,12 +475,18 @@ cleanup(void)
+@@ -474,12 +474,18 @@ cleanup(void)
  	Layout foo = { "", NULL };
  	Monitor *m;
  	size_t i;
@@ -22,7 +22,7 @@
  	XUngrabKey(dpy, AnyKey, AnyModifier, root);
  	while (mons)
  		cleanupmon(mons);
-@@ -501,11 +507,14 @@ cleanupmon(Monitor *mon)
+@@ -500,11 +506,14 @@ cleanupmon(Monitor *mon)
  {
  	Monitor *m;
  
@@ -38,7 +38,7 @@
  	}
  	XUnmapWindow(dpy, mon->barwin);
  	XDestroyWindow(dpy, mon->barwin);
-@@ -1705,7 +1714,10 @@ tile(Monitor *m)
+@@ -1704,7 +1713,10 @@ tile(Monitor *m)
  			if (my + HEIGHT(c) < m->wh)
  				my += HEIGHT(c);
  		} else {
@@ -50,7 +50,7 @@
  			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
  			if (ty + HEIGHT(c) < m->wh)
  				ty += HEIGHT(c);
-@@ -1910,7 +1922,7 @@ updategeom(void)
+@@ -1909,7 +1921,7 @@ updategeom(void)
  		/* removed monitors if n > nn */
  		for (i = nn; i < n; i++) {
  			for (m = mons; m && m->next; m = m->next);
@@ -61,7 +61,7 @@
  				detachstack(c);
 --- a/drw.c
 +++ b/drw.c
-@@ -133,6 +133,12 @@ xfont_create(Drw *drw, const char *fontn
+@@ -119,6 +119,12 @@ xfont_create(Drw *drw, const char *fontn
  		die("no font specified.");
  	}
  
@@ -74,3 +74,24 @@
  	font = ecalloc(1, sizeof(Fnt));
  	font->xfont = xfont;
  	font->pattern = pattern;
+@@ -263,7 +269,7 @@ drw_text(Drw *drw, int x, int y, unsigne
+ 	if (!invalid_width && render)
+ 		invalid_width = drw_fontset_getwidth(drw, invalid);
+ 	while (1) {
+-		ew = ellipsis_len = utf8err = utf8charlen = utf8strlen = 0;
++		ew = ellipsis_len = utf8err = utf8strlen = 0;
+ 		utf8str = text;
+ 		nextfont = NULL;
+ 		while (*text) {
+@@ -345,9 +351,10 @@ drw_text(Drw *drw, int x, int y, unsigne
+ 			fccharset = FcCharSetCreate();
+ 			FcCharSetAddChar(fccharset, utf8codepoint);
+ 
+-			if (!drw->fonts->pattern) {
++			if (!drw->fonts || !drw->fonts->pattern) {
+ 				/* Refer to the comment in xfont_create for more information. */
+ 				die("the first font in the cache must be loaded from a font string.");
++				return 0;
+ 			}
+ 
+ 			fcpattern = FcPatternDuplicate(drw->fonts->pattern);

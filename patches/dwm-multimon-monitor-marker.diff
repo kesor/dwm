@@ -34,7 +34,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 --- a/dwm.c
 +++ b/dwm.c
-@@ -70,7 +70,7 @@ enum { NetSupported, NetWMName, NetWMSta
+@@ -69,7 +69,7 @@ enum { NetSupported, NetWMName, NetWMSta
  		NetDesktopNames, NetDesktopViewport, NetNumberOfDesktops, NetCurrentDesktop,
  		NetLast }; /* EWMH atoms */
  enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
@@ -43,7 +43,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  		ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
  
  typedef union {
-@@ -122,6 +122,7 @@ typedef struct Pertag Pertag;
+@@ -121,6 +121,7 @@ typedef struct Pertag Pertag;
  
  struct Monitor {
  	char ltsymbol[16];
@@ -51,7 +51,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  	float mfact;
  	int nmaster;
  	int num;
-@@ -487,6 +488,8 @@ buttonpress(XEvent *e)
+@@ -486,6 +487,8 @@ buttonpress(XEvent *e)
  			arg.ui = 1 << i;
  		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
  			click = ClkLtSymbol;
@@ -60,7 +60,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  		else if (m == statmon && ev->x > selmon->ww - (int)TEXTW(stext))
  			click = ClkStatusText;
  		else
-@@ -822,6 +825,9 @@ drawbar(Monitor *m)
+@@ -821,6 +824,9 @@ drawbar(Monitor *m)
  	w = TEXTW(m->ltsymbol);
  	drw_setscheme(drw, scheme[SchemeNorm]);
  	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
@@ -70,7 +70,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
-@@ -2268,6 +2274,8 @@ updategeom(void)
+@@ -2267,6 +2273,8 @@ updategeom(void)
  			{
  				dirty = 1;
  				m->num = i;

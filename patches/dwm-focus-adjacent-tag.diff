@@ -34,7 +34,7 @@
  .TP
 --- a/dwm.c
 +++ b/dwm.c
-@@ -218,6 +218,8 @@ static void showhide(Client *c);
+@@ -217,6 +217,8 @@ static void showhide(Client *c);
  static void spawn(const Arg *arg);
  static void tag(const Arg *arg);
  static void tagmon(const Arg *arg);
@@ -43,7 +43,7 @@
  static void tagnthmon(const Arg *arg);
  static void tile(Monitor *m);
  static void togglebar(const Arg *arg);
-@@ -242,6 +244,8 @@ static void updatewmhints(Client *c);
+@@ -241,6 +243,8 @@ static void updatewmhints(Client *c);
  static void updateclienttagprop(Client *c);
  static void view(const Arg *arg);
  static Client *wintoclient(Window w);
@@ -52,7 +52,7 @@
  static Monitor *wintomon(Window w);
  static int xerror(Display *dpy, XErrorEvent *ee);
  static int xerrordummy(Display *dpy, XErrorEvent *ee);
-@@ -1788,6 +1792,28 @@ tagnthmon(const Arg *arg)
+@@ -1787,6 +1791,28 @@ tagnthmon(const Arg *arg)
  }
  
  void
@@ -81,7 +81,7 @@
  tile(Monitor *m)
  {
  	unsigned int i, n, h, mw, my, ty;
-@@ -2217,6 +2243,28 @@ view(const Arg *arg)
+@@ -2216,6 +2242,28 @@ view(const Arg *arg)
  	updatecurrentdesktop();
  }
  

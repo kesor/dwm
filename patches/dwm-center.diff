@@ -25,7 +25,7 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  /* layout(s) */
 --- a/dwm.c
 +++ b/dwm.c
-@@ -99,7 +99,7 @@ struct Client {
+@@ -98,7 +98,7 @@ struct Client {
  	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
  	int bw, oldbw;
  	unsigned int tags;
@@ -34,7 +34,7 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  	Client *next;
  	Client *snext;
  	Monitor *mon;
-@@ -148,6 +148,7 @@ typedef struct {
+@@ -147,6 +147,7 @@ typedef struct {
  	const char *instance;
  	const char *title;
  	unsigned int tags;
@@ -42,7 +42,7 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  	int isfloating;
  	int monitor;
  } Rule;
-@@ -326,6 +327,7 @@ applyrules(Client *c)
+@@ -325,6 +326,7 @@ applyrules(Client *c)
  	XClassHint ch = { NULL, NULL };
  
  	/* rule matching */
@@ -50,7 +50,7 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  	c->isfloating = 0;
  	c->tags = 0;
  	XGetClassHint(dpy, c->win, &ch);
-@@ -338,6 +340,7 @@ applyrules(Client *c)
+@@ -337,6 +339,7 @@ applyrules(Client *c)
  		&& (!r->class || strstr(class, r->class))
  		&& (!r->instance || strstr(instance, r->instance)))
  		{
@@ -58,7 +58,7 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  			c->isfloating = r->isfloating;
  			c->tags |= r->tags;
  			for (m = mons; m && m->num != r->monitor; m = m->next);
-@@ -1175,6 +1178,10 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1174,6 +1177,10 @@ manage(Window w, XWindowAttributes *wa)
  	updatewindowtype(c);
  	updatesizehints(c);
  	updatewmhints(c);
@@ -69,7 +69,7 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  	updateclienttagprop(c);
  	setclienttagprop(c);
  	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
-@@ -2382,8 +2389,10 @@ updatewindowtype(Client *c)
+@@ -2381,8 +2388,10 @@ updatewindowtype(Client *c)
  
  	if (state == netatom[NetWMFullscreen])
  		setfullscreen(c, 1);
