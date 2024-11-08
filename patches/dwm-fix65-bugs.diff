@@ -74,7 +74,7 @@
  	font = ecalloc(1, sizeof(Fnt));
  	font->xfont = xfont;
  	font->pattern = pattern;
-@@ -263,7 +269,7 @@ drw_text(Drw *drw, int x, int y, unsigne
+@@ -263,11 +269,12 @@ drw_text(Drw *drw, int x, int y, unsigne
  	if (!invalid_width && render)
  		invalid_width = drw_fontset_getwidth(drw, invalid);
  	while (1) {
@@ -83,7 +83,12 @@
  		utf8str = text;
  		nextfont = NULL;
  		while (*text) {
-@@ -345,9 +351,10 @@ drw_text(Drw *drw, int x, int y, unsigne
+ 			utf8charlen = utf8decode(text, &utf8codepoint, &utf8err);
++			charexists = 0;
+ 			for (curfont = drw->fonts; curfont; curfont = curfont->next) {
+ 				charexists = charexists || XftCharExists(drw->dpy, curfont->xfont, utf8codepoint);
+ 				if (charexists) {
+@@ -345,9 +352,10 @@ drw_text(Drw *drw, int x, int y, unsigne
  			fccharset = FcCharSetCreate();
  			FcCharSetAddChar(fccharset, utf8codepoint);
  
