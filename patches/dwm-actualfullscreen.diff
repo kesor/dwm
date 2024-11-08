@@ -52,7 +52,7 @@ and applying the monocle layout.
  static void toggletag(const Arg *arg);
  static void toggleview(const Arg *arg);
  static void unfocus(Client *c, int setfocus);
-@@ -1802,6 +1803,21 @@ togglefloating(const Arg *arg)
+@@ -1805,6 +1806,21 @@ togglefloating(const Arg *arg)
  }
  
  void

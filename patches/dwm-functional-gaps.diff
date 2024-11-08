@@ -75,12 +75,12 @@
  		attachstack(c);
  		grabbuttons(c, 1);
  		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
-+                if (!selmon->pertag->drawwithgaps[selmon->pertag->curtag] && !c->isfloating) {
++		if (!selmon->pertag->drawwithgaps[selmon->pertag->curtag] && !c->isfloating) {
 +			XWindowChanges wc;
-+                        wc.sibling = selmon->barwin;
-+                        wc.stack_mode = Below;
-+                        XConfigureWindow(dpy, c->win, CWSibling | CWStackMode, &wc);
-+                }
++			wc.sibling = selmon->barwin;
++			wc.stack_mode = Below;
++			XConfigureWindow(dpy, c->win, CWSibling | CWStackMode, &wc);
++		}
  		setfocus(c);
  	} else {
  		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
@@ -112,7 +112,7 @@
  	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
  	configure(c);
  	XSync(dpy, False);
-@@ -1611,6 +1642,29 @@ setfullscreen(Client *c, int fullscreen)
+@@ -1613,6 +1644,29 @@ setfullscreen(Client *c, int fullscreen)
  }
  
  void
@@ -142,7 +142,7 @@
  setlayout(const Arg *arg)
  {
  	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
-@@ -1873,27 +1927,50 @@ tile(Monitor *m)
+@@ -1876,27 +1930,50 @@ tile(Monitor *m)
  		else
  			sfacts += c->cfact;
  	}
@@ -187,7 +187,7 @@
 +					ty += HEIGHT(c);
 +				sfacts -= c->cfact;
 +			}
- 		}
++		}
 +	} else { /* draw with fullgaps logic */
 +		if (n > m->nmaster)
 +			mw = m->nmaster ? m->ww * m->mfact : 0;
@@ -206,7 +206,7 @@
 +				if (ty + HEIGHT(c) + m->pertag->gappx[m->pertag->curtag] < m->wh)
 +					ty += HEIGHT(c) + m->pertag->gappx[m->pertag->curtag];
 +			}
-+		}
+ 		}
 +	}
  }
  
