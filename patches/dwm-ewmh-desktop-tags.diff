@@ -53,24 +53,26 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  static void updatebarpos(Monitor *m);
  static void updatebars(void);
  static void updateclientlist(void);
-@@ -1454,6 +1462,16 @@ setclientstate(Client *c, long state)
- 	XChangeProperty(dpy, c->win, wmatom[WMState], wmatom[WMState], 32,
+@@ -1455,6 +1463,18 @@ setclientstate(Client *c, long state)
  		PropModeReplace, (unsigned char *)data, 2);
  }
+ 
 +void
 +setcurrentdesktop(void){
 +	long data[] = { 0 };
 +	XChangeProperty(dpy, root, netatom[NetCurrentDesktop], XA_CARDINAL, 32, PropModeReplace, (unsigned char *)data, 1);
 +}
++
 +void setdesktopnames(void){
 +	XTextProperty text;
 +	Xutf8TextListToTextProperty(dpy, (char **)tags, TAGSLENGTH, XUTF8StringStyle, &text);
 +	XSetTextProperty(dpy, root, &text, netatom[NetDesktopNames]);
 +}
- 
++
  int
  sendevent(Client *c, Atom proto)
-@@ -1481,6 +1499,12 @@ sendevent(Client *c, Atom proto)
+ {
+@@ -1481,6 +1501,12 @@ sendevent(Client *c, Atom proto)
  }
  
  void
@@ -83,7 +85,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  setfocus(Client *c)
  {
  	if (!c->neverfocus) {
-@@ -1593,6 +1617,10 @@ setup(void)
+@@ -1593,6 +1619,10 @@ setup(void)
  	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
  	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
  	netatom[NetClientInfo] = XInternAtom(dpy, "_NET_CLIENT_INFO", False);
@@ -94,7 +96,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  	/* init cursors */
  	cursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
  	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
-@@ -1615,6 +1643,10 @@ setup(void)
+@@ -1615,6 +1645,10 @@ setup(void)
  	/* EWMH support per view */
  	XChangeProperty(dpy, root, netatom[NetSupported], XA_ATOM, 32,
  		PropModeReplace, (unsigned char *) netatom, NetLast);
@@ -105,19 +107,20 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  	XDeleteProperty(dpy, root, netatom[NetClientList]);
  	XDeleteProperty(dpy, root, netatom[NetClientInfo]);
  	/* select events */
-@@ -1627,6 +1659,11 @@ setup(void)
- 	grabkeys();
- 	focus(NULL);
+@@ -1629,6 +1663,12 @@ setup(void)
  }
-+void
+ 
+ void
 +setviewport(void){
 +	long data[] = { 0, 0 };
 +	XChangeProperty(dpy, root, netatom[NetDesktopViewport], XA_CARDINAL, 32, PropModeReplace, (unsigned char *)data, 2);
 +}
- 
- void
++
++void
  seturgent(Client *c, int urg)
-@@ -1778,6 +1815,7 @@ toggletag(const Arg *arg)
+ {
+ 	XWMHints *wmh;
+@@ -1778,6 +1818,7 @@ toggletag(const Arg *arg)
  		focus(NULL);
  		arrange(selmon);
  	}
@@ -125,7 +128,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  }
  
  void
-@@ -1790,6 +1828,7 @@ toggleview(const Arg *arg)
+@@ -1790,6 +1831,7 @@ toggleview(const Arg *arg)
  		focus(NULL);
  		arrange(selmon);
  	}
@@ -133,23 +136,23 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  }
  
  void
-@@ -1893,6 +1932,15 @@ updateclientlist(void)
- 				XA_WINDOW, 32, PropModeAppend,
+@@ -1894,6 +1936,15 @@ updateclientlist(void)
  				(unsigned char *) &(c->win), 1);
  }
+ 
 +void updatecurrentdesktop(void){
 +	long rawdata[] = { selmon->tagset[selmon->seltags] };
 +	int i=0;
-+    while(*rawdata >> (i+1)) {
-+        i++;
-+    }
++	while(*rawdata >> (i+1))
++		i++;
 +	long data[] = { i };
 +	XChangeProperty(dpy, root, netatom[NetCurrentDesktop], XA_CARDINAL, 32, PropModeReplace, (unsigned char *)data, 1);
 +}
- 
++
  int
  updategeom(void)
-@@ -2111,6 +2159,7 @@ view(const Arg *arg)
+ {
+@@ -2111,6 +2162,7 @@ view(const Arg *arg)
  		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
  	focus(NULL);
  	arrange(selmon);

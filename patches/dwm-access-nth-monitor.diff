@@ -78,7 +78,7 @@
  focusstack(const Arg *arg)
  {
  	Client *c = NULL, *i;
-@@ -1749,6 +1779,14 @@ tagmon(const Arg *arg)
+@@ -1752,6 +1782,14 @@ tagmon(const Arg *arg)
  }
  
  void
