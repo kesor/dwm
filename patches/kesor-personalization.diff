@@ -42,7 +42,7 @@
  };
  
  /* staticstatus */
-@@ -35,9 +42,38 @@ static const Rule rules[] = {
+@@ -35,9 +42,39 @@ static const Rule rules[] = {
  	 *	WM_CLASS(STRING) = instance, class
  	 *	WM_NAME(STRING) = title
  	 */
@@ -50,7 +50,8 @@
 -	{ "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
 -	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
 +	/* class                        instance                   title            tags mask     iscentered   isfloating   monitor */
-+	{ "Rofi",                       "rofi",                    NULL,            0,            1,           1,           0 },
++	{ NULL,                         NULL,                      "scratchterm",   0,            1,           1,          -1 },
++	{ "Rofi",                       "rofi",                    NULL,            0,            1,           1,          -1 },
 +	{ "Gcr-prompter",               "gcr-prompter",            NULL,            0,            1,           1,           0 },
 +	{ "Brave-browser",              NULL,                      NULL,            0,            0,           0,          -1 },
 +	{ "1Password",                  "1password",               NULL,            0,            1,           1,           0 },
@@ -84,7 +85,7 @@
  };
  
  /* layout(s) */
-@@ -66,13 +102,38 @@ static const Layout layouts[] = {
+@@ -66,13 +103,40 @@ static const Layout layouts[] = {
  
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -97,10 +98,11 @@
 +    "-shb", cat_base, "-shf", cat_blue,
 +    NULL
 +};
-+static const char *roficmd[]  = { "rofi", "-m", dmenumon, "-i", "-modi", "combi,window", "-show", "combi", "-combi-modi", "run,drun", "-show-icons", "-matching", "fuzzy", NULL };
++static const char *roficmd[]  = { "rofi", "-m", "primary", "-i", "-modi", "combi,window", "-show", "combi", "-combi-modi", "run,drun", "-show-icons", "-matching", "fuzzy", NULL };
  static const char *termcmd[]  = { "x-terminal-emulator", NULL };
-+static const char *calccmd[]  = { "speedcrunch", NULL };
-+static const char *xprop[] = { "tmux", "set-option", "remain-on-exit", "on", ";", "split-window", "xprop", NULL };
++static const char *scratchtermcmd[] = { "/usr/local/bin/scratch.sh", "terminal", NULL };
++static const char *calccmd[]  = { "/usr/local/bin/scratch.sh", "speedcrunch", NULL };
++static const char *xprop[]    = { "tmux", "set-option", "remain-on-exit", "on", ";", "split-window", "xprop", ";", "set-option", "remain-on-exit", "off", NULL };
 +
 +static const char *muteMus[]  = { "wpctl", "set-mute",   "@DEFAULT_AUDIO_SINK@",   "toggle", NULL };
 +static const char *muteMic[]  = { "wpctl", "set-mute",   "@DEFAULT_AUDIO_SOURCE@", "toggle", NULL };
@@ -113,6 +115,7 @@
  	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 +	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = roficmd } },
  	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
++	{ MODKEY          ,             XK_grave,  spawn,          {.v = scratchtermcmd } },
 + 	{ MODKEY|ControlMask,           XK_Return, spawn,          {.v = calccmd } },
 + 	{ MODKEY|ShiftMask,             XK_x,      spawn,          {.v = xprop } },
 +
@@ -124,7 +127,7 @@
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-@@ -94,10 +155,10 @@ static const Key keys[] = {
+@@ -94,10 +158,10 @@ static const Key keys[] = {
  	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
  	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
