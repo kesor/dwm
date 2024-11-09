@@ -19,4 +19,6 @@ dwm-status-padding.diff
 dwm-multimon-monitor-marker.diff
 dwm-centered-window-name.diff
 dwm-attach-aside-and-below.diff
+dwm-renamedscratchpads_static-6.5.diff
+dwm-sendmon_keepfocus-6.5.diff
 kesor-personalization.diff

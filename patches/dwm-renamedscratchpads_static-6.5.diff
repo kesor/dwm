@@ -1,0 +1,224 @@
+--- a/config.def.h
++++ b/config.def.h
+@@ -35,9 +35,10 @@ static const Rule rules[] = {
+ 	 *	WM_CLASS(STRING) = instance, class
+ 	 *	WM_NAME(STRING) = title
+ 	 */
+-	/* class      instance    title       tags mask     iscentered   isfloating   monitor */
+-	{ "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
+-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
++	/* class      instance    title       tags mask     iscentered   isfloating   monitor    scratch key */
++	{ "Gimp",     NULL,       NULL,       0,            0,           1,           -1,        0  },
++	{ "firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1,        0  },
++	{ NULL,       NULL,   "scratchpad",   0,            1,           1,           -1,       's' },
+ };
+ 
+ /* layout(s) */
+@@ -69,10 +70,16 @@ static char dmenumon[2] = "0"; /* compon
+ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+ static const char *termcmd[]  = { "x-terminal-emulator", NULL };
+ 
++/*First arg only serves to match against key in rules*/
++static const char *scratchpadcmd[] = {"s", "st", "-t", "scratchpad", NULL};
++
+ static const Key keys[] = {
+ 	/* modifier                     key        function        argument */
+ 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+ 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
++	{ MODKEY,                       XK_g,      togglescratch,  {.v = scratchpadcmd } },
++	{ MODKEY|ShiftMask,             XK_g,      removescratch,  {.v = scratchpadcmd } },
++	{ MODKEY|ControlMask,           XK_g,      setscratch,     {.v = scratchpadcmd } },
+ 	{ MODKEY,                       XK_b,      togglebar,      {0} },
+ 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+ 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+--- a/dwm.c
++++ b/dwm.c
+@@ -100,6 +100,7 @@ struct Client {
+ 	int bw, oldbw;
+ 	unsigned int tags;
+ 	int isfixed, iscentered, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
++	char scratchkey;
+ 	Client *next;
+ 	Client *snext;
+ 	Monitor *mon;
+@@ -152,6 +153,7 @@ typedef struct {
+ 	int iscentered;
+ 	int isfloating;
+ 	int monitor;
++	const char scratchkey;
+ } Rule;
+ 
+ /* function declarations */
+@@ -206,6 +208,7 @@ static void pop(Client *c);
+ static void propertynotify(XEvent *e);
+ static void quit(const Arg *arg);
+ static Monitor *recttomon(int x, int y, int w, int h);
++static void removescratch(const Arg *arg);
+ static void resize(Client *c, int x, int y, int w, int h, int interact);
+ static void resizeclient(Client *c, int x, int y, int w, int h);
+ static void resizemouse(const Arg *arg);
+@@ -225,12 +228,14 @@ static void setgaps(const Arg *arg);
+ static void setlayout(const Arg *arg);
+ static void setcfact(const Arg *arg);
+ static void setmfact(const Arg *arg);
++static void setscratch(const Arg *arg);
+ static void setnumdesktops(void);
+ static void setup(void);
+ static void setviewport(void);
+ static void seturgent(Client *c, int urg);
+ static void showhide(Client *c);
+ static void spawn(const Arg *arg);
++static void spawnscratch(const Arg *arg);
+ static void tag(const Arg *arg);
+ static void tagmon(const Arg *arg);
+ static void tagtoleft(const Arg *arg);
+@@ -239,6 +244,7 @@ static void tagnthmon(const Arg *arg);
+ static void tile(Monitor *m);
+ static void togglebar(const Arg *arg);
+ static void togglefloating(const Arg *arg);
++static void togglescratch(const Arg *arg);
+ static void togglefullscr(const Arg *arg);
+ static void toggletag(const Arg *arg);
+ static void toggleview(const Arg *arg);
+@@ -335,6 +341,7 @@ applyrules(Client *c)
+ 	c->iscentered = 0;
+ 	c->isfloating = 0;
+ 	c->tags = 0;
++	c->scratchkey = 0;
+ 	XGetClassHint(dpy, c->win, &ch);
+ 	class    = ch.res_class ? ch.res_class : broken;
+ 	instance = ch.res_name  ? ch.res_name  : broken;
+@@ -348,6 +355,7 @@ applyrules(Client *c)
+ 			c->iscentered = r->iscentered;
+ 			c->isfloating = r->isfloating;
+ 			c->tags |= r->tags;
++			c->scratchkey = r->scratchkey;
+ 			for (m = mons; m && m->num != r->monitor; m = m->next);
+ 			if (m)
+ 				c->mon = m;
+@@ -357,6 +365,7 @@ applyrules(Client *c)
+ 		XFree(ch.res_class);
+ 	if (ch.res_name)
+ 		XFree(ch.res_name);
++
+ 	c->tags = c->tags & TAGMASK ? c->tags & TAGMASK : c->mon->tagset[c->mon->seltags];
+ }
+ 
+@@ -1441,6 +1450,15 @@ recttomon(int x, int y, int w, int h)
+ }
+ 
+ void
++removescratch(const Arg *arg)
++{
++	Client *c = selmon->sel;
++	if (!c)
++		return;
++	c->scratchkey = 0;
++}
++
++void
+ resize(Client *c, int x, int y, int w, int h, int interact)
+ {
+ 	if (applysizehints(c, &x, &y, &w, &h, interact))
+@@ -1804,6 +1822,16 @@ setmfact(const Arg *arg)
+ }
+ 
+ void
++setscratch(const Arg *arg)
++{
++	Client *c = selmon->sel;
++	if (!c)
++		return;
++
++	c->scratchkey = ((char**)arg->v)[0][0];
++}
++
++void
+ setup(void)
+ {
+ 	int i;
+@@ -1924,6 +1952,9 @@ showhide(Client *c)
+ 			resize(c, c->x, c->y, c->w, c->h, 0);
+ 		showhide(c->snext);
+ 	} else {
++		/* optional: auto-hide scratchpads when moving to other tags */
++		if (c->scratchkey != 0 && c->tags != 0)
++			c->tags = 0;
+ 		/* hide clients bottom up */
+ 		showhide(c->snext);
+ 		XMoveWindow(dpy, c->win, WIDTH(c) * -2, c->y);
+@@ -1960,6 +1991,19 @@ setclienttagprop(Client *c)
+ 			PropModeReplace, (unsigned char *) data, 2);
+ }
+ 
++void spawnscratch(const Arg *arg)
++{
++	if (fork() == 0) {
++		if (dpy)
++			close(ConnectionNumber(dpy));
++		setsid();
++		execvp(((char **)arg->v)[1], ((char **)arg->v)+1);
++		fprintf(stderr, "dwm: execvp %s", ((char **)arg->v)[1]);
++		perror(" failed");
++		exit(EXIT_SUCCESS);
++	}
++}
++
+ void
+ tag(const Arg *arg)
+ {
+@@ -2109,6 +2153,54 @@ togglefullscr(const Arg *arg)
+ }
+ 
+ void
++togglescratch(const Arg *arg)
++{
++	Client *c, *next, *found = NULL;
++	Monitor *mon;
++	int tags = 0, monfound;
++
++	for (mon = mons; mon; mon = mon->next) {
++		monfound = 0;
++		for (c = mon->stack; c; c = next) {
++			next = c->snext;
++			if (c->scratchkey != ((char**)arg->v)[0][0])
++				continue;
++
++			/* awesomebar / wintitleactions compatibility
++			if (HIDDEN(c)) {
++				XMapWindow(dpy, c->win);
++				setclientstate(c, NormalState);
++			}
++			*/
++
++			unfocus(c, 0);
++			monfound = 1;
++
++			if (!found || mon == selmon) {
++				found = c;
++				tags = (c->tags == 0 ? c->mon->tagset[c->mon->seltags] : 0);
++			}
++
++			detachstack(c);
++			attachstack(c);
++			c->tags = tags;
++			if (c->tags && c->isfloating)
++				XRaiseWindow(dpy, c->win);
++		}
++
++		if (monfound)
++			arrange(mon);
++	}
++
++	if (found) {
++		focus(ISVISIBLE(found) ? found : NULL);
++		arrange(selmon);
++	} else {
++		spawnscratch(arg);
++	}
++}
++
++void
+ toggletag(const Arg *arg)
+ {
+ 	unsigned int newtags;
