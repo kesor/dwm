@@ -1,0 +1,35 @@
+--- /dev/null
++++ b/.clangd
+@@ -0,0 +1,3 @@
++CompileFlags:
++  Add: [ -c, -std=c99, -pedantic, -Wall, -Wno-deprecated-declarations, -Os, -I/usr/X11R6/include, -I/usr/include/freetype2, -D_DEFAULT_SOURCE, -D_BSD_SOURCE, -D_XOPEN_SOURCE=700L, -DVERSION=\"6.5\", -DXINERAMA ]
++  Compiler: cc
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,6 @@
++.pc/
++dwm
++config.h
++*.o
++dwm-*.tar.gz
++patches/*~
+--- /dev/null
++++ b/.editorconfig
+@@ -0,0 +1,17 @@
++root = true
++
++# Unix-style newlines with a newline ending every file
++[*]
++charset = utf-8
++trim_trailing_whitespace = true
++end_of_line = lf
++insert_final_newline = true
++
++# Tab indentation (no size specified)
++[Makefile]
++indent_stype = tab
++
++[*.{c,h,cpp,hpp,mk}]
++indent_stype = tab
++indent_size = 4
++max_line_length = 80
