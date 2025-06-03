@@ -15,14 +15,14 @@
  static int floatposgrid_x           = 5;        /* float grid columns */
  static int floatposgrid_y           = 5;        /* float grid rows */
 -static const int horizpadbar        = 2;        /* horizontal padding for statusbar */
-+static const int horizpadbar        = 10;        /* horizontal padding for statusbar */
++static const int horizpadbar        = 10;       /* horizontal padding for statusbar */
  static const int vertpadbar         = 0;        /* vertical padding for statusbar */
  static const int vertpad            = 10;       /* vertical padding of bar */
  static const int sidepad            = 10;       /* horizontal padding of bar */
 -static const char *fonts[]          = { "monospace:size=10" };
 -static const char dmenufont[]       = "monospace:size=10";
-+static const char *fonts[]          = { "JetBrainsMono Nerd Font Mono:size=12:antialias=true:autohint=true" };
-+static const char dmenufont[]       = "JetBrainsMono Nerd Font Mono:size=12:antialias=true:autohint=true";
++static const char *fonts[]          = { "JetBrain Mono:size=12:antialias=true:autohint=true" };
++static const char dmenufont[]       = "JetBrains Mono:size=12:antialias=true:autohint=true";
  static const char col_gray1[]       = "#222222";
  static const char col_gray2[]       = "#444444";
  static const char col_gray3[]       = "#bbbbbb";
@@ -53,7 +53,7 @@
 -	{ "firefox",  NULL,       NULL,       1 << 8,       0,           0,           NULL,      -1,        0  },
 -	{ NULL,       NULL,   "scratchpad",   0,            1,           1,           NULL,      -1,       's' },
 +	/* class                        instance                   title            tags mask     iscentered   isfloating   floatpos  monitor  scratch key */
-+	{ NULL,                         NULL,                      "scratchterm",   0,            1,           1, "50% 50% 50% 50%",  -1,      's' },
++	{ NULL,                         "scratchterm",             NULL,            0,            1,           1, "50% 50% 50% 50%",  -1,      's' },
 +	{ "Rofi",                       "rofi",                    NULL,            0,            1,           1,           NULL,     -1,       0  },
 +	{ "Gcr-prompter",               "gcr-prompter",            NULL,            0,            1,           1,           NULL,      0,       0  },
 +	{ "Brave-browser",              NULL,                      NULL,            0,            0,           0,           NULL,     -1,       0  },
@@ -78,13 +78,13 @@
 +	{ "steam_app_0",                NULL,                      NULL,            0,            0,           1,           NULL,     -1,       0  },
 +	{ "steam",                      "steamwebhelper",    "Steam Games List",    0,            0,           0,           NULL,     -1,       0  },
 +	{ "steam",                      "steamwebhelper",          NULL,            0,            1,           1,           NULL,     -1,       0  },
-+	{ "Slack",                      NULL,                      NULL,            1 << 8,       0,           0,           NULL,      0,       0  },
++	{ "Slack",                      NULL,                      NULL,            0,            0,           0,           NULL,      0,       0  },
 +	{ "Pavucontrol",                NULL,                      NULL,            0,            1,           1,           NULL,      0,       0  },
 +	{ "Blueman-manager",            NULL,                      NULL,            0,            1,           1,           NULL,      0,       0  },
 +	{ "Update-manager",             NULL,                      NULL,            0,            1,           1,           NULL,      0,       0  },
 +	{ "SpeedCrunch",                NULL,                      NULL,            0,            1,           1,           NULL,     -1,      'c' },
 +	{ "flameshot",                  NULL,                      NULL,            0,            0,           0,           NULL,      0,       0  },
-+	{ "stalonetray",                "stalonetray",             "stalonetray",   1 << 8,       0,           1, "2000Z 10Z 28W 28H",  0,       0  }
++	{ "stalonetray",                "stalonetray",             "stalonetray",   -1,           0,           1, "2000Z 10Z 28W 28H",  0,       0  }
  };
  
  /* layout(s) */
@@ -108,7 +108,7 @@
 -/*First arg only serves to match against key in rules*/
 -static const char *scratchpadcmd[] = {"s", "st", "-t", "scratchpad", NULL};
 +/* Scratch Commands: first arg serves to match against key in rules */
-+static const char *scratchtermcmd[] = { "s", "kitty", "--detach", "-T", "scratchterm", NULL };
++static const char *scratchtermcmd[] = { "s", "ghostty", "--x11-instance-name", "scratchterm", NULL };
 +static const char *scratchcalccmd[] = { "c", "speedcrunch", NULL };
 +
 +static const char *muteMus[]  = { "wpctl", "set-mute",   "@DEFAULT_AUDIO_SINK@",   "toggle", NULL };
@@ -125,8 +125,8 @@
 -	{ MODKEY|ShiftMask,             XK_g,      removescratch,  {.v = scratchpadcmd } },
 -	{ MODKEY|ControlMask,           XK_g,      setscratch,     {.v = scratchpadcmd } },
 +	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchtermcmd } },
-+	{ MODKEY|ShiftMask,             XK_grave,  removescratch,  {.v = scratchtermcmd } },
-+	{ MODKEY|ControlMask,           XK_grave,  setscratch,     {.v = scratchtermcmd } },
++/*  { MODKEY|ShiftMask,             XK_grave,  removescratch,  {.v = scratchtermcmd } }, */
++/*  { MODKEY|ControlMask,           XK_grave,  setscratch,     {.v = scratchtermcmd } }, */
 +
 + 	{ MODKEY|ControlMask,           XK_Return, togglescratch,  {.v = scratchcalccmd } },
 + 	{ MODKEY|ShiftMask,             XK_x,      spawn,          {.v = xprop } },
