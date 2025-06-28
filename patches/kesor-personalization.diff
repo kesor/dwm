@@ -108,7 +108,7 @@
 -/*First arg only serves to match against key in rules*/
 -static const char *scratchpadcmd[] = {"s", "st", "-t", "scratchpad", NULL};
 +/* Scratch Commands: first arg serves to match against key in rules */
-+static const char *scratchtermcmd[] = { "s", "ghostty", "--x11-instance-name", "scratchterm", NULL };
++static const char *scratchtermcmd[] = { "s", "ghostty", "--x11-instance-name=scratchterm", NULL };
 +static const char *scratchcalccmd[] = { "c", "speedcrunch", NULL };
 +
 +static const char *muteMus[]  = { "wpctl", "set-mute",   "@DEFAULT_AUDIO_SINK@",   "toggle", NULL };
