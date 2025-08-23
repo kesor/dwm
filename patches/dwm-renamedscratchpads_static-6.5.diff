@@ -14,7 +14,7 @@
  };
  
  /* layout(s) */
-@@ -69,10 +70,16 @@ static char dmenumon[2] = "0"; /* compon
+@@ -70,10 +71,16 @@ static char dmenumon[2] = "0"; /* compon
  static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
  static const char *termcmd[]  = { "x-terminal-emulator", NULL };
  

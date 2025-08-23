@@ -1,6 +1,6 @@
 --- a/config.def.h
 +++ b/config.def.h
-@@ -44,21 +44,19 @@ static const Layout layouts[] = {
+@@ -45,21 +45,19 @@ static const Layout layouts[] = {
  	{ "[M]",      monocle },
  };
  

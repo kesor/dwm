@@ -11,7 +11,7 @@ Subject: [PATCH] Fixed 'cfacts' patch failure due to upstream commit
 
 --- a/config.def.h
 +++ b/config.def.h
-@@ -71,6 +71,9 @@ static const Key keys[] = {
+@@ -72,6 +72,9 @@ static const Key keys[] = {
  	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
  	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
  	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },

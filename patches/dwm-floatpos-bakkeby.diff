@@ -34,7 +34,7 @@ https://github.com/bakkeby/patches/wiki/floatpos/
  };
  
  /* layout(s) */
-@@ -105,6 +107,45 @@ static const Key keys[] = {
+@@ -106,6 +108,45 @@ static const Key keys[] = {
  	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
  	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
  	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
