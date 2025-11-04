@@ -75,7 +75,7 @@ git rev-parse HEAD
 
 ### 1. Get New Hash
 ```bash
-nix-prefetch-url --unpack https://github.com/kesor/dwm/archive/NEW_COMMIT_HASH.tar.gz
+nix-shell -p nix-prefetch-github --run "nix-prefetch-github kesor dwm --rev NEW_COMMIT_HASH"
 ```
 
 ### 2. Update Package Files
@@ -128,7 +128,7 @@ git push kesor master-patched
 
 # Get commit hash and prefetch
 git rev-parse HEAD
-nix-prefetch-url --unpack https://github.com/kesor/dwm/archive/COMMIT_HASH.tar.gz
+nix-shell -p nix-prefetch-github --run "nix-prefetch-github kesor dwm --rev COMMIT_HASH"
 ```
 
 ## Notes
