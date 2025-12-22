@@ -2,6 +2,7 @@ dwm-project-setup.diff
 dwm-fix65-bugs.diff
 dwm-coderabbit-review.diff
 dwm-normalize-whitespace-6.4.diff
+dwm-multimon-mouse-focus-fix.diff
 dwm-config-defaults.diff
 dwm-preserve-on-restart.diff
 dwm-ewmh-desktop-tags.diff

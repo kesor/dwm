@@ -33,7 +33,7 @@
  		return NULL;
  	}
  
-@@ -347,6 +349,7 @@ drw_text(Drw *drw, int x, int y, unsigne
+@@ -370,6 +372,7 @@ drw_text(Drw *drw, int x, int y, unsigne
  
  			if (!drw->fonts || !drw->fonts->pattern) {
  				/* Refer to the comment in xfont_create for more information. */

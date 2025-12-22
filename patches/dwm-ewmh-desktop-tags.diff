@@ -53,7 +53,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  static void updatebarpos(Monitor *m);
  static void updatebars(void);
  static void updateclientlist(void);
-@@ -1455,6 +1463,18 @@ setclientstate(Client *c, long state)
+@@ -1464,6 +1472,18 @@ setclientstate(Client *c, long state)
  		PropModeReplace, (unsigned char *)data, 2);
  }
  
@@ -72,7 +72,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  int
  sendevent(Client *c, Atom proto)
  {
-@@ -1481,6 +1501,12 @@ sendevent(Client *c, Atom proto)
+@@ -1490,6 +1510,12 @@ sendevent(Client *c, Atom proto)
  }
  
  void
@@ -85,7 +85,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  setfocus(Client *c)
  {
  	if (!c->neverfocus) {
-@@ -1593,6 +1619,10 @@ setup(void)
+@@ -1602,6 +1628,10 @@ setup(void)
  	netatom[NetWMWindowTypeDialog] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE_DIALOG", False);
  	netatom[NetClientList] = XInternAtom(dpy, "_NET_CLIENT_LIST", False);
  	netatom[NetClientInfo] = XInternAtom(dpy, "_NET_CLIENT_INFO", False);
@@ -96,7 +96,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  	/* init cursors */
  	cursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
  	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
-@@ -1615,6 +1645,10 @@ setup(void)
+@@ -1624,6 +1654,10 @@ setup(void)
  	/* EWMH support per view */
  	XChangeProperty(dpy, root, netatom[NetSupported], XA_ATOM, 32,
  		PropModeReplace, (unsigned char *) netatom, NetLast);
@@ -107,7 +107,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  	XDeleteProperty(dpy, root, netatom[NetClientList]);
  	XDeleteProperty(dpy, root, netatom[NetClientInfo]);
  	/* select events */
-@@ -1629,6 +1663,12 @@ setup(void)
+@@ -1638,6 +1672,12 @@ setup(void)
  }
  
  void
@@ -120,7 +120,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  seturgent(Client *c, int urg)
  {
  	XWMHints *wmh;
-@@ -1778,6 +1818,7 @@ toggletag(const Arg *arg)
+@@ -1787,6 +1827,7 @@ toggletag(const Arg *arg)
  		focus(NULL);
  		arrange(selmon);
  	}
@@ -128,7 +128,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  }
  
  void
-@@ -1790,6 +1831,7 @@ toggleview(const Arg *arg)
+@@ -1799,6 +1840,7 @@ toggleview(const Arg *arg)
  		focus(NULL);
  		arrange(selmon);
  	}
@@ -136,7 +136,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  }
  
  void
-@@ -1894,6 +1936,15 @@ updateclientlist(void)
+@@ -1903,6 +1945,15 @@ updateclientlist(void)
  				(unsigned char *) &(c->win), 1);
  }
  
@@ -152,7 +152,7 @@ Subject: [PATCH] dwm-ewhmtags-6.2
  int
  updategeom(void)
  {
-@@ -2111,6 +2162,7 @@ view(const Arg *arg)
+@@ -2120,6 +2171,7 @@ view(const Arg *arg)
  		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
  	focus(NULL);
  	arrange(selmon);

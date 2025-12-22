@@ -74,7 +74,7 @@
  	font = ecalloc(1, sizeof(Fnt));
  	font->xfont = xfont;
  	font->pattern = pattern;
-@@ -263,11 +269,12 @@ drw_text(Drw *drw, int x, int y, unsigne
+@@ -286,11 +292,12 @@ drw_text(Drw *drw, int x, int y, unsigne
  	if (!invalid_width && render)
  		invalid_width = drw_fontset_getwidth(drw, invalid);
  	while (1) {
@@ -88,7 +88,7 @@
  			for (curfont = drw->fonts; curfont; curfont = curfont->next) {
  				charexists = charexists || XftCharExists(drw->dpy, curfont->xfont, utf8codepoint);
  				if (charexists) {
-@@ -301,8 +308,6 @@ drw_text(Drw *drw, int x, int y, unsigne
+@@ -324,8 +331,6 @@ drw_text(Drw *drw, int x, int y, unsigne
  
  			if (overflow || !charexists || nextfont || utf8err)
  				break;
@@ -97,7 +97,7 @@
  		}
  
  		if (utf8strlen) {
-@@ -323,16 +328,11 @@ drw_text(Drw *drw, int x, int y, unsigne
+@@ -346,16 +351,11 @@ drw_text(Drw *drw, int x, int y, unsigne
  		if (render && overflow)
  			drw_text(drw, ellipsis_x, y, ellipsis_w, h, 0, "...", invert);
  
@@ -117,7 +117,7 @@
  			hash = (unsigned int)utf8codepoint;
  			hash = ((hash >> 16) ^ hash) * 0x21F0AAAD;
  			hash = ((hash >> 15) ^ hash) * 0xD35A2D97;
-@@ -345,9 +345,10 @@ drw_text(Drw *drw, int x, int y, unsigne
+@@ -368,9 +368,10 @@ drw_text(Drw *drw, int x, int y, unsigne
  			fccharset = FcCharSetCreate();
  			FcCharSetAddChar(fccharset, utf8codepoint);
  
