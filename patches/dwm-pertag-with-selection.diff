@@ -118,7 +118,7 @@ Subject: [PATCH] pertag with last selection
  	updatebarpos(selmon);
  	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
  	arrange(selmon);
-@@ -1905,9 +1933,33 @@ void
+@@ -1905,9 +1933,34 @@ void
  toggleview(const Arg *arg)
  {
  	unsigned int newtagset = selmon->tagset[selmon->seltags] ^ (arg->ui & TAGMASK);
@@ -132,10 +132,11 @@ Subject: [PATCH] pertag with last selection
 +			selmon->pertag->curtag = 0;
 +		}
 +
-+		/* test if the user did not select the same tag */
++		/* update curtag if current tag is no longer visible */
 +		if (selmon->pertag->curtag > 0 && !(newtagset & 1 << (selmon->pertag->curtag - 1))) {
 +			selmon->pertag->prevtag = selmon->pertag->curtag;
-+			for (i = 0; !(newtagset & 1 << i); i++) ;
++			/* use the toggled tag as the new current tag */
++			for (i = 0; !(arg->ui & 1 << i); i++) ;
 +			selmon->pertag->curtag = i + 1;
 +		}
 +
@@ -152,7 +153,7 @@ Subject: [PATCH] pertag with last selection
  		focus(NULL);
  		arrange(selmon);
  	}
-@@ -1930,9 +1982,14 @@ unfocus(Client *c, int setfocus)
+@@ -1930,9 +1983,14 @@ unfocus(Client *c, int setfocus)
  void
  unmanage(Client *c, int destroyed)
  {
@@ -167,7 +168,7 @@ Subject: [PATCH] pertag with last selection
  	detach(c);
  	detachstack(c);
  	if (!destroyed) {
-@@ -2235,12 +2292,38 @@ updateclienttagprop(Client *c)
+@@ -2235,12 +2293,38 @@ updateclienttagprop(Client *c)
  void
  view(const Arg *arg)
  {
