@@ -303,8 +303,8 @@ https://github.com/bakkeby/patches/wiki/floatpos/
  void
 +setfloatpos(Client *c, const char *floatpos)
 +{
-+	char xCh, yCh, wCh, hCh;
-+	int x, y, w, h, wx, ww, wy, wh;
++	char xCh = 0, yCh = 0, wCh = 0, hCh = 0;
++	int x = 0, y = 0, w = 0, h = 0, wx, ww, wy, wh;
 +
 +	if (!c || !floatpos)
 +		return;
