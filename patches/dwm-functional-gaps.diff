@@ -112,7 +112,7 @@
  	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
  	configure(c);
  	XSync(dpy, False);
-@@ -1622,6 +1653,29 @@ setfullscreen(Client *c, int fullscreen)
+@@ -1625,6 +1656,29 @@ setfullscreen(Client *c, int fullscreen)
  }
  
  void
@@ -142,7 +142,7 @@
  setlayout(const Arg *arg)
  {
  	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
-@@ -1885,27 +1939,50 @@ tile(Monitor *m)
+@@ -1888,27 +1942,50 @@ tile(Monitor *m)
  		else
  			sfacts += c->cfact;
  	}

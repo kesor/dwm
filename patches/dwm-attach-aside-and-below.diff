@@ -81,7 +81,7 @@
  nexttiled(Client *c)
  {
  	for (; c && (c->isfloating || !ISVISIBLE(c)); c = c->next);
-@@ -1575,7 +1610,7 @@ sendmon(Client *c, Monitor *m)
+@@ -1578,7 +1613,7 @@ sendmon(Client *c, Monitor *m)
  	detachstack(c);
  	c->mon = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -90,7 +90,7 @@
  	attachstack(c);
  	setclienttagprop(c);
  	focus(NULL);
-@@ -2310,6 +2345,7 @@ updategeom(void)
+@@ -2313,6 +2348,7 @@ updategeom(void)
  				detachstack(c);
  				c->mon = mons;
  				attach(c);

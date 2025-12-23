@@ -70,7 +70,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
-@@ -2280,6 +2286,8 @@ updategeom(void)
+@@ -2283,6 +2289,8 @@ updategeom(void)
  			{
  				dirty = 1;
  				m->num = i;

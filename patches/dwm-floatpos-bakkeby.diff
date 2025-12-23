@@ -297,7 +297,7 @@ https://github.com/bakkeby/patches/wiki/floatpos/
  	c->cfact = 1.0;
  
  	updatetitle(c);
-@@ -1729,6 +1871,53 @@ setnumdesktops(void){
+@@ -1732,6 +1874,53 @@ setnumdesktops(void){
  }
  
  void
