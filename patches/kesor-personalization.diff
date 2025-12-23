@@ -92,7 +92,7 @@
  };
  
  /* layout(s) */
-@@ -70,19 +106,44 @@ static const Layout layouts[] = {
+@@ -72,19 +108,44 @@ static const Layout layouts[] = {
  
  /* commands */
  static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -143,7 +143,7 @@
  	{ MODKEY,                       XK_b,      togglebar,      {0} },
  	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
  	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-@@ -104,57 +165,56 @@ static const Key keys[] = {
+@@ -108,57 +169,56 @@ static const Key keys[] = {
  	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
  	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
  	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
