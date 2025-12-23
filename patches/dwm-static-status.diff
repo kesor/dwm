@@ -30,7 +30,7 @@
  			click = ClkStatusText;
  		else
  			click = ClkWinTitle;
-@@ -794,7 +794,7 @@ drawbar(Monitor *m)
+@@ -795,7 +795,7 @@ drawbar(Monitor *m)
  		return;
  
  	/* draw status first so it can be overdrawn by tags later */
@@ -39,7 +39,7 @@
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
  		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
-@@ -2271,7 +2271,7 @@ updategeom(void)
+@@ -2272,7 +2272,7 @@ updategeom(void)
  			else
  				mons = createmon();
  		}
@@ -48,7 +48,7 @@
  			if (i >= n
  			|| unique[i].x_org != m->mx || unique[i].y_org != m->my
  			|| unique[i].width != m->mw || unique[i].height != m->mh)
-@@ -2284,6 +2284,9 @@ updategeom(void)
+@@ -2285,6 +2285,9 @@ updategeom(void)
  				m->mh = m->wh = unique[i].height;
  				updatebarpos(m);
  			}
@@ -58,7 +58,7 @@
  		/* removed monitors if n > nn */
  		for (i = nn; i < n; i++) {
  			for (m = mons; m && m->next; m = m->next);
-@@ -2297,6 +2300,8 @@ updategeom(void)
+@@ -2298,6 +2301,8 @@ updategeom(void)
  			}
  			if (m == selmon)
  				selmon = mons;
@@ -67,7 +67,7 @@
  			cleanupmon(m);
  		}
  		free(unique);
-@@ -2384,7 +2389,7 @@ updatestatus(void)
+@@ -2385,7 +2390,7 @@ updatestatus(void)
  {
  	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
  		strcpy(stext, "dwm-"VERSION);

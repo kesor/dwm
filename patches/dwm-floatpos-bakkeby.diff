@@ -142,7 +142,7 @@ https://github.com/bakkeby/patches/wiki/floatpos/
  		/* see last two sentences in ICCCM 4.1.2.3 */
  		baseismin = c->basew == c->minw && c->baseh == c->minh;
  		if (!baseismin) { /* temporarily remove base dimensions */
-@@ -928,6 +936,21 @@ expose(XEvent *e)
+@@ -929,6 +937,21 @@ expose(XEvent *e)
  }
  
  void
@@ -164,7 +164,7 @@ https://github.com/bakkeby/patches/wiki/floatpos/
  focus(Client *c)
  {
  	if (!c || !ISVISIBLE(c))
-@@ -1040,6 +1063,124 @@ getatomprop(Client *c, Atom prop)
+@@ -1041,6 +1064,124 @@ getatomprop(Client *c, Atom prop)
  	return atom;
  }
  
@@ -289,7 +289,7 @@ https://github.com/bakkeby/patches/wiki/floatpos/
  int
  getrootptr(int *x, int *y)
  {
-@@ -1206,6 +1347,7 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1207,6 +1348,7 @@ manage(Window w, XWindowAttributes *wa)
  	c->w = c->oldw = wa->width;
  	c->h = c->oldh = wa->height;
  	c->oldbw = wa->border_width;
@@ -297,7 +297,7 @@ https://github.com/bakkeby/patches/wiki/floatpos/
  	c->cfact = 1.0;
  
  	updatetitle(c);
-@@ -1732,6 +1874,53 @@ setnumdesktops(void){
+@@ -1733,6 +1875,53 @@ setnumdesktops(void){
  }
  
  void
