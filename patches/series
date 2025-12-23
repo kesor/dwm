@@ -25,4 +25,7 @@ dwm-renamedscratchpads_static-6.5.diff
 dwm-sendmon_keepfocus-6.5.diff
 dwm-floatpos-bakkeby.diff
 dwm-activetagindicatorbar.diff
+dwm-bottomstack.diff
+dwm-togglefloatingcenter.diff
+dwm-resizecorners.diff
 kesor-personalization.diff
