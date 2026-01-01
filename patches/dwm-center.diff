@@ -58,7 +58,7 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  			c->isfloating = r->isfloating;
  			c->tags |= r->tags;
  			for (m = mons; m && m->num != r->monitor; m = m->next);
-@@ -1184,6 +1187,10 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1185,6 +1188,10 @@ manage(Window w, XWindowAttributes *wa)
  	updatewindowtype(c);
  	updatesizehints(c);
  	updatewmhints(c);
@@ -69,7 +69,7 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  	updateclienttagprop(c);
  	setclienttagprop(c);
  	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
-@@ -2398,8 +2405,10 @@ updatewindowtype(Client *c)
+@@ -2400,8 +2407,10 @@ updatewindowtype(Client *c)
  
  	if (state == netatom[NetWMFullscreen])
  		setfullscreen(c, 1);

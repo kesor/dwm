@@ -104,7 +104,7 @@
  	c->tags = c->tags & TAGMASK ? c->tags & TAGMASK : c->mon->tagset[c->mon->seltags];
  }
  
-@@ -1451,6 +1460,15 @@ recttomon(int x, int y, int w, int h)
+@@ -1453,6 +1462,15 @@ recttomon(int x, int y, int w, int h)
  }
  
  void
@@ -120,7 +120,7 @@
  resize(Client *c, int x, int y, int w, int h, int interact)
  {
  	if (applysizehints(c, &x, &y, &w, &h, interact))
-@@ -1817,6 +1835,16 @@ setmfact(const Arg *arg)
+@@ -1819,6 +1837,16 @@ setmfact(const Arg *arg)
  }
  
  void
@@ -137,7 +137,7 @@
  setup(void)
  {
  	int i;
-@@ -1937,6 +1965,9 @@ showhide(Client *c)
+@@ -1939,6 +1967,9 @@ showhide(Client *c)
  			resize(c, c->x, c->y, c->w, c->h, 0);
  		showhide(c->snext);
  	} else {
@@ -147,7 +147,7 @@
  		/* hide clients bottom up */
  		showhide(c->snext);
  		XMoveWindow(dpy, c->win, WIDTH(c) * -2, c->y);
-@@ -1973,6 +2004,19 @@ setclienttagprop(Client *c)
+@@ -1975,6 +2006,19 @@ setclienttagprop(Client *c)
  			PropModeReplace, (unsigned char *) data, 2);
  }
  
@@ -167,7 +167,7 @@
  void
  tag(const Arg *arg)
  {
-@@ -2122,6 +2166,126 @@ togglefullscr(const Arg *arg)
+@@ -2124,6 +2168,126 @@ togglefullscr(const Arg *arg)
  }
  
  void

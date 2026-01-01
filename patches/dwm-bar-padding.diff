@@ -40,7 +40,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  			}
  			focus(NULL);
  			arrange(NULL);
-@@ -798,7 +800,7 @@ drawbar(Monitor *m)
+@@ -799,7 +801,7 @@ drawbar(Monitor *m)
  	if (m == statmon) { /* status is only drawn on user-defined status monitor */
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
@@ -49,7 +49,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  	}
  
  	for (c = m->clients; c; c = c->next) {
-@@ -824,12 +826,12 @@ drawbar(Monitor *m)
+@@ -825,12 +827,12 @@ drawbar(Monitor *m)
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
  			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
@@ -64,7 +64,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  		}
  	}
  	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
-@@ -1796,7 +1798,10 @@ setup(void)
+@@ -1798,7 +1800,10 @@ setup(void)
  		die("no fonts could be loaded.");
  	lrpad = drw->fonts->h;
  	bh = drw->fonts->h + 2;
@@ -75,7 +75,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  	/* init atoms */
  	utf8string = XInternAtom(dpy, "UTF8_STRING", False);
  	wmatom[WMProtocols] = XInternAtom(dpy, "WM_PROTOCOLS", False);
-@@ -2038,7 +2043,7 @@ togglebar(const Arg *arg)
+@@ -2040,7 +2045,7 @@ togglebar(const Arg *arg)
  {
  	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] = !selmon->showbar;
  	updatebarpos(selmon);
@@ -84,7 +84,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  	arrange(selmon);
  }
  
-@@ -2197,7 +2202,7 @@ updatebars(void)
+@@ -2199,7 +2204,7 @@ updatebars(void)
  	for (m = mons; m; m = m->next) {
  		if (m->barwin)
  			continue;
@@ -93,7 +93,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  				CopyFromParent, DefaultVisual(dpy, screen),
  				CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
  		XDefineCursor(dpy, m->barwin, cursor[CurNormal]->cursor);
-@@ -2212,11 +2217,11 @@ updatebarpos(Monitor *m)
+@@ -2214,11 +2219,11 @@ updatebarpos(Monitor *m)
  	m->wy = m->my;
  	m->wh = m->mh;
  	if (m->showbar) {

@@ -1,6 +1,6 @@
 --- a/dwm.c
 +++ b/dwm.c
-@@ -1648,9 +1648,14 @@ void
+@@ -1650,9 +1650,14 @@ void
  resizemouse(const Arg *arg)
  {
  	int ocx, ocy, nw, nh;
@@ -15,7 +15,7 @@
  	Time lasttime = 0;
  
  	if (!(c = selmon->sel))
-@@ -1660,10 +1665,18 @@ resizemouse(const Arg *arg)
+@@ -1662,10 +1667,18 @@ resizemouse(const Arg *arg)
  	restack(selmon);
  	ocx = c->x;
  	ocy = c->y;
@@ -35,7 +35,7 @@
  	do {
  		XMaskEvent(dpy, MOUSEMASK|ExposureMask|SubstructureRedirectMask, &ev);
  		switch(ev.type) {
-@@ -1677,8 +1690,15 @@ resizemouse(const Arg *arg)
+@@ -1679,8 +1692,15 @@ resizemouse(const Arg *arg)
  				continue;
  			lasttime = ev.xmotion.time;
  
@@ -53,7 +53,7 @@
  			/* Use the monitor where mouse cursor is for validation */
  			if ((m = recttomon(ev.xmotion.x_root, ev.xmotion.y_root, 1, 1))) {
  				if (c->mon->wx + nw >= m->wx && c->mon->wx + nw <= m->wx + m->ww
-@@ -1690,11 +1710,13 @@ resizemouse(const Arg *arg)
+@@ -1692,11 +1712,13 @@ resizemouse(const Arg *arg)
  				}
  			}
  			if (!c->mon->lt[c->mon->sellt]->arrange || c->isfloating)

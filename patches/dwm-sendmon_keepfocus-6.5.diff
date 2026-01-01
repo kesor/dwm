@@ -1,6 +1,6 @@
 --- a/dwm.c
 +++ b/dwm.c
-@@ -1627,16 +1627,23 @@ sendmon(Client *c, Monitor *m)
+@@ -1629,16 +1629,23 @@ sendmon(Client *c, Monitor *m)
  {
  	if (c->mon == m)
  		return;

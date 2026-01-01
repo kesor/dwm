@@ -71,7 +71,7 @@
  
  	return m;
  }
-@@ -879,6 +892,12 @@ focus(Client *c)
+@@ -880,6 +893,12 @@ focus(Client *c)
  		attachstack(c);
  		grabbuttons(c, 1);
  		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
@@ -84,7 +84,7 @@
  		setfocus(c);
  	} else {
  		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
-@@ -1218,7 +1237,10 @@ monocle(Monitor *m)
+@@ -1220,7 +1239,10 @@ monocle(Monitor *m)
  	if (n > 0) /* override layout symbol */
  		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
  	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
@@ -96,7 +96,7 @@
  }
  
  void
-@@ -1388,6 +1410,15 @@ resizeclient(Client *c, int x, int y, in
+@@ -1390,6 +1412,15 @@ resizeclient(Client *c, int x, int y, in
  	c->oldw = c->w; c->w = wc.width = w;
  	c->oldh = c->h; c->h = wc.height = h;
  	wc.border_width = c->bw;
@@ -112,7 +112,7 @@
  	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
  	configure(c);
  	XSync(dpy, False);
-@@ -1626,6 +1657,29 @@ setfullscreen(Client *c, int fullscreen)
+@@ -1628,6 +1659,29 @@ setfullscreen(Client *c, int fullscreen)
  }
  
  void
@@ -142,7 +142,7 @@
  setlayout(const Arg *arg)
  {
  	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
-@@ -1889,27 +1943,50 @@ tile(Monitor *m)
+@@ -1891,27 +1945,50 @@ tile(Monitor *m)
  		else
  			sfacts += c->cfact;
  	}

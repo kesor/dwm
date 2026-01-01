@@ -60,7 +60,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  		else if (m == statmon && ev->x > selmon->ww - (int)TEXTW(stext))
  			click = ClkStatusText;
  		else
-@@ -822,6 +825,9 @@ drawbar(Monitor *m)
+@@ -823,6 +826,9 @@ drawbar(Monitor *m)
  	w = TEXTW(m->ltsymbol);
  	drw_setscheme(drw, scheme[SchemeNorm]);
  	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
@@ -70,7 +70,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
-@@ -2284,6 +2290,8 @@ updategeom(void)
+@@ -2286,6 +2292,8 @@ updategeom(void)
  			{
  				dirty = 1;
  				m->num = i;
