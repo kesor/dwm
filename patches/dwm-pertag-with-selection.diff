@@ -205,7 +205,7 @@ Subject: [PATCH] pertag with last selection
  	detach(c);
  	detachstack(c);
  	if (!destroyed) {
-@@ -2247,12 +2308,38 @@ updateclienttagprop(Client *c)
+@@ -2247,35 +2308,103 @@ updateclienttagprop(Client *c)
  void
  view(const Arg *arg)
  {
@@ -246,3 +246,72 @@ Subject: [PATCH] pertag with last selection
  	arrange(selmon);
  	updatecurrentdesktop();
  }
+ 
+ void
+ viewtoleft(const Arg *arg) {
++	int i;
++	unsigned int newtag;
++
+ 	if(__builtin_popcount(selmon->tagset[selmon->seltags] & TAGMASK) == 1
+ 	&& selmon->tagset[selmon->seltags] > 1) {
+ 		selmon->seltags ^= 1; /* toggle sel tagset */
+-		selmon->tagset[selmon->seltags] = selmon->tagset[selmon->seltags ^ 1] >> 1;
+-		focus(NULL);
++		newtag = selmon->tagset[selmon->seltags ^ 1] >> 1;
++		selmon->tagset[selmon->seltags] = newtag;
++
++		/* Update pertag state */
++		selmon->pertag->prevtag = selmon->pertag->curtag;
++		for (i = 0; i < LENGTH(tags) && !(newtag & 1 << i); i++) ;
++		selmon->pertag->curtag = (i < LENGTH(tags)) ? i + 1 : 1;
++
++		/* Apply per-tag settings */
++		selmon->nmaster = selmon->pertag->nmasters[selmon->pertag->curtag];
++		selmon->mfact = selmon->pertag->mfacts[selmon->pertag->curtag];
++		selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag];
++		selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
++		selmon->lt[selmon->sellt^1] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt^1];
++
++		if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
++			togglebar(NULL);
++
++		focus(selmon->pertag->sel[selmon->pertag->curtag]);
+ 		arrange(selmon);
++		updatecurrentdesktop();
+ 	}
+ }
+ 
+ void
+ viewtoright(const Arg *arg) {
++	int i;
++	unsigned int newtag;
++
+ 	if(__builtin_popcount(selmon->tagset[selmon->seltags] & TAGMASK) == 1
+ 	&& selmon->tagset[selmon->seltags] & (TAGMASK >> 1)) {
+ 		selmon->seltags ^= 1; /* toggle sel tagset */
+-		selmon->tagset[selmon->seltags] = selmon->tagset[selmon->seltags ^ 1] << 1;
+-		focus(NULL);
++		newtag = selmon->tagset[selmon->seltags ^ 1] << 1;
++		selmon->tagset[selmon->seltags] = newtag;
++
++		/* Update pertag state */
++		selmon->pertag->prevtag = selmon->pertag->curtag;
++		for (i = 0; i < LENGTH(tags) && !(newtag & 1 << i); i++) ;
++		selmon->pertag->curtag = (i < LENGTH(tags)) ? i + 1 : 1;
++
++		/* Apply per-tag settings */
++		selmon->nmaster = selmon->pertag->nmasters[selmon->pertag->curtag];
++		selmon->mfact = selmon->pertag->mfacts[selmon->pertag->curtag];
++		selmon->sellt = selmon->pertag->sellts[selmon->pertag->curtag];
++		selmon->lt[selmon->sellt] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt];
++		selmon->lt[selmon->sellt^1] = selmon->pertag->ltidxs[selmon->pertag->curtag][selmon->sellt^1];
++
++		if (selmon->showbar != selmon->pertag->showbars[selmon->pertag->curtag])
++			togglebar(NULL);
++
++		focus(selmon->pertag->sel[selmon->pertag->curtag]);
+ 		arrange(selmon);
++		updatecurrentdesktop();
+ 	}
+ }
+ 

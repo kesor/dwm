@@ -29,7 +29,7 @@
  
  /* variables */
  static const char broken[] = "broken";
-@@ -3034,3 +3036,65 @@ main(int argc, char *argv[])
+@@ -3076,3 +3078,65 @@ main(int argc, char *argv[])
  	XCloseDisplay(dpy);
  	return EXIT_SUCCESS;
  }
