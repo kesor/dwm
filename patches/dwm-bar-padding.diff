@@ -11,37 +11,37 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
 
 --- a/config.def.h
 +++ b/config.def.h
-@@ -7,6 +7,8 @@ static const unsigned int gappx[]   = {
- static const unsigned int snap      = 32;       /* snap pixel */
- static const int showbar            = 1;        /* 0 means no bar */
- static const int topbar             = 1;        /* 0 means bottom bar */
-+static const int vertpad            = 10;       /* vertical padding of bar */
-+static const int sidepad            = 10;       /* horizontal padding of bar */
- static const char *fonts[]          = { "monospace:size=10" };
- static const char dmenufont[]       = "monospace:size=10";
- static const char col_gray1[]       = "#222222";
+@@ -8,6 +8,8 @@ static const unsigned int gappx[]  = { 1
+ static const unsigned int snap     = 32; /* snap pixel */
+ static const int showbar           = 1;  /* 0 means no bar */
+ static const int topbar            = 1;  /* 0 means bottom bar */
++static const int vertpad           = 10; /* vertical padding of bar */
++static const int sidepad           = 10; /* horizontal padding of bar */
+ static const char* fonts[]         = { "monospace:size=10" };
+ static const char dmenufont[]      = "monospace:size=10";
+ static const char col_gray1[]      = "#222222";
 --- a/dwm.c
 +++ b/dwm.c
-@@ -270,6 +270,8 @@ static int screen;
- static int sw, sh;           /* X display screen geometry width, height */
- static int bh;               /* bar height */
- static int lrpad;            /* sum of left and right padding for text */
-+static int vp;               /* vertical padding for bar */
-+static int sp;               /* side padding for bar */
- static int (*xerrorxlib)(Display *, XErrorEvent *);
- static unsigned int numlockmask = 0;
- static void (*handler[LASTEvent]) (XEvent *) = {
-@@ -623,7 +625,7 @@ configurenotify(XEvent *e)
+@@ -308,6 +308,8 @@ static int screen;
+ static int sw, sh; /* X display screen geometry width, height */
+ static int bh;     /* bar height */
+ static int lrpad;  /* sum of left and right padding for text */
++static int vp;     /* vertical padding for bar */
++static int sp;     /* side padding for bar */
+ static int (*xerrorxlib)(Display*, XErrorEvent*);
+ static unsigned int numlockmask            = 0;
+ static void (*handler[LASTEvent])(XEvent*) = {
+@@ -662,7 +664,7 @@ configurenotify(XEvent* e)
  				for (c = m->clients; c; c = c->next)
  					if (c->isfullscreen)
  						resizeclient(c, m->mx, m->my, m->mw, m->mh);
 -				XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, m->ww, bh);
-+				XMoveResizeWindow(dpy, m->barwin, m->wx + sp, m->by + vp, m->ww -  2 * sp, bh);
++				XMoveResizeWindow(dpy, m->barwin, m->wx + sp, m->by + vp, m->ww - 2 * sp, bh);
  			}
  			focus(NULL);
  			arrange(NULL);
-@@ -799,7 +801,7 @@ drawbar(Monitor *m)
- 	if (m == statmon) { /* status is only drawn on user-defined status monitor */
+@@ -843,7 +845,7 @@ drawbar(Monitor* m)
+ 	if (m == statmon) {                /* status is only drawn on selected monitor */
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
 -		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
@@ -49,7 +49,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  	}
  
  	for (c = m->clients; c; c = c->next) {
-@@ -825,12 +827,12 @@ drawbar(Monitor *m)
+@@ -869,12 +871,12 @@ drawbar(Monitor* m)
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
  			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
@@ -64,36 +64,34 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  		}
  	}
  	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
-@@ -1798,7 +1800,10 @@ setup(void)
+@@ -1860,6 +1862,8 @@ setup(void)
  		die("no fonts could be loaded.");
  	lrpad = drw->fonts->h;
- 	bh = drw->fonts->h + 2;
-+	sp = sidepad;
-+	vp = (topbar == 1) ? vertpad : - vertpad;
+ 	bh    = drw->fonts->h + 2;
++	sp    = sidepad;
++	vp    = (topbar == 1) ? vertpad : -vertpad;
  	updategeom();
-+
  	/* init atoms */
- 	utf8string = XInternAtom(dpy, "UTF8_STRING", False);
- 	wmatom[WMProtocols] = XInternAtom(dpy, "WM_PROTOCOLS", False);
-@@ -2040,7 +2045,7 @@ togglebar(const Arg *arg)
- {
- 	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] = !selmon->showbar;
+ 	utf8string                     = XInternAtom(dpy, "UTF8_STRING", False);
+@@ -2105,7 +2109,7 @@ togglebar(const Arg* arg)
+ 	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] =
+ 		!selmon->showbar;
  	updatebarpos(selmon);
 -	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
 +	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx + sp, selmon->by + vp, selmon->ww - 2 * sp, bh);
  	arrange(selmon);
  }
  
-@@ -2199,7 +2204,7 @@ updatebars(void)
+@@ -2268,7 +2272,7 @@ updatebars(void)
  	for (m = mons; m; m = m->next) {
  		if (m->barwin)
  			continue;
 -		m->barwin = XCreateWindow(dpy, root, m->wx, m->by, m->ww, bh, 0, DefaultDepth(dpy, screen),
 +		m->barwin = XCreateWindow(dpy, root, m->wx + sp, m->by + vp, m->ww - 2 * sp, bh, 0, DefaultDepth(dpy, screen),
- 				CopyFromParent, DefaultVisual(dpy, screen),
- 				CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
+ 		                          CopyFromParent, DefaultVisual(dpy, screen),
+ 		                          CWOverrideRedirect | CWBackPixmap | CWEventMask, &wa);
  		XDefineCursor(dpy, m->barwin, cursor[CurNormal]->cursor);
-@@ -2214,11 +2219,11 @@ updatebarpos(Monitor *m)
+@@ -2283,11 +2287,11 @@ updatebarpos(Monitor* m)
  	m->wy = m->my;
  	m->wh = m->mh;
  	if (m->showbar) {

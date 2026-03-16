@@ -4,8 +4,8 @@
  #include "util.h"
  
  void
--die(const char *fmt, ...)
-+die(const char * const fmt, ...)
+-die(const char* fmt, ...)
++die(const char* const fmt, ...)
  {
  	va_list ap;
  	int saved_errno;
@@ -13,27 +13,15 @@
 +++ b/drw.c
 @@ -13,6 +13,9 @@
  static int
- utf8decode(const char *s_in, long *u, int *err)
+ utf8decode(const char* s_in, long* u, int* err)
  {
 +	if (!s_in || !u || !err)
 +		return 0;
 +
  	static const unsigned char lens[] = {
+ 		// clang-format off
  		/* 0XXXX */ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
- 		/* 10XXX */ 0, 0, 0, 0, 0, 0, 0, 0,  /* invalid */
-@@ -119,9 +122,8 @@ xfont_create(Drw *drw, const char *fontn
- 		die("no font specified.");
- 	}
- 
--	if (!xfont) {  // Final check to prevent null dereference
--		fprintf(stderr, "error, failed to load font.\n");
--		FcPatternDestroy(pattern);  // Clean up pattern if allocated
-+	if (!xfont && pattern) {
-+		FcPatternDestroy(pattern);
- 		return NULL;
- 	}
- 
-@@ -370,6 +372,7 @@ drw_text(Drw *drw, int x, int y, unsigne
+@@ -373,6 +376,7 @@ drw_text(Drw* drw, int x, int y, unsigne
  
  			if (!drw->fonts || !drw->fonts->pattern) {
  				/* Refer to the comment in xfont_create for more information. */

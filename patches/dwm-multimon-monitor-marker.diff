@@ -23,27 +23,26 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
 
 --- a/config.def.h
 +++ b/config.def.h
-@@ -128,6 +128,8 @@ static const Button buttons[] = {
- 	/* click                event mask      button          function        argument */
- 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
- 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
-+	{ ClkMonNum,            0,              Button1,        focusmon,       {.i = +1} },
-+	{ ClkMonNum,            0,              Button3,        focusmon,       {.i = -1} },
- 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
- 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
- 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+@@ -141,6 +141,8 @@ static const Button buttons[] = {
+ 	/* click         mask    button   function        argument */
+ 	{ ClkLtSymbol,   0,      Button1, setlayout,      { 0 }                },
+ 	{ ClkLtSymbol,   0,      Button3, setlayout,      { .v = &layouts[2] } },
++	{ ClkMonNum,     0,      Button1, focusmon,       { .i = +1 }          },
++	{ ClkMonNum,     0,      Button3, focusmon,       { .i = -1 }          },
+ 	{ ClkWinTitle,   0,      Button2, zoom,           { 0 }                },
+ 	{ ClkStatusText, 0,      Button2, spawn,          { .v = termcmd }     },
+ 	{ ClkClientWin,  MODKEY, Button1, movemouse,      { 0 }                },
 --- a/dwm.c
 +++ b/dwm.c
-@@ -69,7 +69,7 @@ enum { NetSupported, NetWMName, NetWMSta
- 		NetDesktopNames, NetDesktopViewport, NetNumberOfDesktops, NetCurrentDesktop,
- 		NetLast }; /* EWMH atoms */
- enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
--enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
-+enum { ClkTagBar, ClkLtSymbol, ClkMonNum, ClkStatusText, ClkWinTitle,
- 		ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
- 
- typedef union {
-@@ -121,6 +121,7 @@ typedef struct Pertag Pertag;
+@@ -103,6 +103,7 @@ enum
+ {
+ 	ClkTagBar,
+ 	ClkLtSymbol,
++	ClkMonNum,
+ 	ClkStatusText,
+ 	ClkWinTitle,
+ 	ClkClientWin,
+@@ -159,6 +160,7 @@ typedef struct Pertag Pertag;
  
  struct Monitor {
  	char ltsymbol[16];
@@ -51,16 +50,16 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  	float mfact;
  	int nmaster;
  	int num;
-@@ -486,6 +487,8 @@ buttonpress(XEvent *e)
+@@ -526,6 +528,8 @@ buttonpress(XEvent* e)
  			arg.ui = 1 << i;
  		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
  			click = ClkLtSymbol;
 +		else if (ev->x < x + TEXTW(selmon->ltsymbol) + TEXTW(selmon->monmark))
 +			click = ClkMonNum;
- 		else if (m == statmon && ev->x > selmon->ww - (int)TEXTW(stext))
+ 		else if (m == statmon && ev->x > selmon->ww - (int) TEXTW(stext))
  			click = ClkStatusText;
  		else
-@@ -823,6 +826,9 @@ drawbar(Monitor *m)
+@@ -867,6 +871,9 @@ drawbar(Monitor* m)
  	w = TEXTW(m->ltsymbol);
  	drw_setscheme(drw, scheme[SchemeNorm]);
  	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
@@ -70,9 +69,9 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
-@@ -2286,6 +2292,8 @@ updategeom(void)
- 			{
- 				dirty = 1;
+@@ -2356,6 +2363,8 @@ updategeom(void)
+ 			if (i >= n || unique[i].x_org != m->mx || unique[i].y_org != m->my || unique[i].width != m->mw || unique[i].height != m->mh) {
+ 				dirty  = 1;
  				m->num = i;
 +				/* this is ugly, but it is a race condition otherwise */
 +				snprintf(m->monmark, sizeof(m->monmark), "(%d)", m->num + 1);

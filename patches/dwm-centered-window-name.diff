@@ -9,7 +9,7 @@ Subject: [PATCH] Fix overflow when window name is bigger than window width
 
 --- a/dwm.c
 +++ b/dwm.c
-@@ -832,8 +832,12 @@ drawbar(Monitor *m)
+@@ -877,8 +877,12 @@ drawbar(Monitor* m)
  
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {

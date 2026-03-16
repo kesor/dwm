@@ -1,46 +1,54 @@
 --- a/config.def.h
 +++ b/config.def.h
-@@ -55,6 +55,8 @@ static const Layout layouts[] = {
- 	{ "[]=",      tile },    /* first entry is default */
- 	{ "><>",      NULL },    /* no layout function means floating behavior */
- 	{ "[M]",      monocle },
-+	{ "TTT",      bstack },
-+	{ "===",      bstackhoriz },
+@@ -58,9 +58,11 @@ static const int refreshrate =
+ 
+ static const Layout layouts[] = {
+ 	/* symbol  arrange function */
+-	{ "[]=", tile    }, /* first entry is default */
+-	{ "><>", NULL    }, /* no layout function means floating behavior */
+-	{ "[M]", monocle },
++	{ "[]=", tile        }, /* first entry is default */
++	{ "><>", NULL        }, /* no layout function means floating behavior */
++	{ "[M]", monocle     },
++	{ "TTT", bstack      },
++	{ "===", bstackhoriz },
  };
  
  /* key definitions Mod4=Super_L & Mod3=Super_R */
-@@ -99,6 +101,8 @@ static const Key keys[] = {
- 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
- 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
- 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-+	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[3]} },
-+	{ MODKEY,                       XK_o,      setlayout,      {.v = &layouts[4]} },
- 	{ MODKEY,                       XK_space,  setlayout,      {0} },
- 	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
- 	{ MODKEY|ShiftMask,             XK_f,      togglefullscr,  {0} },
+@@ -108,6 +110,8 @@ static const Key keys[] = {
+ 	{ MODKEY,			    XK_t,      setlayout,      { .v = &layouts[0] }   },
+ 	{ MODKEY,			    XK_f,      setlayout,      { .v = &layouts[1] }   },
+ 	{ MODKEY,			    XK_m,      setlayout,      { .v = &layouts[2] }   },
++	{ MODKEY,               XK_u,      setlayout,      { .v = &layouts[3] }   },
++	{ MODKEY,               XK_o,      setlayout,      { .v = &layouts[4] }   },
+ 	{ MODKEY,			    XK_space,  setlayout,      { 0 }                  },
+ 	{ MODKEY | ShiftMask,   XK_space,  togglefloating, { 0 }                  },
+ 	{ MODKEY | ShiftMask,   XK_f,      togglefullscr,  { 0 }                  },
 --- a/dwm.c
 +++ b/dwm.c
-@@ -277,6 +277,8 @@ static int xerror(Display *dpy, XErrorEv
- static int xerrordummy(Display *dpy, XErrorEvent *ee);
- static int xerrorstart(Display *dpy, XErrorEvent *ee);
- static void zoom(const Arg *arg);
-+static void bstack(Monitor *m);
-+static void bstackhoriz(Monitor *m);
- 
- /* variables */
- static const char broken[] = "broken";
-@@ -3076,3 +3078,65 @@ main(int argc, char *argv[])
+@@ -205,6 +205,8 @@ static void arrangemon(Monitor* m);
+ static void attach(Client* c);
+ static void attachBelow(Client* c);
+ static void attachstack(Client* c);
++static void bstack(Monitor* m);
++static void bstackhoriz(Monitor* m);
+ static void buttonpress(XEvent* e);
+ static void checkotherwm(void);
+ static void cleanup(void);
+@@ -3170,3 +3172,69 @@ main(int argc, char* argv[])
  	XCloseDisplay(dpy);
  	return EXIT_SUCCESS;
  }
 +
 +static void
-+bstack(Monitor *m) {
++bstack(Monitor* m)
++{
 +	int w, h, mh, mx, tx, ty, tw;
 +	unsigned int i, n;
-+	Client *c;
++	Client* c;
 +
-+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
++	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++)
++		;
 +	if (n == 0)
 +		return;
 +	if (n > m->nmaster) {
@@ -67,12 +75,14 @@
 +}
 +
 +static void
-+bstackhoriz(Monitor *m) {
++bstackhoriz(Monitor* m)
++{
 +	int w, mh, mx, tx, ty, th;
 +	unsigned int i, n;
-+	Client *c;
++	Client* c;
 +
-+	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
++	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++)
++		;
 +	if (n == 0)
 +		return;
 +	if (n > m->nmaster) {
@@ -81,7 +91,7 @@
 +		ty = m->wy + mh;
 +	} else {
 +		th = mh = m->wh;
-+		ty = m->wy;
++		ty      = m->wy;
 +	}
 +	for (i = mx = 0, tx = m->wx, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++) {
 +		if (i < m->nmaster) {

@@ -1,6 +1,6 @@
 --- a/dwm.c
 +++ b/dwm.c
-@@ -775,7 +775,16 @@ enternotify(XEvent *e)
+@@ -816,7 +816,17 @@ enternotify(XEvent* e)
  	if ((ev->mode != NotifyNormal || ev->detail == NotifyInferior) && ev->window != root)
  		return;
  	c = wintoclient(ev->window);
@@ -15,6 +15,7 @@
 +	} else {
 +		m = wintomon(ev->window);
 +	}
++
  	if (m != selmon) {
  		unfocus(selmon->sel, 1);
  		selmon = m;

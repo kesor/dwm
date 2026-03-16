@@ -1,7 +1,13 @@
 --- a/config.def.h
 +++ b/config.def.h
-@@ -45,21 +45,19 @@ static const Layout layouts[] = {
- 	{ "[M]",      monocle },
+@@ -1,4 +1,5 @@
+ /* See LICENSE file for copyright and license details. */
++#include <X11/XF86keysym.h>
+ 
+ /* appearance */
+ static const unsigned int borderpx = 1;  /* border pixel of windows */
+@@ -47,21 +48,19 @@ static const Layout layouts[] = {
+ 	{ "[M]", monocle },
  };
  
 -/* key definitions */
@@ -9,7 +15,7 @@
 +/* key definitions Mod4=Super_L & Mod3=Super_R */
 +#define MODKEY Mod4Mask
 +#define ALTMOD Mod3Mask
- #define TAGKEYS(KEY,TAG) \
+ #define TAGKEYS(KEY, TAG) \
  	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
  	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
  	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
@@ -19,10 +25,10 @@
 -#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 -
  /* commands */
- static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
- static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
--static const char *termcmd[]  = { "st", NULL };
-+static const char *termcmd[]  = { "x-terminal-emulator", NULL };
+ static char dmenumon[2]       = "0"; /* component of dmenucmd, manipulated in spawn() */
+ static const char* dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+-static const char* termcmd[]  = { "st", NULL };
++static const char* termcmd[]  = { "x-terminal-emulator", NULL };
  
  static const Key keys[] = {
- 	/* modifier                     key        function        argument */
+ 	/* modifier           key        function        argument */

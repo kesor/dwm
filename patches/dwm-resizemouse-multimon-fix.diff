@@ -1,22 +1,23 @@
 --- a/dwm.c
 +++ b/dwm.c
-@@ -1340,14 +1340,17 @@ resizemouse(const Arg *arg)
- 
- 			nw = MAX(ev.xmotion.x - ocx - 2 * c->bw + 1, 1);
- 			nh = MAX(ev.xmotion.y - ocy - 2 * c->bw + 1, 1);
--			if (c->mon->wx + nw >= selmon->wx && c->mon->wx + nw <= selmon->wx + selmon->ww
--			&& c->mon->wy + nh >= selmon->wy && c->mon->wy + nh <= selmon->wy + selmon->wh)
--			{
--				if (!c->isfloating && selmon->lt[selmon->sellt]->arrange
--				&& (abs(nw - c->w) > snap || abs(nh - c->h) > snap))
+@@ -1385,14 +1385,18 @@ resizemouse(const Arg* arg)
+ 			if ((ev.xmotion.time - lasttime) <= (1000 / refreshrate))
+ 				continue;
+ 			lasttime = ev.xmotion.time;
+-
+-			nw = MAX(ev.xmotion.x - ocx - 2 * c->bw + 1, 1);
+-			nh = MAX(ev.xmotion.y - ocy - 2 * c->bw + 1, 1);
+-			if (c->mon->wx + nw >= selmon->wx && c->mon->wx + nw <= selmon->wx + selmon->ww && c->mon->wy + nh >= selmon->wy && c->mon->wy + nh <= selmon->wy + selmon->wh) {
+-				if (!c->isfloating && selmon->lt[selmon->sellt]->arrange && (abs(nw - c->w) > snap || abs(nh - c->h) > snap))
 -					togglefloating(NULL);
++			nw       = MAX(ev.xmotion.x - ocx - 2 * c->bw + 1, 1);
++			nh       = MAX(ev.xmotion.y - ocy - 2 * c->bw + 1, 1);
 +			/* Use the monitor where mouse cursor is for validation */
 +			if ((m = recttomon(ev.xmotion.x_root, ev.xmotion.y_root, 1, 1))) {
-+				if (c->mon->wx + nw >= m->wx && c->mon->wx + nw <= m->wx + m->ww
-+				&& c->mon->wy + nh >= m->wy && c->mon->wy + nh <= m->wy + m->wh)
-+				{
-+					if (!c->isfloating && c->mon->lt[c->mon->sellt]->arrange
-+					&& (abs(nw - c->w) > snap || abs(nh - c->h) > snap))
++				if (c->mon->wx + nw >= m->wx && c->mon->wx + nw <= m->wx + m->ww &&
++				    c->mon->wy + nh >= m->wy && c->mon->wy + nh <= m->wy + m->wh) {
++					if (!c->isfloating && c->mon->lt[c->mon->sellt]->arrange &&
++					    (abs(nw - c->w) > snap || abs(nh - c->h) > snap))
 +						togglefloating(NULL);
 +				}
  			}

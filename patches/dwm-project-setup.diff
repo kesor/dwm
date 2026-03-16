@@ -15,7 +15,7 @@
 +patches/*~
 --- /dev/null
 +++ b/.editorconfig
-@@ -0,0 +1,17 @@
+@@ -0,0 +1,18 @@
 +root = true
 +
 +# Unix-style newlines with a newline ending every file
@@ -24,6 +24,7 @@
 +trim_trailing_whitespace = true
 +end_of_line = lf
 +insert_final_newline = true
++max_line_length = off
 +
 +# Tab indentation (no size specified)
 +[Makefile]
@@ -32,4 +33,63 @@
 +[*.{c,h,cpp,hpp,mk}]
 +indent_stype = tab
 +indent_size = 4
-+max_line_length = 80
++tab_width = 4
+--- /dev/null
++++ b/.clang-format
+@@ -0,0 +1,56 @@
++BasedOnStyle: LLVM
++Language: C
++LineEnding: LF
++
++AlignConsecutiveBitFields: AcrossEmptyLinesAndComments
++AlignConsecutiveMacros: AcrossEmptyLinesAndComments
++AlignEscapedNewlines: LeftWithLastLine
++AlignTrailingComments:
++  Kind: Always
++  OverEmptyLines: 2
++SkipMacroDefinitionBody: true
++AlwaysBreakAfterReturnType: TopLevelDefinitions
++BreakBeforeBraces: Custom
++BraceWrapping:
++  AfterEnum: true
++  AfterFunction: true
++
++EnumTrailingComma: Insert
++RemoveEmptyLinesInUnwrappedLines: true
++
++IndentWidth: 4
++TabWidth: 4
++UseTab: AlignWithSpaces
++PointerAlignment: Left
++
++AlignConsecutiveDeclarations:
++  Enabled: false
++AlignConsecutiveAssignments:
++  Enabled: true
++
++MaxEmptyLinesToKeep: 2
++KeepEmptyLinesAtTheStartOfBlocks: true
++
++AlignArrayOfStructures: Left
++ColumnLimit: 0
++Cpp11BracedListStyle: false
++
++AllowShortEnumsOnASingleLine: true
++
++SpacesBeforeTrailingComments: 4
++SpaceAfterCStyleCast: true
++IndentCaseLabels: false
++IndentGotoLabels: false
++
++IncludeCategories:
++  - Regex: '^<X11/'
++    Priority: 2
++  - Regex: '^<'
++    Priority: 1
++  - Regex: '^"'
++    Priority: 3
++
++SortIncludes: CaseSensitive
++IncludeBlocks: Preserve
++IncludeIsMainSourceRegex: '^$'
++IncludeIsMainRegex: '^$'

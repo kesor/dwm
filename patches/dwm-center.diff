@@ -10,55 +10,55 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
 
 --- a/config.def.h
 +++ b/config.def.h
-@@ -28,9 +28,9 @@ static const Rule rules[] = {
+@@ -30,9 +30,9 @@ static const Rule rules[] = {
  	 *	WM_CLASS(STRING) = instance, class
  	 *	WM_NAME(STRING) = title
  	 */
 -	/* class      instance    title       tags mask     isfloating   monitor */
 -	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
 -	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
-+	/* class      instance    title       tags mask     iscentered   isfloating   monitor */
-+	{ "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
-+	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
++ 	/* class      instance    title       tags mask     iscentered   isfloating   monitor */
++ 	{ "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
++ 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
  };
+ // clang-format on
  
- /* layout(s) */
 --- a/dwm.c
 +++ b/dwm.c
-@@ -98,7 +98,7 @@ struct Client {
+@@ -136,7 +136,7 @@ struct Client {
  	int basew, baseh, incw, inch, maxw, maxh, minw, minh, hintsvalid;
  	int bw, oldbw;
  	unsigned int tags;
 -	int isfixed, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
 +	int isfixed, iscentered, isfloating, isurgent, neverfocus, oldstate, isfullscreen;
- 	Client *next;
- 	Client *snext;
- 	Monitor *mon;
-@@ -147,6 +147,7 @@ typedef struct {
- 	const char *instance;
- 	const char *title;
+ 	Client* next;
+ 	Client* snext;
+ 	Monitor* mon;
+@@ -185,6 +185,7 @@ typedef struct {
+ 	const char* instance;
+ 	const char* title;
  	unsigned int tags;
 +	int iscentered;
  	int isfloating;
  	int monitor;
  } Rule;
-@@ -325,6 +326,7 @@ applyrules(Client *c)
+@@ -365,6 +366,7 @@ applyrules(Client* c)
  	XClassHint ch = { NULL, NULL };
  
  	/* rule matching */
 +	c->iscentered = 0;
  	c->isfloating = 0;
- 	c->tags = 0;
+ 	c->tags       = 0;
  	XGetClassHint(dpy, c->win, &ch);
-@@ -337,6 +339,7 @@ applyrules(Client *c)
- 		&& (!r->class || strstr(class, r->class))
- 		&& (!r->instance || strstr(instance, r->instance)))
- 		{
+@@ -374,6 +376,7 @@ applyrules(Client* c)
+ 	for (i = 0; i < LENGTH(rules); i++) {
+ 		r = &rules[i];
+ 		if ((!r->title || strstr(c->name, r->title)) && (!r->class || strstr(class, r->class)) && (!r->instance || strstr(instance, r->instance))) {
 +			c->iscentered = r->iscentered;
  			c->isfloating = r->isfloating;
  			c->tags |= r->tags;
- 			for (m = mons; m && m->num != r->monitor; m = m->next);
-@@ -1185,6 +1188,10 @@ manage(Window w, XWindowAttributes *wa)
+ 			for (m = mons; m && m->num != r->monitor; m = m->next)
+@@ -1235,6 +1238,10 @@ manage(Window w, XWindowAttributes* wa)
  	updatewindowtype(c);
  	updatesizehints(c);
  	updatewmhints(c);
@@ -68,8 +68,8 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
 +	}
  	updateclienttagprop(c);
  	setclienttagprop(c);
- 	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
-@@ -2400,8 +2407,10 @@ updatewindowtype(Client *c)
+ 	XSelectInput(dpy, w, EnterWindowMask | FocusChangeMask | PropertyChangeMask | StructureNotifyMask);
+@@ -2471,8 +2478,10 @@ updatewindowtype(Client* c)
  
  	if (state == netatom[NetWMFullscreen])
  		setfullscreen(c, 1);

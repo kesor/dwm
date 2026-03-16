@@ -1,6 +1,6 @@
 --- a/dwm.c
 +++ b/dwm.c
-@@ -1629,16 +1629,23 @@ sendmon(Client *c, Monitor *m)
+@@ -1683,6 +1683,7 @@ sendmon(Client* c, Monitor* m)
  {
  	if (c->mon == m)
  		return;
@@ -8,12 +8,9 @@
  	unfocus(c, 1);
  	detach(c);
  	detachstack(c);
-+	arrange(c->mon);
- 	c->mon = m;
- 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
- 	attachBelow(c);
- 	attachstack(c);
- 	setclienttagprop(c);
+@@ -1694,7 +1695,12 @@ sendmon(Client* c, Monitor* m)
+ 	if (c->isfullscreen)
+ 		resizeclient(c, m->mx, m->my, m->mw, m->mh);
  	focus(NULL);
 -	arrange(NULL);
 +	arrange(m);
