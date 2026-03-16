@@ -38,7 +38,7 @@
  	}
  	XUnmapWindow(dpy, mon->barwin);
  	XDestroyWindow(dpy, mon->barwin);
-@@ -1704,7 +1713,10 @@ tile(Monitor *m)
+@@ -1705,7 +1714,10 @@ tile(Monitor *m)
  			if (my + HEIGHT(c) < m->wh)
  				my += HEIGHT(c);
  		} else {
@@ -50,7 +50,7 @@
  			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
  			if (ty + HEIGHT(c) < m->wh)
  				ty += HEIGHT(c);
-@@ -1909,7 +1921,7 @@ updategeom(void)
+@@ -1910,7 +1922,7 @@ updategeom(void)
  		/* removed monitors if n > nn */
  		for (i = nn; i < n; i++) {
  			for (m = mons; m && m->next; m = m->next);

@@ -1,15 +1,31 @@
 --- a/dwm.c
 +++ b/dwm.c
-@@ -48,7 +48,7 @@
- #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
- #define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
- #define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
+@@ -45,26 +45,26 @@
+ #include "util.h"
+ 
+ /* macros */
+-#define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
+-#define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
+-#define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
 -                               * MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
+-#define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
+-#define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
+-#define WIDTH(X)                ((X)->w + 2 * (X)->bw)
+-#define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
+-#define TAGMASK                 ((1 << LENGTH(tags)) - 1)
+-#define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
++#define BUTTONMASK		(ButtonPressMask|ButtonReleaseMask)
++#define CLEANMASK(mask)		(mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
++#define INTERSECT(x,y,w,h,m)	(MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
 +								* MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
- #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
- #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
- #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
-@@ -60,11 +60,11 @@
++#define ISVISIBLE(C)		((C->tags & C->mon->tagset[C->mon->seltags]))
++#define MOUSEMASK		(BUTTONMASK|PointerMotionMask)
++#define WIDTH(X)		((X)->w + 2 * (X)->bw)
++#define HEIGHT(X)		((X)->h + 2 * (X)->bw)
++#define TAGMASK			((1 << LENGTH(tags)) - 1)
++#define TEXTW(X)		(drw_fontset_getwidth(drw, (X)) + lrpad)
+ 
+ /* enums */
  enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
  enum { SchemeNorm, SchemeSel }; /* color schemes */
  enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
@@ -24,7 +40,40 @@
  
  typedef union {
  	int i;
-@@ -978,9 +978,9 @@ grabkeys(void)
+@@ -115,7 +115,7 @@ struct Monitor {
+ 	float mfact;
+ 	int nmaster;
+ 	int num;
+-	int by;               /* bar geometry */
++	int by;		      /* bar geometry */
+ 	int mx, my, mw, mh;   /* screen size */
+ 	int wx, wy, ww, wh;   /* window area  */
+ 	unsigned int seltags;
+@@ -237,9 +237,9 @@ static void zoom(const Arg *arg);
+ static const char broken[] = "broken";
+ static char stext[256];
+ static int screen;
+-static int sw, sh;           /* X display screen geometry width, height */
+-static int bh;               /* bar height */
+-static int lrpad;            /* sum of left and right padding for text */
++static int sw, sh;	     /* X display screen geometry width, height */
++static int bh;		     /* bar height */
++static int lrpad;	     /* sum of left and right padding for text */
+ static int (*xerrorxlib)(Display *, XErrorEvent *);
+ static unsigned int numlockmask = 0;
+ static void (*handler[LASTEvent]) (XEvent *) = {
+@@ -287,8 +287,8 @@ applyrules(Client *c)
+ 	c->isfloating = 0;
+ 	c->tags = 0;
+ 	XGetClassHint(dpy, c->win, &ch);
+-	class    = ch.res_class ? ch.res_class : broken;
+-	instance = ch.res_name  ? ch.res_name  : broken;
++	class	 = ch.res_class ? ch.res_class : broken;
++	instance = ch.res_name	? ch.res_name  : broken;
+ 
+ 	for (i = 0; i < LENGTH(rules); i++) {
+ 		r = &rules[i];
+@@ -979,9 +979,9 @@ grabkeys(void)
  				if (keys[i].keysym == syms[(k - start) * skip])
  					for (j = 0; j < LENGTH(modifiers); j++)
  						XGrabKey(dpy, k,
@@ -37,3 +86,249 @@
  		XFree(syms);
  	}
  }
+--- a/drw.c
++++ b/drw.c
+@@ -22,7 +22,7 @@ utf8decode(const char *s_in, long *u, in
+ 		/* 110XX */ 2, 2, 2, 2,
+ 		/* 1110X */ 3, 3,
+ 		/* 11110 */ 4,
+-		/* 11111 */ 0,  /* invalid */
++		/* 11111 */ 0,	/* invalid */
+ 	};
+ 	static const unsigned char leading_mask[] = { 0x7F, 0x1F, 0x0F, 0x07 };
+ 	static const unsigned int overlong[] = { 0x0, 0x80, 0x0800, 0x10000 };
+@@ -181,8 +181,8 @@ drw_clr_create(Drw *drw, Clr *dest, cons
+ 		return;
+ 
+ 	if (!XftColorAllocName(drw->dpy, DefaultVisual(drw->dpy, drw->screen),
+-	                       DefaultColormap(drw->dpy, drw->screen),
+-	                       clrname, dest))
++			       DefaultColormap(drw->dpy, drw->screen),
++			       clrname, dest))
+ 		die("error, cannot allocate color '%s'", clrname);
+ }
+ 
+@@ -210,7 +210,7 @@ drw_clr_free(Drw *drw, Clr *c)
+ 
+ 	/* c is typedef XftColor Clr */
+ 	XftColorFree(drw->dpy, DefaultVisual(drw->dpy, drw->screen),
+-	             DefaultColormap(drw->dpy, drw->screen), c);
++		     DefaultColormap(drw->dpy, drw->screen), c);
+ }
+ 
+ void
+@@ -282,8 +282,8 @@ drw_text(Drw *drw, int x, int y, unsigne
+ 		if (w < lpad)
+ 			return x + w;
+ 		d = XftDrawCreate(drw->dpy, drw->drawable,
+-		                  DefaultVisual(drw->dpy, drw->screen),
+-		                  DefaultColormap(drw->dpy, drw->screen));
++				  DefaultVisual(drw->dpy, drw->screen),
++				  DefaultColormap(drw->dpy, drw->screen));
+ 		x += lpad;
+ 		w -= lpad;
+ 	}
+@@ -339,7 +339,7 @@ drw_text(Drw *drw, int x, int y, unsigne
+ 			if (render) {
+ 				ty = y + (h - usedfont->h) / 2 + usedfont->xfont->ascent;
+ 				XftDrawStringUtf8(d, &drw->scheme[invert ? ColBg : ColFg],
+-				                  usedfont->xfont, x, ty, (XftChar8 *)utf8str, utf8strlen);
++						  usedfont->xfont, x, ty, (XftChar8 *)utf8str, utf8strlen);
+ 			}
+ 			x += ew;
+ 			w -= ew;
+--- a/config.def.h
++++ b/config.def.h
+@@ -1,21 +1,21 @@
+ /* See LICENSE file for copyright and license details. */
+ 
+ /* appearance */
+-static const unsigned int borderpx  = 1;        /* border pixel of windows */
+-static const unsigned int snap      = 32;       /* snap pixel */
+-static const int showbar            = 1;        /* 0 means no bar */
+-static const int topbar             = 1;        /* 0 means bottom bar */
+-static const char *fonts[]          = { "monospace:size=10" };
+-static const char dmenufont[]       = "monospace:size=10";
+-static const char col_gray1[]       = "#222222";
+-static const char col_gray2[]       = "#444444";
+-static const char col_gray3[]       = "#bbbbbb";
+-static const char col_gray4[]       = "#eeeeee";
+-static const char col_cyan[]        = "#005577";
+-static const char *colors[][3]      = {
+-	/*               fg         bg         border   */
++static const unsigned int borderpx  = 1;	/* border pixel of windows */
++static const unsigned int snap	    = 32;	/* snap pixel */
++static const int showbar	    = 1;	/* 0 means no bar */
++static const int topbar		    = 1;	/* 0 means bottom bar */
++static const char *fonts[]	    = { "monospace:size=10" };
++static const char dmenufont[]	    = "monospace:size=10";
++static const char col_gray1[]	    = "#222222";
++static const char col_gray2[]	    = "#444444";
++static const char col_gray3[]	    = "#bbbbbb";
++static const char col_gray4[]	    = "#eeeeee";
++static const char col_cyan[]	    = "#005577";
++static const char *colors[][3]	    = {
++	/*		 fg	    bg	       border	*/
+ 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
+-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
++	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan	 },
+ };
+ 
+ /* tagging */
+@@ -26,9 +26,9 @@ static const Rule rules[] = {
+ 	 *	WM_CLASS(STRING) = instance, class
+ 	 *	WM_NAME(STRING) = title
+ 	 */
+-	/* class      instance    title       tags mask     isfloating   monitor */
+-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
++	/* class      instance	  title	      tags mask	    isfloating	 monitor */
++	{ "Gimp",     NULL,	  NULL,	      0,	    1,		 -1 },
++	{ "Firefox",  NULL,	  NULL,	      1 << 8,	    0,		 -1 },
+ };
+ 
+ /* layout(s) */
+@@ -40,18 +40,18 @@ static const int refreshrate = 120;  /*
+ 
+ static const Layout layouts[] = {
+ 	/* symbol     arrange function */
+-	{ "[]=",      tile },    /* first entry is default */
+-	{ "><>",      NULL },    /* no layout function means floating behavior */
++	{ "[]=",      tile },	 /* first entry is default */
++	{ "><>",      NULL },	 /* no layout function means floating behavior */
+ 	{ "[M]",      monocle },
+ };
+ 
+ /* key definitions */
+ #define MODKEY Mod1Mask
+ #define TAGKEYS(KEY,TAG) \
+-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+-	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
+-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
++	{ MODKEY,			KEY,	  view,		  {.ui = 1 << TAG} }, \
++	{ MODKEY|ControlMask,		KEY,	  toggleview,	  {.ui = 1 << TAG} }, \
++	{ MODKEY|ShiftMask,		KEY,	  tag,		  {.ui = 1 << TAG} }, \
++	{ MODKEY|ControlMask|ShiftMask, KEY,	  toggletag,	  {.ui = 1 << TAG} },
+ 
+ /* helper for spawning shell commands in the pre dwm-5.0 fashion */
+ #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+@@ -62,56 +62,56 @@ static const char *dmenucmd[] = { "dmenu
+ static const char *termcmd[]  = { "st", NULL };
+ 
+ static const Key keys[] = {
+-	/* modifier                     key        function        argument */
+-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+-	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+-	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+-	{ MODKEY,                       XK_Return, zoom,           {0} },
+-	{ MODKEY,                       XK_Tab,    view,           {0} },
+-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+-	{ MODKEY,                       XK_space,  setlayout,      {0} },
+-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
+-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+-	TAGKEYS(                        XK_1,                      0)
+-	TAGKEYS(                        XK_2,                      1)
+-	TAGKEYS(                        XK_3,                      2)
+-	TAGKEYS(                        XK_4,                      3)
+-	TAGKEYS(                        XK_5,                      4)
+-	TAGKEYS(                        XK_6,                      5)
+-	TAGKEYS(                        XK_7,                      6)
+-	TAGKEYS(                        XK_8,                      7)
+-	TAGKEYS(                        XK_9,                      8)
+-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
++	/* modifier			key	   function	   argument */
++	{ MODKEY,			XK_p,	   spawn,	   {.v = dmenucmd } },
++	{ MODKEY|ShiftMask,		XK_Return, spawn,	   {.v = termcmd } },
++	{ MODKEY,			XK_b,	   togglebar,	   {0} },
++	{ MODKEY,			XK_j,	   focusstack,	   {.i = +1 } },
++	{ MODKEY,			XK_k,	   focusstack,	   {.i = -1 } },
++	{ MODKEY,			XK_i,	   incnmaster,	   {.i = +1 } },
++	{ MODKEY,			XK_d,	   incnmaster,	   {.i = -1 } },
++	{ MODKEY,			XK_h,	   setmfact,	   {.f = -0.05} },
++	{ MODKEY,			XK_l,	   setmfact,	   {.f = +0.05} },
++	{ MODKEY,			XK_Return, zoom,	   {0} },
++	{ MODKEY,			XK_Tab,	   view,	   {0} },
++	{ MODKEY|ShiftMask,		XK_c,	   killclient,	   {0} },
++	{ MODKEY,			XK_t,	   setlayout,	   {.v = &layouts[0]} },
++	{ MODKEY,			XK_f,	   setlayout,	   {.v = &layouts[1]} },
++	{ MODKEY,			XK_m,	   setlayout,	   {.v = &layouts[2]} },
++	{ MODKEY,			XK_space,  setlayout,	   {0} },
++	{ MODKEY|ShiftMask,		XK_space,  togglefloating, {0} },
++	{ MODKEY,			XK_0,	   view,	   {.ui = ~0 } },
++	{ MODKEY|ShiftMask,		XK_0,	   tag,		   {.ui = ~0 } },
++	{ MODKEY,			XK_comma,  focusmon,	   {.i = -1 } },
++	{ MODKEY,			XK_period, focusmon,	   {.i = +1 } },
++	{ MODKEY|ShiftMask,		XK_comma,  tagmon,	   {.i = -1 } },
++	{ MODKEY|ShiftMask,		XK_period, tagmon,	   {.i = +1 } },
++	TAGKEYS(			XK_1,			   0)
++	TAGKEYS(			XK_2,			   1)
++	TAGKEYS(			XK_3,			   2)
++	TAGKEYS(			XK_4,			   3)
++	TAGKEYS(			XK_5,			   4)
++	TAGKEYS(			XK_6,			   5)
++	TAGKEYS(			XK_7,			   6)
++	TAGKEYS(			XK_8,			   7)
++	TAGKEYS(			XK_9,			   8)
++	{ MODKEY|ShiftMask,		XK_q,	   quit,	   {0} },
+ };
+ 
+ /* button definitions */
+ /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
+ static const Button buttons[] = {
+-	/* click                event mask      button          function        argument */
+-	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+-	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+-	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
+-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+-	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
+-	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
+-	{ ClkTagBar,            0,              Button1,        view,           {0} },
+-	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
+-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
+-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
++	/* click		event mask	button		function	argument */
++	{ ClkLtSymbol,		0,		Button1,	setlayout,	{0} },
++	{ ClkLtSymbol,		0,		Button3,	setlayout,	{.v = &layouts[2]} },
++	{ ClkWinTitle,		0,		Button2,	zoom,		{0} },
++	{ ClkStatusText,	0,		Button2,	spawn,		{.v = termcmd } },
++	{ ClkClientWin,		MODKEY,		Button1,	movemouse,	{0} },
++	{ ClkClientWin,		MODKEY,		Button2,	togglefloating, {0} },
++	{ ClkClientWin,		MODKEY,		Button3,	resizemouse,	{0} },
++	{ ClkTagBar,		0,		Button1,	view,		{0} },
++	{ ClkTagBar,		0,		Button3,	toggleview,	{0} },
++	{ ClkTagBar,		MODKEY,		Button1,	tag,		{0} },
++	{ ClkTagBar,		MODKEY,		Button3,	toggletag,	{0} },
+ };
+ 
+--- a/util.h
++++ b/util.h
+@@ -1,9 +1,9 @@
+ /* See LICENSE file for copyright and license details. */
+ 
+-#define MAX(A, B)               ((A) > (B) ? (A) : (B))
+-#define MIN(A, B)               ((A) < (B) ? (A) : (B))
+-#define BETWEEN(X, A, B)        ((A) <= (X) && (X) <= (B))
+-#define LENGTH(X)               (sizeof (X) / sizeof (X)[0])
++#define MAX(A, B)		((A) > (B) ? (A) : (B))
++#define MIN(A, B)		((A) < (B) ? (A) : (B))
++#define BETWEEN(X, A, B)	((A) <= (X) && (X) <= (B))
++#define LENGTH(X)		(sizeof (X) / sizeof (X)[0])
+ 
+ void die(const char *fmt, ...);
+ void *ecalloc(size_t nmemb, size_t size);
