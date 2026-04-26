@@ -11,19 +11,19 @@
 @@ -46,11 +47,11 @@
  
  /* macros */
- #define BUTTONMASK              (ButtonPressMask|ButtonReleaseMask)
--#define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
+ #define BUTTONMASK		(ButtonPressMask|ButtonReleaseMask)
+-#define CLEANMASK(mask)		(mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
 +#define CLEANMASK(mask)         ((mask) & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
- #define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
+ #define INTERSECT(x,y,w,h,m)	(MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
  								* MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
 -#define ISVISIBLEONTAG(C, T)    ((C->tags & T))
 -#define ISVISIBLE(C)            ISVISIBLEONTAG(C, C->mon->tagset[C->mon->seltags])
 +#define ISVISIBLEONTAG(C, T)    (((C)->tags & (T)))
 +#define ISVISIBLE(C)            ISVISIBLEONTAG((C), (C)->mon->tagset[(C)->mon->seltags])
- #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
- #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
- #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
-@@ -1313,7 +1314,7 @@ keypress(XEvent *e)
+ #define MOUSEMASK		(BUTTONMASK|PointerMotionMask)
+ #define WIDTH(X)		((X)->w + 2 * (X)->bw)
+ #define HEIGHT(X)		((X)->h + 2 * (X)->bw)
+@@ -1314,7 +1315,7 @@ keypress(XEvent *e)
  	XKeyEvent *ev;
  
  	ev = &e->xkey;
@@ -32,7 +32,7 @@
  	for (i = 0; i < LENGTH(keys); i++)
  		if (keysym == keys[i].keysym
  		&& CLEANMASK(keys[i].mod) == CLEANMASK(ev->state)
-@@ -1324,6 +1325,7 @@ keypress(XEvent *e)
+@@ -1325,6 +1326,7 @@ keypress(XEvent *e)
  void
  killclient(const Arg *arg)
  {
@@ -40,7 +40,7 @@
  	if (!selmon->sel)
  		return;
  	if (!sendevent(selmon->sel, wmatom[WMDelete])) {
-@@ -1589,6 +1591,7 @@ propertynotify(XEvent *e)
+@@ -1590,6 +1592,7 @@ propertynotify(XEvent *e)
  void
  quit(const Arg *arg)
  {

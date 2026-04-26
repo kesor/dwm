@@ -24,14 +24,14 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
 --- a/config.def.h
 +++ b/config.def.h
 @@ -128,6 +128,8 @@ static const Button buttons[] = {
- 	/* click                event mask      button          function        argument */
- 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
- 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+ 	/* click		event mask	button		function	argument */
+ 	{ ClkLtSymbol,		0,		Button1,	setlayout,	{0} },
+ 	{ ClkLtSymbol,		0,		Button3,	setlayout,	{.v = &layouts[2]} },
 +	{ ClkMonNum,            0,              Button1,        focusmon,       {.i = +1} },
 +	{ ClkMonNum,            0,              Button3,        focusmon,       {.i = -1} },
- 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
- 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
- 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+ 	{ ClkWinTitle,		0,		Button2,	zoom,		{0} },
+ 	{ ClkStatusText,	0,		Button2,	spawn,		{.v = termcmd } },
+ 	{ ClkClientWin,		MODKEY,		Button1,	movemouse,	{0} },
 --- a/dwm.c
 +++ b/dwm.c
 @@ -69,7 +69,7 @@ enum { NetSupported, NetWMName, NetWMSta
@@ -70,7 +70,7 @@ Content-Disposition: attachment; filename="0001-added-monitor-marker-to-bar.patc
  
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
-@@ -2286,6 +2292,8 @@ updategeom(void)
+@@ -2287,6 +2293,8 @@ updategeom(void)
  			{
  				dirty = 1;
  				m->num = i;

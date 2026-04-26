@@ -52,8 +52,8 @@ clients on old tags, however note that layout order is not preserved.
  	attach(c);
  	attachstack(c);
 +	setclienttagprop(c);
-	if (c->isfullscreen)
-		resizeclient(c, m->mx, m->my, m->mw, m->mh);
+ 	if (c->isfullscreen)
+ 		resizeclient(c, m->mx, m->my, m->mw, m->mh);
  	focus(NULL);
 @@ -1600,6 +1605,7 @@ setup(void)
  	netatom[NetWMWindowType] = XInternAtom(dpy, "_NET_WM_WINDOW_TYPE", False);

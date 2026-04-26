@@ -1,15 +1,15 @@
 --- a/dwm.c
 +++ b/dwm.c
 @@ -49,7 +49,8 @@
- #define CLEANMASK(mask)         (mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
- #define INTERSECT(x,y,w,h,m)    (MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
+ #define CLEANMASK(mask)		(mask & ~(numlockmask|LockMask) & (ShiftMask|ControlMask|Mod1Mask|Mod2Mask|Mod3Mask|Mod4Mask|Mod5Mask))
+ #define INTERSECT(x,y,w,h,m)	(MAX(0, MIN((x)+(w),(m)->wx+(m)->ww) - MAX((x),(m)->wx)) \
  								* MAX(0, MIN((y)+(h),(m)->wy+(m)->wh) - MAX((y),(m)->wy)))
--#define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
+-#define ISVISIBLE(C)		((C->tags & C->mon->tagset[C->mon->seltags]))
 +#define ISVISIBLEONTAG(C, T)    ((C->tags & T))
 +#define ISVISIBLE(C)            ISVISIBLEONTAG(C, C->mon->tagset[C->mon->seltags])
- #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
- #define WIDTH(X)                ((X)->w + 2 * (X)->bw)
- #define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
+ #define MOUSEMASK		(BUTTONMASK|PointerMotionMask)
+ #define WIDTH(X)		((X)->w + 2 * (X)->bw)
+ #define HEIGHT(X)		((X)->h + 2 * (X)->bw)
 @@ -159,6 +160,7 @@ static int applysizehints(Client *c, int
  static void arrange(Monitor *m);
  static void arrangemon(Monitor *m);
@@ -55,7 +55,7 @@
  attachstack(Client *c)
  {
  	c->snext = c->mon->stack;
-@@ -1212,7 +1237,7 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1213,7 +1238,7 @@ manage(Window w, XWindowAttributes *wa)
  		c->isfloating = c->oldstate = trans != None || c->isfixed;
  	if (c->isfloating)
  		XRaiseWindow(dpy, c->win);
@@ -64,7 +64,7 @@
  	attachstack(c);
  	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
  		(unsigned char *) &(c->win), 1);
-@@ -1345,6 +1370,16 @@ movemouse(const Arg *arg)
+@@ -1346,6 +1371,16 @@ movemouse(const Arg *arg)
  }
  
  Client *
@@ -81,7 +81,7 @@
  nexttiled(Client *c)
  {
  	for (; c && (c->isfloating || !ISVISIBLE(c)); c = c->next);
-@@ -1581,7 +1616,7 @@ sendmon(Client *c, Monitor *m)
+@@ -1582,7 +1617,7 @@ sendmon(Client *c, Monitor *m)
  	detachstack(c);
  	c->mon = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -89,8 +89,8 @@
 +	attachBelow(c);
  	attachstack(c);
  	setclienttagprop(c);
- 	focus(NULL);
-@@ -2316,6 +2351,7 @@ updategeom(void)
+ 	if (c->isfullscreen)
+@@ -2317,6 +2352,7 @@ updategeom(void)
  				detachstack(c);
  				c->mon = mons;
  				attach(c);

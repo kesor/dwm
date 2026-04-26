@@ -7,13 +7,13 @@
 +	{ ALTMOD,                       XK_minus,  setborderpx,    {.i = -1 } },
 +	{ ALTMOD,                       XK_equal,  setborderpx,    {.i = +1 } },
 +	{ ALTMOD|ShiftMask,             XK_equal,  setborderpx,    {.i = 0 } },
- 	TAGKEYS(                        XK_1,                      0)
- 	TAGKEYS(                        XK_2,                      1)
- 	TAGKEYS(                        XK_3,                      2)
+ 	TAGKEYS(			XK_1,			   0)
+ 	TAGKEYS(			XK_2,			   1)
+ 	TAGKEYS(			XK_3,			   2)
 --- a/dwm.c
 +++ b/dwm.c
 @@ -127,6 +127,7 @@ struct Monitor {
- 	int by;               /* bar geometry */
+ 	int by;		      /* bar geometry */
  	int mx, my, mw, mh;   /* screen size */
  	int wx, wy, ww, wh;   /* window area  */
 +	unsigned int borderpx;
@@ -36,7 +36,7 @@
  	m->lt[0] = &layouts[0];
  	m->lt[1] = &layouts[1 % LENGTH(layouts)];
  	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
-@@ -1173,7 +1176,7 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1174,7 +1177,7 @@ manage(Window w, XWindowAttributes *wa)
  		c->y = c->mon->wy + c->mon->wh - HEIGHT(c);
  	c->x = MAX(c->x, c->mon->wx);
  	c->y = MAX(c->y, c->mon->wy);
@@ -45,7 +45,7 @@
  
  	wc.border_width = c->bw;
  	XConfigureWindow(dpy, w, CWBorderWidth, &wc);
-@@ -1567,6 +1570,40 @@ sendmon(Client *c, Monitor *m)
+@@ -1570,6 +1573,40 @@ sendmon(Client *c, Monitor *m)
  }
  
  void

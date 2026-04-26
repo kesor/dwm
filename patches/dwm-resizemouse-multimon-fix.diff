@@ -1,6 +1,6 @@
 --- a/dwm.c
 +++ b/dwm.c
-@@ -1340,14 +1340,17 @@ resizemouse(const Arg *arg)
+@@ -1341,14 +1341,17 @@ resizemouse(const Arg *arg)
  
  			nw = MAX(ev.xmotion.x - ocx - 2 * c->bw + 1, 1);
  			nh = MAX(ev.xmotion.y - ocy - 2 * c->bw + 1, 1);

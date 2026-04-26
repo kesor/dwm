@@ -21,14 +21,14 @@ in config.def.h
 --- a/config.def.h
 +++ b/config.def.h
 @@ -7,6 +7,8 @@ static const unsigned int gappx[]   = {
- static const unsigned int snap      = 32;       /* snap pixel */
- static const int showbar            = 1;        /* 0 means no bar */
- static const int topbar             = 1;        /* 0 means bottom bar */
+ static const unsigned int snap	    = 32;	/* snap pixel */
+ static const int showbar	    = 1;	/* 0 means no bar */
+ static const int topbar		    = 1;	/* 0 means bottom bar */
 +static const int horizpadbar        = 2;        /* horizontal padding for statusbar */
 +static const int vertpadbar         = 0;        /* vertical padding for statusbar */
  static const int vertpad            = 10;       /* vertical padding of bar */
  static const int sidepad            = 10;       /* horizontal padding of bar */
- static const char *fonts[]          = { "monospace:size=10" };
+ static const char *fonts[]	    = { "monospace:size=10" };
 --- a/dwm.c
 +++ b/dwm.c
 @@ -800,8 +800,8 @@ drawbar(Monitor *m)
@@ -42,7 +42,7 @@ in config.def.h
  	}
  
  	for (c = m->clients; c; c = c->next) {
-@@ -1798,8 +1798,8 @@ setup(void)
+@@ -1799,8 +1799,8 @@ setup(void)
  	drw = drw_create(dpy, screen, root, sw, sh);
  	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
  		die("no fonts could be loaded.");

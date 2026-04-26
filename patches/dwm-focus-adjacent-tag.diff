@@ -1,16 +1,16 @@
 --- a/config.def.h
 +++ b/config.def.h
 @@ -87,6 +87,10 @@ static const Key keys[] = {
- 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
- 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
- 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-+	{ MODKEY,                       XK_Left,   viewtoleft,     {0} },
-+	{ MODKEY,                       XK_Right,  viewtoright,    {0} },
-+	{ MODKEY|ShiftMask,             XK_Left,   tagtoleft,      {0} },
-+	{ MODKEY|ShiftMask,             XK_Right,  tagtoright,     {0} },
- 	TAGKEYS(                        XK_1,                      0)
- 	TAGKEYS(                        XK_2,                      1)
- 	TAGKEYS(                        XK_3,                      2)
+ 	{ MODKEY,			XK_period, focusmon,	   {.i = +1 } },
+ 	{ MODKEY|ShiftMask,		XK_comma,  tagmon,	   {.i = -1 } },
+ 	{ MODKEY|ShiftMask,		XK_period, tagmon,	   {.i = +1 } },
++	{ MODKEY,		XK_Left,   viewtoleft,     {0} },
++	{ MODKEY,		XK_Right,  viewtoright,    {0} },
++	{ MODKEY|ShiftMask,		XK_Left,   tagtoleft,      {0} },
++	{ MODKEY|ShiftMask,		XK_Right,  tagtoright,     {0} },
+ 	TAGKEYS(			XK_1,			   0)
+ 	TAGKEYS(			XK_2,			   1)
+ 	TAGKEYS(			XK_3,			   2)
 --- a/dwm.1
 +++ b/dwm.1
 @@ -77,6 +77,18 @@ Send focused window to previous screen,
@@ -52,7 +52,7 @@
  static Monitor *wintomon(Window w);
  static int xerror(Display *dpy, XErrorEvent *ee);
  static int xerrordummy(Display *dpy, XErrorEvent *ee);
-@@ -1802,6 +1806,28 @@ tagnthmon(const Arg *arg)
+@@ -1803,6 +1807,28 @@ tagnthmon(const Arg *arg)
  }
  
  void
@@ -81,7 +81,7 @@
  tile(Monitor *m)
  {
  	unsigned int i, n, h, mw, my, ty;
-@@ -2231,6 +2257,28 @@ view(const Arg *arg)
+@@ -2232,6 +2258,28 @@ view(const Arg *arg)
  	updatecurrentdesktop();
  }
  

@@ -1,7 +1,7 @@
 --- a/config.def.h
 +++ b/config.def.h
-@@ -20,6 +20,9 @@ static const char *colors[][3]      = {
- 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+@@ -20,6 +20,9 @@ static const char *colors[][3]	    = {
+ 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan	 },
  };
  
 +/* staticstatus */
@@ -25,7 +25,7 @@
  			arg.ui = 1 << i;
  		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
  			click = ClkLtSymbol;
--		else if (ev->x > selmon->ww - (int)TEXTW(stext))
+-		else if (ev->x > selmon->ww - (int)TEXTW(stext) + lrpad - 2)
 +		else if (m == statmon && ev->x > selmon->ww - (int)TEXTW(stext))
  			click = ClkStatusText;
  		else
@@ -39,7 +39,7 @@
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
  		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
-@@ -2274,7 +2274,7 @@ updategeom(void)
+@@ -2275,7 +2275,7 @@ updategeom(void)
  			else
  				mons = createmon();
  		}
@@ -48,7 +48,7 @@
  			if (i >= n
  			|| unique[i].x_org != m->mx || unique[i].y_org != m->my
  			|| unique[i].width != m->mw || unique[i].height != m->mh)
-@@ -2287,6 +2287,9 @@ updategeom(void)
+@@ -2288,6 +2288,9 @@ updategeom(void)
  				m->mh = m->wh = unique[i].height;
  				updatebarpos(m);
  			}
@@ -58,7 +58,7 @@
  		/* removed monitors if n > nn */
  		for (i = nn; i < n; i++) {
  			for (m = mons; m && m->next; m = m->next);
-@@ -2300,6 +2303,8 @@ updategeom(void)
+@@ -2301,6 +2304,8 @@ updategeom(void)
  			}
  			if (m == selmon)
  				selmon = mons;
@@ -67,7 +67,7 @@
  			cleanupmon(m);
  		}
  		free(unique);
-@@ -2387,7 +2392,7 @@ updatestatus(void)
+@@ -2388,7 +2393,7 @@ updatestatus(void)
  {
  	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
  		strcpy(stext, "dwm-"VERSION);

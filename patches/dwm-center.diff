@@ -14,9 +14,9 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  	 *	WM_CLASS(STRING) = instance, class
  	 *	WM_NAME(STRING) = title
  	 */
--	/* class      instance    title       tags mask     isfloating   monitor */
--	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
--	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+-	/* class      instance	  title	      tags mask	    isfloating	 monitor */
+-	{ "Gimp",     NULL,	  NULL,	      0,	    1,		 -1 },
+-	{ "Firefox",  NULL,	  NULL,	      1 << 8,	    0,		 -1 },
 +	/* class      instance    title       tags mask     iscentered   isfloating   monitor */
 +	{ "Gimp",     NULL,       NULL,       0,            0,           1,           -1 },
 +	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           0,           -1 },
@@ -58,7 +58,7 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  			c->isfloating = r->isfloating;
  			c->tags |= r->tags;
  			for (m = mons; m && m->num != r->monitor; m = m->next);
-@@ -1185,6 +1188,10 @@ manage(Window w, XWindowAttributes *wa)
+@@ -1186,6 +1189,10 @@ manage(Window w, XWindowAttributes *wa)
  	updatewindowtype(c);
  	updatesizehints(c);
  	updatewmhints(c);
@@ -69,7 +69,7 @@ Subject: [PATCH] Adding 6.2 center patch with multi-monitor fix and
  	updateclienttagprop(c);
  	setclienttagprop(c);
  	XSelectInput(dpy, w, EnterWindowMask|FocusChangeMask|PropertyChangeMask|StructureNotifyMask);
-@@ -2400,8 +2407,10 @@ updatewindowtype(Client *c)
+@@ -2401,8 +2408,10 @@ updatewindowtype(Client *c)
  
  	if (state == netatom[NetWMFullscreen])
  		setfullscreen(c, 1);

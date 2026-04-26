@@ -14,23 +14,16 @@
  };
  
  /* layout(s) */
-@@ -70,10 +71,16 @@ static char dmenumon[2] = "0"; /* compon
- static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
- static const char *termcmd[]  = { "x-terminal-emulator", NULL };
- 
-+/*First arg only serves to match against key in rules*/
-+static const char *scratchpadcmd[] = {"s", "st", "-t", "scratchpad", NULL};
-+
- static const Key keys[] = {
- 	/* modifier                     key        function        argument */
- 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
- 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+@@ -74,6 +75,9 @@ static const Key keys[] = {
+ 	/* modifier			key	   function	   argument */
+ 	{ MODKEY,			XK_p,	   spawn,	   {.v = dmenucmd } },
+ 	{ MODKEY|ShiftMask,		XK_Return, spawn,	   {.v = termcmd } },
 +	{ MODKEY,                       XK_g,      togglescratch,  {.v = scratchpadcmd } },
 +	{ MODKEY|ShiftMask,             XK_g,      removescratch,  {.v = scratchpadcmd } },
 +	{ MODKEY|ControlMask,           XK_g,      setscratch,     {.v = scratchpadcmd } },
- 	{ MODKEY,                       XK_b,      togglebar,      {0} },
- 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
- 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+ 	{ MODKEY,			XK_b,	   togglebar,	   {0} },
+ 	{ MODKEY,			XK_j,	   focusstack,	   {.i = +1 } },
+ 	{ MODKEY,			XK_k,	   focusstack,	   {.i = -1 } },
 --- a/dwm.c
 +++ b/dwm.c
 @@ -100,6 +100,7 @@ struct Client {
@@ -86,8 +79,8 @@
  	c->tags = 0;
 +	c->scratchkey = 0;
  	XGetClassHint(dpy, c->win, &ch);
- 	class    = ch.res_class ? ch.res_class : broken;
- 	instance = ch.res_name  ? ch.res_name  : broken;
+ 	class	 = ch.res_class ? ch.res_class : broken;
+ 	instance = ch.res_name	? ch.res_name  : broken;
 @@ -348,6 +355,7 @@ applyrules(Client *c)
  			c->iscentered = r->iscentered;
  			c->isfloating = r->isfloating;
@@ -104,7 +97,7 @@
  	c->tags = c->tags & TAGMASK ? c->tags & TAGMASK : c->mon->tagset[c->mon->seltags];
  }
  
-@@ -1453,6 +1462,15 @@ recttomon(int x, int y, int w, int h)
+@@ -1454,6 +1463,15 @@ recttomon(int x, int y, int w, int h)
  }
  
  void
@@ -120,7 +113,7 @@
  resize(Client *c, int x, int y, int w, int h, int interact)
  {
  	if (applysizehints(c, &x, &y, &w, &h, interact))
-@@ -1819,6 +1837,16 @@ setmfact(const Arg *arg)
+@@ -1820,6 +1838,16 @@ setmfact(const Arg *arg)
  }
  
  void
@@ -137,7 +130,7 @@
  setup(void)
  {
  	int i;
-@@ -1939,6 +1967,9 @@ showhide(Client *c)
+@@ -1940,6 +1968,9 @@ showhide(Client *c)
  			resize(c, c->x, c->y, c->w, c->h, 0);
  		showhide(c->snext);
  	} else {
@@ -147,7 +140,7 @@
  		/* hide clients bottom up */
  		showhide(c->snext);
  		XMoveWindow(dpy, c->win, WIDTH(c) * -2, c->y);
-@@ -1975,6 +2006,19 @@ setclienttagprop(Client *c)
+@@ -1976,6 +2007,19 @@ setclienttagprop(Client *c)
  			PropModeReplace, (unsigned char *) data, 2);
  }
  
@@ -167,7 +160,7 @@
  void
  tag(const Arg *arg)
  {
-@@ -2124,6 +2168,126 @@ togglefullscr(const Arg *arg)
+@@ -2125,6 +2169,126 @@ togglefullscr(const Arg *arg)
  }
  
  void
