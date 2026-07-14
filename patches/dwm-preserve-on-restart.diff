@@ -113,9 +113,9 @@ clients on old tags, however note that layout order is not preserved.
 +	Atom atom;
 +
 +	if (XGetWindowProperty(
-+	        dpy, c->win, netatom[NetClientInfo], 0L, 2L, False,
-+	        XA_CARDINAL, &atom, &format, &n, &extra,
-+	        (unsigned char**) &data) != Success)
++			dpy, c->win, netatom[NetClientInfo], 0L, 2L, False,
++			XA_CARDINAL, &atom, &format, &n, &extra,
++			(unsigned char**) &data) != Success)
 +		return;
 +	if (n == 2) {
 +		c->tags = *data & TAGMASK;

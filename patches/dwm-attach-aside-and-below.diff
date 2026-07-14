@@ -202,8 +202,8 @@
  		}
  	}
  	if (dirty) {
-+		Monitor *mm;
-+		Client *cc;
++		Monitor* mm;
++		Client* cc;
 +
  		selmon = mons;
  		selmon = wintomon(root);
