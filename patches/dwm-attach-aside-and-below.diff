@@ -105,10 +105,11 @@
  	attachstack(c);
  	setclienttagprop(c);
  	if (c->isfullscreen)
-@@ -2388,6 +2424,7 @@ updategeom(void)
+@@ -2387,7 +2423,7 @@ updategeom(void)
+ 				m->clients = c->next;
  				detachstack(c);
  				c->mon = mons;
- 				attach(c);
+-				attach(c);
 +				attachBelow(c);
  				attachstack(c);
  			}
