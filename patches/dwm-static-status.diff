@@ -12,7 +12,7 @@
  
 --- a/dwm.c
 +++ b/dwm.c
-@@ -332,7 +332,7 @@ static Cur* cursor[CurLast];
+@@ -333,7 +333,7 @@ static Cur* cursor[CurLast];
  static Clr** scheme;
  static Display* dpy;
  static Drw* drw;
@@ -21,7 +21,7 @@
  static Window root, wmcheckwin;
  
  /* configuration, allows nested code to access above variables */
-@@ -524,7 +524,7 @@ buttonpress(XEvent* e)
+@@ -525,7 +525,7 @@ buttonpress(XEvent* e)
  			arg.ui = 1 << i;
  		} else if (ev->x < x + TEXTW(selmon->ltsymbol))
  			click = ClkLtSymbol;
@@ -30,7 +30,7 @@
  			click = ClkStatusText;
  		else
  			click = ClkWinTitle;
-@@ -840,7 +840,7 @@ drawbar(Monitor* m)
+@@ -849,7 +849,7 @@ drawbar(Monitor* m)
  		return;
  
  	/* draw status first so it can be overdrawn by tags later */
@@ -39,7 +39,7 @@
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
  		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
-@@ -2348,7 +2348,7 @@ updategeom(void)
+@@ -2373,7 +2373,7 @@ updategeom(void)
  			else
  				mons = createmon();
  		}
@@ -48,7 +48,7 @@
  			if (i >= n || unique[i].x_org != m->mx || unique[i].y_org != m->my || unique[i].width != m->mw || unique[i].height != m->mh) {
  				dirty  = 1;
  				m->num = i;
-@@ -2358,6 +2358,9 @@ updategeom(void)
+@@ -2383,6 +2383,9 @@ updategeom(void)
  				m->mh = m->wh = unique[i].height;
  				updatebarpos(m);
  			}
@@ -58,7 +58,7 @@
  		/* removed monitors if n > nn */
  		for (i = nn; i < n; i++) {
  			for (m = mons; m && m->next; m = m->next)
-@@ -2372,6 +2375,8 @@ updategeom(void)
+@@ -2397,6 +2400,8 @@ updategeom(void)
  			}
  			if (m == selmon)
  				selmon = mons;
@@ -67,12 +67,31 @@
  			cleanupmon(m);
  		}
  		free(unique);
-@@ -2458,7 +2463,7 @@ updatestatus(void)
+@@ -2405,6 +2410,8 @@ updategeom(void)
+ 	{  /* default monitor setup */
+ 		if (!mons)
+ 			mons = createmon();
++		if (!statmon)
++			statmon = mons;
+ 		if (mons->mw != sw || mons->mh != sh) {
+ 			dirty    = 1;
+ 			mons->mw = mons->ww = sw;
+@@ -2412,6 +2419,8 @@ updategeom(void)
+ 			updatebarpos(mons);
+ 		}
+ 	}
++	if (!statmon)
++		statmon = mons;
+ 	if (dirty) {
+ 		selmon = mons;
+ 		selmon = wintomon(root);
+@@ -2483,7 +2492,8 @@ updatestatus(void)
  {
  	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
  		strcpy(stext, "dwm-" VERSION);
 -	drawbar(selmon);
-+	drawbar(statmon);
++	if (statmon)
++		drawbar(statmon);
  }
  
  void

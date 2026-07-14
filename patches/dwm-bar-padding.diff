@@ -22,7 +22,7 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  static const char col_gray1[]      = "#222222";
 --- a/dwm.c
 +++ b/dwm.c
-@@ -308,6 +308,8 @@ static int screen;
+@@ -309,6 +309,8 @@ static int screen;
  static int sw, sh; /* X display screen geometry width, height */
  static int bh;     /* bar height */
  static int lrpad;  /* sum of left and right padding for text */
@@ -31,40 +31,40 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  static int (*xerrorxlib)(Display*, XErrorEvent*);
  static unsigned int numlockmask            = 0;
  static void (*handler[LASTEvent])(XEvent*) = {
-@@ -662,7 +664,7 @@ configurenotify(XEvent* e)
+@@ -663,7 +665,7 @@ configurenotify(XEvent* e)
  				for (c = m->clients; c; c = c->next)
  					if (c->isfullscreen)
  						resizeclient(c, m->mx, m->my, m->mw, m->mh);
 -				XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, m->ww, bh);
-+				XMoveResizeWindow(dpy, m->barwin, m->wx + sp, m->by + vp, m->ww - 2 * sp, bh);
++				XMoveResizeWindow(dpy, m->barwin, m->wx + sp, m->by + vp, MAX(1, m->ww - 2 * sp), bh);
  			}
  			focus(NULL);
  			arrange(NULL);
-@@ -843,7 +845,7 @@ drawbar(Monitor* m)
+@@ -852,7 +854,7 @@ drawbar(Monitor* m)
  	if (m == statmon) {                /* status is only drawn on selected monitor */
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		tw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
 -		drw_text(drw, m->ww - tw, 0, tw, bh, 0, stext, 0);
-+		drw_text(drw, m->ww - tw - 2 * sp, 0, tw, bh, 0, stext, 0);
++		drw_text(drw, MAX(0, m->ww - tw - 2 * sp), 0, tw, bh, 0, stext, 0);
  	}
  
  	for (c = m->clients; c; c = c->next) {
-@@ -869,12 +871,12 @@ drawbar(Monitor* m)
+@@ -878,12 +880,12 @@ drawbar(Monitor* m)
  	if ((w = m->ww - tw - x) > bh) {
  		if (m->sel) {
  			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
 -			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
-+			drw_text(drw, x, 0, w - 2 * sp, bh, lrpad / 2, m->sel->name, 0);
++			drw_text(drw, x, 0, MAX(1, w - 2 * sp), bh, lrpad / 2, m->sel->name, 0);
  			if (m->sel->isfloating)
  				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
  		} else {
  			drw_setscheme(drw, scheme[SchemeNorm]);
 -			drw_rect(drw, x, 0, w, bh, 1, 1);
-+			drw_rect(drw, x, 0, w - 2 * sp, bh, 1, 1);
++			drw_rect(drw, x, 0, MAX(1, w - 2 * sp), bh, 1, 1);
  		}
  	}
  	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
-@@ -1860,6 +1862,8 @@ setup(void)
+@@ -1870,6 +1872,8 @@ setup(void)
  		die("no fonts could be loaded.");
  	lrpad = drw->fonts->h;
  	bh    = drw->fonts->h + 2;
@@ -73,25 +73,25 @@ Subject: [PATCH] barpadding: adds space between the statusbar and the edge of
  	updategeom();
  	/* init atoms */
  	utf8string                     = XInternAtom(dpy, "UTF8_STRING", False);
-@@ -2105,7 +2109,7 @@ togglebar(const Arg* arg)
+@@ -2119,7 +2123,7 @@ togglebar(const Arg* arg)
  	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] =
  		!selmon->showbar;
  	updatebarpos(selmon);
 -	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
-+	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx + sp, selmon->by + vp, selmon->ww - 2 * sp, bh);
++	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx + sp, selmon->by + vp, MAX(1, selmon->ww - 2 * sp), bh);
  	arrange(selmon);
  }
  
-@@ -2268,7 +2272,7 @@ updatebars(void)
+@@ -2291,7 +2295,7 @@ updatebars(void)
  	for (m = mons; m; m = m->next) {
  		if (m->barwin)
  			continue;
 -		m->barwin = XCreateWindow(dpy, root, m->wx, m->by, m->ww, bh, 0, DefaultDepth(dpy, screen),
-+		m->barwin = XCreateWindow(dpy, root, m->wx + sp, m->by + vp, m->ww - 2 * sp, bh, 0, DefaultDepth(dpy, screen),
++		m->barwin = XCreateWindow(dpy, root, m->wx + sp, m->by + vp, MAX(1, m->ww - 2 * sp), bh, 0, DefaultDepth(dpy, screen),
  		                          CopyFromParent, DefaultVisual(dpy, screen),
  		                          CWOverrideRedirect | CWBackPixmap | CWEventMask, &wa);
  		XDefineCursor(dpy, m->barwin, cursor[CurNormal]->cursor);
-@@ -2283,11 +2287,11 @@ updatebarpos(Monitor* m)
+@@ -2306,11 +2310,11 @@ updatebarpos(Monitor* m)
  	m->wy = m->my;
  	m->wh = m->mh;
  	if (m->showbar) {

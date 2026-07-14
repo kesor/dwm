@@ -39,7 +39,42 @@
  	}
  	XUnmapWindow(dpy, mon->barwin);
  	XDestroyWindow(dpy, mon->barwin);
-@@ -1749,7 +1758,10 @@ tile(Monitor* m)
+@@ -723,15 +732,22 @@ dirtomon(int dir)
+ {
+ 	Monitor* m = NULL;
+ 
++	if (!mons)
++		return NULL;
++	if (!selmon)
++		return mons;
+ 	if (dir > 0) {
+ 		if (!(m = selmon->next))
+ 			m = mons;
+-	} else if (selmon == mons)
++	} else if (selmon == mons) {
+ 		for (m = mons; m->next; m = m->next)
+ 			;
+-	else
+-		for (m = mons; m->next != selmon; m = m->next)
++	} else {
++		for (m = mons; m->next && m->next != selmon; m = m->next)
+ 			;
++		if (!m->next) /* selmon not in monitor list */
++			return mons;
++	}
+ 	return m;
+ }
+ 
+@@ -890,7 +906,7 @@ focusstack(const Arg* arg)
+ 			for (c = selmon->clients; c && !ISVISIBLE(c); c = c->next)
+ 				;
+ 	} else {
+-		for (i = selmon->clients; i != selmon->sel; i = i->next)
++		for (i = selmon->clients; i && i != selmon->sel; i = i->next)
+ 			if (ISVISIBLE(i))
+ 				c = i;
+ 		if (!c)
+@@ -1749,7 +1765,10 @@ tile(Monitor* m)
  			if (my + HEIGHT(c) < m->wh)
  				my += HEIGHT(c);
  		} else {
@@ -51,7 +86,16 @@
  			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2 * c->bw), h - (2 * c->bw), 0);
  			if (ty + HEIGHT(c) < m->wh)
  				ty += HEIGHT(c);
-@@ -1954,7 +1966,7 @@ updategeom(void)
+@@ -1921,6 +1940,8 @@ updategeom(void)
+ 		XineramaScreenInfo* info   = XineramaQueryScreens(dpy, &nn);
+ 		XineramaScreenInfo* unique = NULL;
+ 
++		if (!info)
++			nn = 0;
+ 		for (n = 0, m = mons; m; m = m->next, n++)
+ 			;
+ 		/* only consider unique geometries as separate screens */
+@@ -1954,7 +1975,7 @@ updategeom(void)
  		for (i = nn; i < n; i++) {
  			for (m = mons; m && m->next; m = m->next)
  				;

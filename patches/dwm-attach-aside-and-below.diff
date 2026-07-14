@@ -55,21 +55,7 @@
  attachstack(Client* c)
  {
  	c->snext      = c->mon->stack;
-@@ -880,11 +905,11 @@ drawbar(Monitor* m)
- 	if ((w = m->ww - tw - x) > bh) {
- 		if (m->sel) {
- 			/* fix overflow when window name is bigger than window width */
--			int mid = (int)((m->ww - TEXTW(m->sel->name)) / 2.0 + 0.5) - x;
-+			int mid = (int) ((m->ww - TEXTW(m->sel->name)) / 2.0 + 0.5) - x;
- 			/* make sure name will not overlap on tags even when it is very long */
- 			mid = mid >= lrpad / 2 ? mid : lrpad / 2;
- 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
--			drw_text(drw, x, 0, w - 2 * sp, bh,       mid, m->sel->name, 0);
-+			drw_text(drw, x, 0, w - 2 * sp, bh, mid, m->sel->name, 0);
- 			if (m->sel->isfloating)
- 				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
- 		} else {
-@@ -1264,7 +1289,7 @@ manage(Window w, XWindowAttributes* wa)
+@@ -1271,7 +1296,7 @@ manage(Window w, XWindowAttributes* wa)
  		c->isfloating = c->oldstate = trans != None || c->isfixed;
  	if (c->isfloating)
  		XRaiseWindow(dpy, c->win);
@@ -78,7 +64,7 @@
  	attachstack(c);
  	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
  	                (unsigned char*) &(c->win), 1);
-@@ -1397,6 +1422,17 @@ movemouse(const Arg* arg)
+@@ -1404,6 +1429,17 @@ movemouse(const Arg* arg)
  }
  
  Client*
@@ -96,7 +82,7 @@
  nexttiled(Client* c)
  {
  	for (; c && (c->isfloating || !ISVISIBLE(c)); c = c->next)
-@@ -1636,7 +1672,7 @@ sendmon(Client* c, Monitor* m)
+@@ -1643,7 +1679,7 @@ sendmon(Client* c, Monitor* m)
  	clearclientfrompertagsel(c);
  	c->mon  = m;
  	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
@@ -105,7 +91,7 @@
  	attachstack(c);
  	setclienttagprop(c);
  	if (c->isfullscreen)
-@@ -2370,47 +2406,53 @@ updategeom(void)
+@@ -2379,47 +2415,53 @@ updategeom(void)
  		XFree(info);
  		nn = j;
  
@@ -198,9 +184,9 @@
  		}
  		free(unique);
  	} else
-@@ -2426,8 +2468,16 @@ updategeom(void)
- 		}
- 	}
+@@ -2439,8 +2481,16 @@ updategeom(void)
+ 	if (!statmon)
+ 		statmon = mons;
  	if (dirty) {
 +		Monitor* mm;
 +		Client* cc;
