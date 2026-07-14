@@ -45,7 +45,7 @@
  };
  
  /* staticstatus */
-@@ -39,10 +43,22 @@ static const Rule rules[] = {
+@@ -39,10 +43,23 @@ static const Rule rules[] = {
  	 *	WM_CLASS(STRING) = instance, class
  	 *	WM_NAME(STRING) = title
  	 */
@@ -68,11 +68,12 @@
 +	{ "Update-manager",             NULL,                      NULL,            0,            1,           1,           NULL,      0,       0  },
 +	{ "SpeedCrunch",                NULL,                      NULL,            0,            1,           1,           NULL,     -1,      'c' },
 +	{ "flameshot",                  NULL,                      NULL,            0,            0,           0,           NULL,      0,       0  },
-+	{ "stalonetray",                "stalonetray",             "stalonetray",   -1,           0,           1, "2000Z 10Z 28W 28H",  0,       0  }
++	/* tag 9 only; floatpos pins top-right of mon 0 client area (left of status-ish) */
++{ "stalonetray",                "stalonetray",             "stalonetray",   1 << 8,       0,           1, "100% 0Y 160W 32H",   0,       0  }
  };
  // clang-format on
  
-@@ -80,20 +96,44 @@ static const Layout layouts[] = {
+@@ -80,20 +97,44 @@ static const Layout layouts[] = {
  static char dmenumon[2] =
  	"0"; /* component of dmenucmd, manipulated in spawn() */
  static const char* dmenucmd[] = {
@@ -124,7 +125,7 @@
  	{ MODKEY,			    XK_b,      togglebar,      { 0 }                  },
  	{ MODKEY,			    XK_j,      focusstack,     { .i = +1 }            },
  	{ MODKEY,			    XK_k,      focusstack,     { .i = -1 }            },
-@@ -117,68 +157,30 @@ static const Key keys[] = {
+@@ -117,68 +158,30 @@ static const Key keys[] = {
  	{ MODKEY | ShiftMask,   XK_f,      togglefullscr,  { 0 }                  },
  	{ MODKEY,			    XK_0,      view,           { .ui = ~0 }           },
  	{ MODKEY | ShiftMask,   XK_0,      tag,            { .ui = ~0 }           },
