@@ -43,19 +43,20 @@
  static void tile(Monitor* m);
  static void togglebar(const Arg* arg);
  static void togglefloating(const Arg* arg);
-@@ -758,6 +761,19 @@ dirtomon(int dir)
+@@ -758,6 +761,20 @@ dirtomon(int dir)
  	return m;
  }
  
 +Monitor*
 +numtomon(int num)
 +{
-+	Monitor* m = NULL;
++	Monitor* m = mons;
 +	int i      = 0;
 +
-+	for (m = mons, i = 0; m->next && i < num; m = m->next) {
-+		i++;
-+	}
++	if (!mons || num < 0)
++		return NULL;
++	for (; m->next && i < num; m = m->next, i++)
++		;
 +	return m;
 +}
 +
@@ -63,7 +64,7 @@
  void
  drawbar(Monitor* m)
  {
-@@ -910,6 +926,21 @@ focusmon(const Arg* arg)
+@@ -910,6 +927,20 @@ focusmon(const Arg* arg)
  }
  
  void
@@ -71,10 +72,9 @@
 +{
 +	Monitor* m;
 +
-+	if (!mons->next)
++	if (!mons || !mons->next)
 +		return;
-+
-+	if ((m = numtomon(arg->i)) == selmon)
++	if (!(m = numtomon(arg->i)) || m == selmon)
 +		return;
 +	unfocus(selmon->sel, 0);
 +	selmon = m;
@@ -85,15 +85,19 @@
  focusstack(const Arg* arg)
  {
  	Client *c = NULL, *i;
-@@ -1823,6 +1854,14 @@ tagmon(const Arg* arg)
+@@ -1823,6 +1854,18 @@ tagmon(const Arg* arg)
  }
  
  void
 +tagnthmon(const Arg* arg)
 +{
-+	if (!selmon->sel || !mons->next)
++	Monitor* m;
++
++	if (!selmon->sel || !mons || !mons->next)
 +		return;
-+	sendmon(selmon->sel, numtomon(arg->i));
++	if (!(m = numtomon(arg->i)))
++		return;
++	sendmon(selmon->sel, m);
 +}
 +
 +void

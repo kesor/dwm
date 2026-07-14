@@ -1,11 +1,47 @@
 --- a/dwm.c
 +++ b/dwm.c
-@@ -2426,6 +2426,8 @@ togglefloating(const Arg* arg)
- 	if (selmon->sel->isfloating)
+@@ -2430,26 +2430,35 @@ togglefloating(const Arg* arg)
+ 	if (selmon->sel->isfullscreen) /* no support for fullscreen windows */
+ 		return;
+ 	selmon->sel->isfloating = !selmon->sel->isfloating || selmon->sel->isfixed;
+-	if (selmon->sel->isfloating)
++	if (selmon->sel->isfloating) {
++		/* center only when becoming floating, not when returning to tile */
++		selmon->sel->x = selmon->sel->mon->mx + (selmon->sel->mon->mw - WIDTH(selmon->sel)) / 2;
++		selmon->sel->y = selmon->sel->mon->my + (selmon->sel->mon->mh - HEIGHT(selmon->sel)) / 2;
  		resize(selmon->sel, selmon->sel->x, selmon->sel->y,
  		       selmon->sel->w, selmon->sel->h, 0);
-+	selmon->sel->x = selmon->sel->mon->mx + (selmon->sel->mon->mw - WIDTH(selmon->sel)) / 2;
-+	selmon->sel->y = selmon->sel->mon->my + (selmon->sel->mon->mh - HEIGHT(selmon->sel)) / 2;
++	}
  	arrange(selmon);
  }
  
+ void
+ togglefullscr(const Arg* arg)
+ {
+-	if (!selmon->sel)
++	Client* c = selmon->sel;
++
++	if (!c)
+ 		return;
+-	if (selmon->sel->isfullscreen) {
+-		selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] =
+-			!selmon->oldbar;
++	if (!c->isfullscreen) {
++		/* enter: remember bar state and hide bar if shown */
++		selmon->oldbar = selmon->showbar;
++		if (selmon->showbar)
++			togglebar(NULL);
++		setfullscreen(c, 1);
+ 	} else {
+-		selmon->oldbar  = selmon->showbar;
+-		selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] = 1;
++		/* leave: restore bar only if it changed */
++		setfullscreen(c, 0);
++		if (selmon->showbar != selmon->oldbar)
++			togglebar(NULL);
+ 	}
+-	togglebar(arg);
+-	setfullscreen(selmon->sel, !selmon->sel->isfullscreen);
+ }
+ 
+ void

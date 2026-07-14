@@ -103,7 +103,7 @@
  struct Monitor {
  	char ltsymbol[16];
  	float mfact;
-@@ -248,6 +252,7 @@ static void setdesktopnames(void);
+@@ -249,6 +253,7 @@ static void setdesktopnames(void);
  static void setclienttagprop(Client* c);
  static void setfocus(Client* c);
  static void setfullscreen(Client* c, int fullscreen);
@@ -111,7 +111,7 @@
  static void setlayout(const Arg* arg);
  static void setcfact(const Arg* arg);
  static void setmfact(const Arg* arg);
-@@ -338,6 +343,8 @@ struct Pertag {
+@@ -339,6 +344,8 @@ struct Pertag {
  	const Layout* ltidxs[LENGTH(tags) + 1][2]; /* matrix of tags and layouts indexes  */
  	int showbars[LENGTH(tags) + 1];            /* display bar for the current tag */
  	Client* sel[LENGTH(tags) + 1];             /* selected client */
@@ -120,7 +120,7 @@
  };
  
  /* compile-time check if all tags fit into an unsigned int bit array. */
-@@ -736,7 +743,13 @@ createmon(void)
+@@ -737,7 +744,13 @@ createmon(void)
  		m->pertag->sellts[i]    = m->sellt;
  
  		m->pertag->showbars[i] = m->showbar;
@@ -134,7 +134,7 @@
  	return m;
  }
  
-@@ -926,6 +939,12 @@ focus(Client* c)
+@@ -928,6 +941,12 @@ focus(Client* c)
  		attachstack(c);
  		grabbuttons(c, 1);
  		XSetWindowBorder(dpy, c->win, scheme[SchemeSel][ColBorder].pixel);
@@ -147,23 +147,23 @@
  		setfocus(c);
  	} else {
  		XSetInputFocus(dpy, root, RevertToPointerRoot, CurrentTime);
-@@ -1271,7 +1290,10 @@ monocle(Monitor* m)
+@@ -1272,7 +1291,10 @@ monocle(Monitor* m)
  	if (n > 0) /* override layout symbol */
  		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
  	for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
 -		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
-+		if (selmon->pertag->drawwithgaps[selmon->pertag->curtag])
++		if (m->pertag->drawwithgaps[m->pertag->curtag])
 +			resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
 +		else
 +			resize(c, m->wx - c->bw, m->wy, m->ww, m->wh, False);
  }
  
  void
-@@ -1446,6 +1468,12 @@ resizeclient(Client* c, int x, int y, in
+@@ -1447,6 +1469,12 @@ resizeclient(Client* c, int x, int y, in
  	c->oldh         = c->h;
  	c->h = wc.height = h;
  	wc.border_width  = c->bw;
-+	if (!selmon->pertag->drawwithgaps[selmon->pertag->curtag] &&
++	if (!c->mon->pertag->drawwithgaps[c->mon->pertag->curtag] &&
 +	    (((nexttiled(c->mon->clients) == c && !nexttiled(c->next)) || &monocle == c->mon->lt[c->mon->sellt]->arrange)) && !c->isfullscreen && !c->isfloating && NULL != c->mon->lt[c->mon->sellt]->arrange) {
 +		c->w            = wc.width += c->bw * 2;
 +		c->h            = wc.height += c->bw * 2;
@@ -172,7 +172,7 @@
  	XConfigureWindow(dpy, c->win, CWX | CWY | CWWidth | CWHeight | CWBorderWidth, &wc);
  	configure(c);
  	XSync(dpy, False);
-@@ -1689,6 +1717,28 @@ setfullscreen(Client* c, int fullscreen)
+@@ -1692,6 +1720,28 @@ setfullscreen(Client* c, int fullscreen)
  }
  
  void
@@ -201,7 +201,7 @@
  setlayout(const Arg* arg)
  {
  	if (!arg || !arg->v || arg->v != selmon->lt[selmon->sellt])
-@@ -1961,27 +2011,49 @@ tile(Monitor* m)
+@@ -1968,27 +2018,49 @@ tile(Monitor* m)
  		else
  			sfacts += c->cfact;
  	}

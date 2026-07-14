@@ -101,31 +101,39 @@ clients on old tags, however note that layout order is not preserved.
  		focus(NULL);
  		arrange(selmon);
  	}
-@@ -2120,6 +2141,31 @@ updatewmhints(Client* c)
+@@ -2120,6 +2141,39 @@ updatewmhints(Client* c)
  }
  
  void
 +updateclienttagprop(Client* c)
 +{
 +	int format;
-+	unsigned long *data, n, extra;
++	unsigned long *data = NULL, n = 0, extra;
 +	Monitor* m;
 +	Atom atom;
++
 +	if (XGetWindowProperty(
-+			dpy, c->win, netatom[NetClientInfo], 0L, 2L, False,
-+			XA_CARDINAL, &atom, &format, &n, &extra,
-+			(unsigned char**) &data) == Success &&
-+	    n == 2) {
-+		c->tags = *data;
++	        dpy, c->win, netatom[NetClientInfo], 0L, 2L, False,
++	        XA_CARDINAL, &atom, &format, &n, &extra,
++	        (unsigned char**) &data) != Success)
++		return;
++	if (n == 2) {
++		c->tags = *data & TAGMASK;
 +		for (m = mons; m; m = m->next) {
 +			if (m->num == *(data + 1)) {
 +				c->mon = m;
 +				break;
 +			}
 +		}
++		/* geometry may still be for the pre-restore monitor */
++		if (c->x + WIDTH(c) > c->mon->wx + c->mon->ww)
++			c->x = c->mon->wx + c->mon->ww - WIDTH(c);
++		if (c->y + HEIGHT(c) > c->mon->wy + c->mon->wh)
++			c->y = c->mon->wy + c->mon->wh - HEIGHT(c);
++		c->x = MAX(c->x, c->mon->wx);
++		c->y = MAX(c->y, c->mon->wy);
 +	}
-+	if (n > 0)
-+		XFree(data);
++	XFree(data);
 +}
 +
 +
